@@ -2,9 +2,9 @@ package Userdata;
 
 public class Staff implements User{
 
-	private String staffID;
-	private String staffName;
-	private String email;
+	private String id;
+	private String name;
+	private String userName;
 	private String hashedPassword;
 	private String faculty;
 
@@ -13,57 +13,47 @@ public class Staff implements User{
 		throw new UnsupportedOperationException();
 	}
 
-
-
-	//override
-	public String getEmail() {
-		return this.email;
+	public String getID(){
+		return this.id;
 	}
 
-	//override
+	public String getName(){
+		return this.name;
+	}
+
 	public String getUserName() {
-		// TODO - implement Staff.getUserName
-		throw new UnsupportedOperationException();
+		return this.userName;
 	}
 
-
-	public void setStaffID(int String) {
-		// TODO - implement Staff.setStuffID
-		throw new UnsupportedOperationException();
-	}
-	
-
-	public void setStaffName(String staffName) {
-		this.staffName = staffName;
-	}
-
-	//override
-	public void setHashedPassword(String hashedPassword) {
-		this.hashedPassword = hashedPassword;
-	}
-
-	public String getID() {
-		// TODO - implement Staff.getID
-		throw new UnsupportedOperationException();
-	}
-
-	public User getUser(int Map) {
-		// TODO - implement Staff.getUser
-		throw new UnsupportedOperationException();
-	}
-
-	//override
 	public String getHashedPassword() {
 		return this.hashedPassword;
 	}
 
-	//override
-	public void setEmail(String email) {
-		this.email = email;
+	public String getFaculty(){
+		return this.faculty;
 	}
 
-	//override
-	public boolean checkUsername(){
+	public void setID(String id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setUserName(String userName){
+		this.userName = userName;
+	}
+
+	public void setHashedPassword(String hashedPassword) {
+		this.hashedPassword = hashedPassword;
+	}
+
+	public void setFaculty(String faculty){
+		this.faculty = faculty;
+	}
+
+	public boolean checkUsername(String username){
 		//TO DO- inherited from USER interface
 		return true;
 	}

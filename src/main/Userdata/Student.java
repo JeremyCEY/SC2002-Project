@@ -2,14 +2,13 @@ package Userdata;
 
 public class Student {
 
-	private String studentID;
-	private String studentName;
-	private String email;
+	private String id;
+	private String name;
+	private String userName;
 	private String hashedPassword;
 	private String faculty;
-	private string[] registeredCamps;
+	private String[] registeredCamps;
 	private String status;
-	private int attribute;
 
 	public Student() {
 		// TODO - implement Student.Student
@@ -17,40 +16,60 @@ public class Student {
 	}
 
 	public String getID() {
-		// TODO - implement Student.getID
-		throw new UnsupportedOperationException();
+		return this.id;
 	}
 
-	public String getEmail() {
-		return this.email;
+	public String getName(){
+		return this.name;
 	}
 
 	public String getUserName() {
-		// TODO - implement Student.getUserName
-		throw new UnsupportedOperationException();
+		return this.userName;
 	}
 
 	public String getHashedPassword() {
 		return this.hashedPassword;
 	}
 
+	public String getFaculty(){
+		return this.faculty;
+	}
+
+	public String[] getRegisteredCamps(){
+		return this.registeredCamps;
+	}
+
 	public String getStatus() {
 		return this.status;
 	}
 
-	/**
-	 * 
-	 * @param hashedPassword
-	 */
+	public void setID(String id){
+		this.id = id;
+	}
+
+	public void setName(String name){
+		this.name = name;
+	}
+
+	public void setUserName(String userName){
+		this.userName = userName;
+	}
+
 	public void setHashedPassword(String hashedPassword) {
 		this.hashedPassword = hashedPassword;
 	}
 
-	/**
-	 * 
-	 * @param status
-	 */
-	public void setStatus(String status) {
+	public void setFaculty(String faculty){
+		this.faculty = faculty;
+	}
+
+	public void setRegisteredCamps(String[] registeredCamps){
+		//do the appending in manager, retrieve,append,set
+		this.registeredCamps = registeredCamps;
+	}
+
+	public void setStatus(String status){
+		//participant or committee
 		this.status = status;
 	}
 

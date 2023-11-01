@@ -4,7 +4,7 @@ public interface User {
 
 	String getID();
 
-	String getEmail();
+	String getName();
 
 	String getUserName();
 
@@ -13,10 +13,10 @@ public interface User {
 	String getFaculty();
 
 	void setID(String id);
-	
-	void setEmail(String email);
 
-	void setUsername(String username);
+	void setName(String name);
+
+	void setUserName(String userName);
 
 	void setHashedPassword(String hashedPassword);
 
