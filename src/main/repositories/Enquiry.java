@@ -11,6 +11,12 @@ public class Enquiry {
 	private String message;
 	private int attribute;
 
+	public Enquiry(){
+		//To DO
+		
+		//constructor
+	}
+
 	public RequestStates getRequestStatus() {
 		return this.requestStatus;
 	}

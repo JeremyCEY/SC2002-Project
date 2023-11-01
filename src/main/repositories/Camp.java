@@ -4,8 +4,8 @@ public class Camp {
 
 	private String campID;
 	private String campName;
-	private String[] dates;
-	private String RegistrationClosingDate;
+	private String[] dates; //format DD-MM-YYYY
+	private String registrationClosingDate;
 	private boolean campType;
 	private String location;
 	private int totalSlots;
@@ -14,9 +14,24 @@ public class Camp {
 	private String staffID;
 	private boolean visibility;
 
-	public Camp() {
-		// TODO - implement Camp.Camp
-		throw new UnsupportedOperationException();
+	//Constructor
+	public Camp(String campID, String staffID) {
+		this.campID = campID;
+
+		//initialise all the variables
+		this.campName = "";
+		this.dates =  new String[30];//to decide how much space needed
+		this.registrationClosingDate = "";
+		this.campType = false;
+		this.location = "";
+		this.totalSlots = 0;
+		this.campCommSlots = 0;
+		this.description = "";
+		this.visibility = false;
+		
+		//dont pass too many parameters in the constructor, we can use the set methods in CampManager????
+		//1.create camp(constructs camp with the above initialised variables)
+		//2.input details of camp(use mututator methods to set the variables, same for edit camp details)
 	}
 
 	public String getCampID() {
@@ -32,8 +47,7 @@ public class Camp {
 	}
 
 	public String getRegistrationClosingDate() {
-		// TODO - implement Camp.getRegistrationClosingDate
-		throw new UnsupportedOperationException();
+		return this.registrationClosingDate;
 	}
 
 	public boolean getCampType() {
@@ -60,86 +74,57 @@ public class Camp {
 		return this.staffID;
 	}
 
-	/**
-	 * 
-	 * @param String
-	 */
-	public void setCampID(int String) {
-		// TODO - implement Camp.setCampID
-		throw new UnsupportedOperationException();
+	public boolean getVisibility(){
+		return this.visibility;
 	}
 
-	/**
-	 * 
-	 * @param String
-	 */
-	public void setCampName(int String) {
-		// TODO - implement Camp.setCampName
-		throw new UnsupportedOperationException();
+	public void setCampID(String id) {
+		this.campID = id;
 	}
 
-	/**
-	 * 
-	 * @param dates
-	 */
+	public void setCampName(String name) {
+		this.campName = name;
+	}
+
 	public void setDates(String[] dates) {
 		this.dates = dates;
 	}
 
-	/**
-	 * 
-	 * @param String
-	 */
-	public void setRegistrationClosingDate(int String) {
-		// TODO - implement Camp.setRegistrationClosingDate
-		throw new UnsupportedOperationException();
+	public void setRegistrationClosingDate(String closingDate) {
+		this.registrationClosingDate = closingDate;
 	}
 
-	/**
-	 * 
-	 * @param campType
-	 */
-	public void setCampType(boolean campType) {
+	public void setCampType(boolean campType) {//may need to change it to String
+		//true = open to whole of NTU
+		//false = open only to faculty
+		
 		this.campType = campType;
 	}
 
-	/**
-	 * 
-	 * @param location
-	 */
 	public void setLocation(String location) {
 		this.location = location;
 	}
 
-	/**
-	 * 
-	 * @param totalSlots
-	 */
 	public void setTotalSlots(int totalSlots) {
 		this.totalSlots = totalSlots;
 	}
 
-	public void setCampCommSlots() {
-		// TODO - implement Camp.setCampCommSlots
-		throw new UnsupportedOperationException();
+	public void setCampCommSlots(int slots) {
+		this.campCommSlots = slots;
 	}
 
-	/**
-	 * 
-	 * @param String
-	 */
-	public void setDescription(int String) {
-		// TODO - implement Camp.setDescription
-		throw new UnsupportedOperationException();
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	/**
-	 * 
-	 * @param String
-	 */
-	public void setStaffID(int String) {
-		// TODO - implement Camp.setStaffID
-		throw new UnsupportedOperationException();
+	public void setStaffID(String staffID) {
+		this.staffID = staffID;
+	}
+
+	public void setVisibility(boolean visibility){
+		//true = on
+		//false = off
+		this.visibility = visibility;
 	}
 
 }

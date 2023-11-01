@@ -1,6 +1,6 @@
 package Userdata;
 
-public class Staff {
+public class Staff implements User{
 
 	private String staffID;
 	private String staffName;
@@ -13,36 +13,31 @@ public class Staff {
 		throw new UnsupportedOperationException();
 	}
 
+
+
+	//override
 	public String getEmail() {
 		return this.email;
 	}
 
-	/**
-	 * 
-	 * @param String
-	 */
-	public void setStuffID(int String) {
-		// TODO - implement Staff.setStuffID
-		throw new UnsupportedOperationException();
-	}
-
+	//override
 	public String getUserName() {
 		// TODO - implement Staff.getUserName
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * 
-	 * @param staffName
-	 */
+
+	public void setStaffID(int String) {
+		// TODO - implement Staff.setStuffID
+		throw new UnsupportedOperationException();
+	}
+	
+
 	public void setStaffName(String staffName) {
 		this.staffName = staffName;
 	}
 
-	/**
-	 * 
-	 * @param hashedPassword
-	 */
+	//override
 	public void setHashedPassword(String hashedPassword) {
 		this.hashedPassword = hashedPassword;
 	}
@@ -52,25 +47,26 @@ public class Staff {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * 
-	 * @param Map
-	 */
 	public User getUser(int Map) {
 		// TODO - implement Staff.getUser
 		throw new UnsupportedOperationException();
 	}
 
+	//override
 	public String getHashedPassword() {
 		return this.hashedPassword;
 	}
 
-	/**
-	 * 
-	 * @param email
-	 */
+	//override
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	//override
+	public boolean checkUsername(){
+		//TO DO- inherited from USER interface
+		return true;
+	}
+
 
 }
