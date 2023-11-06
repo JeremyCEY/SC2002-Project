@@ -1,4 +1,4 @@
-package Userdata;
+package model.user;
 
 public class Staff implements User{
 

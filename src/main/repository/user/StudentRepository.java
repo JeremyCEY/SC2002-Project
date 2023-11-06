@@ -1,4 +1,4 @@
-package Userdata;
+package repository.user;
 
 public class StudentRepository extends Repository {
 

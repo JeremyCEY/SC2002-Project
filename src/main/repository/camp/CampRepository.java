@@ -1,4 +1,6 @@
-package repositories;
+package repository.camp;
+
+import repository.Repository;
 
 public class CampRepository extends Repository {
 

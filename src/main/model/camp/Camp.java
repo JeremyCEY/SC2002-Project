@@ -1,4 +1,4 @@
-package repositories;
+package model.camp;
 
 public class Camp {
 

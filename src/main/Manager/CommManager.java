@@ -1,4 +1,6 @@
-import repositories.*;
+package manager;
+import model.request.Request;
+import repository.*;
 
 public class CommManager {
 

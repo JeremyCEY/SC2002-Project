@@ -1,4 +1,4 @@
-package Userdata;
+package model.user;
 
 public interface User {
 

@@ -1,20 +1,23 @@
-package repositories;
+package model.request;
 
-public class Suggestion {
+public class Enquiry {
 
-	private RequestStatus requestStatus;
+	private RequestStates requestStatus;
 	private RequestType requestType;
 	private String requestID;
 	private String campID;
 	private String senderID;
-	private String approverID;
+	private String replierID;
+	private String message;
+	private int attribute;
 
-	public Suggestion() {
-		// TODO - implement Suggestion.Suggestion
-		throw new UnsupportedOperationException();
+	public Enquiry(){
+		//To DO
+		
+		//constructor
 	}
 
-	public RequestStatus getRequestStatus() {
+	public RequestStates getRequestStatus() {
 		return this.requestStatus;
 	}
 
@@ -34,15 +37,19 @@ public class Suggestion {
 		return this.senderID;
 	}
 
-	public String getApproverID() {
-		return this.approverID;
+	public String getReplierID() {
+		return this.replierID;
+	}
+
+	public String getMessage() {
+		return this.message;
 	}
 
 	/**
 	 * 
 	 * @param requestStatus
 	 */
-	public void setRequestStatus(RequestStatus requestStatus) {
+	public void setRequestStatus(RequestStates requestStatus) {
 		this.requestStatus = requestStatus;
 	}
 
@@ -80,10 +87,18 @@ public class Suggestion {
 
 	/**
 	 * 
-	 * @param approverID
+	 * @param replierID
 	 */
-	public void setApproverID(String approverID) {
-		this.approverID = approverID;
+	public void setReplierID(String replierID) {
+		this.replierID = replierID;
+	}
+
+	/**
+	 * 
+	 * @param message
+	 */
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 }

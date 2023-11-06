@@ -1,4 +1,4 @@
-package Userdata;
+package repository.user;
 
 public class StaffRepository extends Repository {
 

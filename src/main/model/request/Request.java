@@ -1,4 +1,4 @@
-package repositories;
+package model.request;
 
 public interface Request {
 

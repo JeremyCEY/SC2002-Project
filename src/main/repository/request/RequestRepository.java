@@ -1,4 +1,6 @@
-package repositories;
+package repository.request;
+
+import repository.Repository;
 
 public class RequestRepository extends Repository {
 
