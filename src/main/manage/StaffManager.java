@@ -1,4 +1,4 @@
-package main.manager;
+package main.manage;
 
 public class StaffManager {
 
