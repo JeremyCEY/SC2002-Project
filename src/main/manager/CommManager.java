@@ -1,4 +1,4 @@
-package main.manage;
+package main.manager;
 import main.model.request.Request;
 import main.repository.*;
 

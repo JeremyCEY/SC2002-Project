@@ -1,4 +1,4 @@
-package main.manage;
+package main.manager;
 
 public class AtendeeManager {
 }
