@@ -1,6 +1,6 @@
-package manager;
-import model.request.Request;
-import repository.*;
+package main.manager;
+import main.model.request.Request;
+import main.repository.*;
 
 public class CommManager {
 

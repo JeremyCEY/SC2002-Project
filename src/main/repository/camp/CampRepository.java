@@ -1,4 +1,4 @@
-package repository.camp;
+package main.repository.camp;
 
 import repository.Repository;
 

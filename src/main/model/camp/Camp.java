@@ -1,4 +1,4 @@
-package model.camp;
+package main.model.camp;
 
 public class Camp {
 

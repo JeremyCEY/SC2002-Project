@@ -1,4 +1,4 @@
-import ui.UIEntry;
+import main.ui.UIEntry;
 
 public class main {
     public static void main(String[] args) {

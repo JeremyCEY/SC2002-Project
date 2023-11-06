@@ -1,4 +1,4 @@
-package model.request;
+package main.model.request;
 
 public class Enquiry {
 
