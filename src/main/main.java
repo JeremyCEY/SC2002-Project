@@ -1,3 +1,5 @@
+package main;
+
 import main.ui.UIEntry;
 
 public class main {
