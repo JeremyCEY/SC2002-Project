@@ -1,28 +1,60 @@
 package main.model.user;
 
+import main.utils.parameters.EmptyID;
+import main.utils.parameters.NotNull;
+
+import java.util.Map;
+
 public class Staff implements User{
 
-	private String id;
+	private String userID;
 	private String name;
-	private String userName;
 	private String hashedPassword;
 	private String faculty;
 
-	public Staff() {
-		// TODO - implement Staff.Staff
-		throw new UnsupportedOperationException();
+	//Constructor
+	//Constructor of new Staff object with specified Staff ID, Name and username
+	public Staff(String staffID, String staffName, String faculty) {
+		this.userID = staffID;
+		this.name = staffName;
+		this.faculty = faculty;
 	}
 
-	public String getID(){
-		return this.id;
+	//Constructor of new Staff Object with specified Staff ID and password
+	public Staff(String staffID, String staffName, String faculty, @NotNull String hashedPassword){
+		this.userID = staffID;
+		this.name = staffName;
+		this.faculty = faculty;
+		this.hashedPassword = hashedPassword;
+	}
+
+	//MAPPING CONSTRUCTOR
+	public Staff(Map<String, String> map){
+		this.fromMap(map);
+	}
+	
+
+	//Default Constructor
+	public Staff(){
+		super();
+		this.userID = EmptyID.EMPTY_ID;
+		this.name = EmptyID.EMPTY_ID;
+		this.userID = EmptyID.EMPTY_ID;
+	}
+
+
+	//Methods
+
+	public static User getUser(Map<String, String> map){
+		return new Staff(map);
+	}
+
+	public String getUserID() {
+		return this.userID;
 	}
 
 	public String getName(){
 		return this.name;
-	}
-
-	public String getUserName() {
-		return this.userName;
 	}
 
 	public String getHashedPassword() {
@@ -33,16 +65,12 @@ public class Staff implements User{
 		return this.faculty;
 	}
 
-	public void setID(String id) {
-		this.id = id;
+	public void setUserID(String userID){
+		this.userID = userID;
 	}
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public void setUserName(String userName){
-		this.userName = userName;
 	}
 
 	public void setHashedPassword(String hashedPassword) {
@@ -52,11 +80,4 @@ public class Staff implements User{
 	public void setFaculty(String faculty){
 		this.faculty = faculty;
 	}
-
-	public boolean checkUsername(String username){
-		//TO DO- inherited from USER interface
-		return true;
-	}
-
-
 }

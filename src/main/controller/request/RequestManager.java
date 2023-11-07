@@ -1,4 +1,4 @@
-package main.manager;
+package main.controller.request;
 
 public class RequestManager {
 

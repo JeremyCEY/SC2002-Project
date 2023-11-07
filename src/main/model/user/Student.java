@@ -1,31 +1,60 @@
 package main.model.user;
 
-public class Student {
+import main.utils.parameters.EmptyID;
+import main.utils.parameters.NotNull;
 
-	private String id;
+import java.util.Map;
+
+public class Student implements User{
+
+	private String userID;
 	private String name;
-	private String userName;
 	private String hashedPassword;
 	private String faculty;
 	private String[] registeredCamps;
-	private String status;
+	//private String status;//check for camp comm status???
+	private String[] campDates;
 
-	public Student() {
-		// TODO - implement Student.Student
-		throw new UnsupportedOperationException();
+
+	//Constructors
+
+	//Constructor for new Student object with specified student ID and default password
+	public Student(String studentID, String studentName, String faculty) {
+		this.userID = studentID;
+		this.name = studentName;
+		this.faculty = faculty;
 	}
 
-	public String getID() {
-		return this.id;
+	//Constructor for new Student object with speicified student ID and password
+	public Student(String studentID, String studentName, String faculty, @NotNull String hashedPassword){
+		this.userID = studentID;
+		this.name = studentName;
+		this.faculty = faculty;
+		this.hashedPassword = hashedPassword;
+	}
+
+	public Student(Map<String, String> informationMap){
+		fromMap(informationMap);
+	}
+	
+
+	//Default Constructor
+	public Student(){
+		super();
+		this.userID = EmptyID.EMPTY_ID;
+		this.name = EmptyID.EMPTY_ID;
+		this.faculty = EmptyID.EMPTY_ID;
+	}
+
+	//Methods
+	public String getUserID() {
+		return this.userID;
 	}
 
 	public String getName(){
 		return this.name;
 	}
 
-	public String getUserName() {
-		return this.userName;
-	}
 
 	public String getHashedPassword() {
 		return this.hashedPassword;
@@ -39,21 +68,22 @@ public class Student {
 		return this.registeredCamps;
 	}
 
-	public String getStatus() {
+	/*public String getStatus() {
 		return this.status;
+	}*/
+
+	public String[] getCampDates(){
+		return this.campDates;
 	}
 
-	public void setID(String id){
-		this.id = id;
+	public void setUserID(String userID){
+		this.userID = userID;
 	}
 
 	public void setName(String name){
 		this.name = name;
 	}
 
-	public void setUserName(String userName){
-		this.userName = userName;
-	}
 
 	public void setHashedPassword(String hashedPassword) {
 		this.hashedPassword = hashedPassword;
@@ -68,9 +98,12 @@ public class Student {
 		this.registeredCamps = registeredCamps;
 	}
 
-	public void setStatus(String status){
+	/*public void setStatus(String status){
 		//participant or committee
 		this.status = status;
-	}
+	}*/
 
+	public void setCampDates(String[] campDates){
+		this.campDates = campDates;
+	}
 }

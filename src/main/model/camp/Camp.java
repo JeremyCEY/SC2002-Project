@@ -1,12 +1,23 @@
 package main.model.camp;
 
+import main.model.Displayable;
+import main.model.Model;
+import main.model.user.Student;
+import main.model.user.Staff;
+import main.repository.user.StudentRepository;
+import main.repository.user.StaffRepository;
+import main.utils.exception.ModelNotFoundException;
+import main.utils.parameters.EmptyID;
+
+import java.util.Map;
+
 public class Camp {
 
 	private String campID;
 	private String campName;
 	private String[] dates; //format DD-MM-YYYY
 	private String registrationClosingDate;
-	private boolean campType;
+	private userGroup openTo;
 	private String location;
 	private int totalSlots;
 	private int campCommSlots;
@@ -14,25 +25,29 @@ public class Camp {
 	private String staffID;
 	private boolean visibility;
 
-	//Constructor
-	public Camp(String campID, String staffID) {
+	//Constructor TO EDIT
+	public Camp(String campID, String campName, String location, String staffID) {
 		this.campID = campID;
-
-		//initialise all the variables
-		this.campName = "";
+		this.campName = campName;
 		this.dates =  new String[30];//to decide how much space needed
-		this.registrationClosingDate = "";
-		this.campType = false;
-		this.location = "";
+		this.registrationClosingDate = EmptyID.EMPTY_ID;
+		this.openTo = userGroup.SCHOOL;
+		this.location = location;
 		this.totalSlots = 0;
 		this.campCommSlots = 0;
-		this.description = "";
+		this.description = EmptyID.EMPTY_ID;
+		this.staffID = staffID;
 		this.visibility = false;
-		
-		//dont pass too many parameters in the constructor, we can use the set methods in CampManager????
-		//1.create camp(constructs camp with the above initialised variables)
-		//2.input details of camp(use mututator methods to set the variables, same for edit camp details)
 	}
+
+	public Camp(Map<String, String> map){
+		fromMap(map);
+	}
+
+	/*private void displayStudentList{
+		
+	}*/
+
 
 	public String getCampID() {
 		return this.campID;
@@ -50,8 +65,8 @@ public class Camp {
 		return this.registrationClosingDate;
 	}
 
-	public boolean getCampType() {
-		return this.campType;
+	public userGroup getOpenTo() {
+		return this.openTo;
 	}
 
 	public String getLocation() {
@@ -94,11 +109,10 @@ public class Camp {
 		this.registrationClosingDate = closingDate;
 	}
 
-	public void setCampType(boolean campType) {//may need to change it to String
+	public void setCampType(userGroup userGroup) {
 		//true = open to whole of NTU
 		//false = open only to faculty
-		
-		this.campType = campType;
+		this.openTo = userGroup;
 	}
 
 	public void setLocation(String location) {

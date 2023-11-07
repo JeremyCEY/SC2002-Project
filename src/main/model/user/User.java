@@ -2,27 +2,24 @@ package main.model.user;
 
 public interface User {
 
-	String getID();
+	String getUserID();
 
 	String getName();
-
-	String getUserName();
 
 	String getHashedPassword();
 
 	String getFaculty();
 
-	void setID(String id);
+	void setUserID(String userID);
 
 	void setName(String name);
-
-	void setUserName(String userName);
 
 	void setHashedPassword(String hashedPassword);
 
 	void setFaculty(String faculty);
 
-	boolean checkUsername(String username);
+	default boolean checkUserID(String userID){
+		return this.getUserID().equalsIgnoreCase(userID);
+	}
 
-	//hash function?
 }
