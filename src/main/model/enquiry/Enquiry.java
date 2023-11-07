@@ -1,32 +1,29 @@
-package main.model.request;
+package main.model.enquiry;
+
 
 public class Enquiry {
 
-	private RequestStates requestStatus;
-	private RequestType requestType;
-	private String requestID;
+	private String enquiryID;
 	private String campID;
 	private String senderID;
 	private String replierID;
 	private String message;
-	private int attribute;
+	private boolean isReplied;
 
-	public Enquiry(){
-		//To DO
-		
-		//constructor
+	//Constructor
+	public Enquiry(String enquiryID, String campID, String senderID, String replierID, String message){
+		this.enquiryID = enquiryID;
+		this.campID = campID;
+		this.senderID = senderID;
+		this.replierID = replierID;
+		this.message = message;
+		this.isReplied = false;
 	}
 
-	public RequestStates getRequestStatus() {
-		return this.requestStatus;
-	}
 
-	public RequestType getRequestType() {
-		return this.requestType;
-	}
-
-	public String getRequestID() {
-		return this.requestID;
+	//Methods
+	public String getEnquiryID() {
+		return this.enquiryID;
 	}
 
 	public String getCampID() {
@@ -45,28 +42,12 @@ public class Enquiry {
 		return this.message;
 	}
 
-	/**
-	 * 
-	 * @param requestStatus
-	 */
-	public void setRequestStatus(RequestStates requestStatus) {
-		this.requestStatus = requestStatus;
+	public boolean getIsReplied(){
+		return this.isReplied;
 	}
 
-	/**
-	 * 
-	 * @param requestType
-	 */
-	public void setRequestType(RequestType requestType) {
-		this.requestType = requestType;
-	}
-
-	/**
-	 * 
-	 * @param requestID
-	 */
-	public void setRequestID(String requestID) {
-		this.requestID = requestID;
+	public void EnquiryID(String requestID) {
+		this.enquiryID = requestID;
 	}
 
 	/**
@@ -99,6 +80,10 @@ public class Enquiry {
 	 */
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public void setIsReplied(boolean isReplied){
+		this.isReplied = isReplied;
 	}
 
 }

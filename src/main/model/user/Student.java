@@ -14,6 +14,7 @@ public class Student implements User{
 	private String[] registeredCamps;
 	//private String status;//check for camp comm status???
 	private String[] campDates;
+	private int points;
 
 
 	//Constructors
@@ -23,6 +24,7 @@ public class Student implements User{
 		this.userID = studentID;
 		this.name = studentName;
 		this.faculty = faculty;
+		this.points = 0;
 	}
 
 	//Constructor for new Student object with speicified student ID and password
@@ -31,6 +33,7 @@ public class Student implements User{
 		this.name = studentName;
 		this.faculty = faculty;
 		this.hashedPassword = hashedPassword;
+		this.points = 0;
 	}
 
 	public Student(Map<String, String> informationMap){
@@ -44,6 +47,7 @@ public class Student implements User{
 		this.userID = EmptyID.EMPTY_ID;
 		this.name = EmptyID.EMPTY_ID;
 		this.faculty = EmptyID.EMPTY_ID;
+		this.points = 0;
 	}
 
 	//Methods
@@ -76,6 +80,10 @@ public class Student implements User{
 		return this.campDates;
 	}
 
+	public int getPoints(){
+		return this.points;
+	}
+
 	public void setUserID(String userID){
 		this.userID = userID;
 	}
@@ -105,5 +113,9 @@ public class Student implements User{
 
 	public void setCampDates(String[] campDates){
 		this.campDates = campDates;
+	}
+
+	public void setPoints(int points){
+		this.points = points;
 	}
 }
