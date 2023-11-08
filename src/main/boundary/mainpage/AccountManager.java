@@ -1,4 +1,4 @@
-package main.ui;
+package main.boundary.mainpage;
 
 public class AccountManager {
 

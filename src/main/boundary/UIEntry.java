@@ -1,4 +1,4 @@
-package main.ui;
+package main.boundary;
 
 public class UIEntry {
     

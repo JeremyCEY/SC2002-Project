@@ -1,6 +1,6 @@
 package main;
 
-import main.ui.UIEntry;
+import main.boundary.UIEntry;
 
 public class main {
     public static void main(String[] args) {
