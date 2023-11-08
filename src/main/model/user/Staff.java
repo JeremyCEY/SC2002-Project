@@ -24,6 +24,8 @@ public class Staff implements User {
     private String email;
     private String hashedPassword;
 
+    private Faculty faculty;
+
     /**
      * Constructs a new staff object with the specified staff ID.
      *

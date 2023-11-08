@@ -20,6 +20,7 @@ public class Camp implements Model, Displayable {
 	private String registrationClosingDate;
 	private Faculty openTo;
 	private String location;
+	private int filledSlots;
 	private int totalSlots; // assuming total attendee slots ONLY (exclude comm)
 	private int campCommSlots;
 	private String description;
@@ -34,6 +35,7 @@ public class Camp implements Model, Displayable {
 		this.registrationClosingDate = EmptyID.EMPTY_ID;
 		this.openTo = Faculty.NTU;
 		this.location = location;
+		this.filledSlots = 0;
 		this.totalSlots = 0;
 		this.campCommSlots = 0;
 		this.description = EmptyID.EMPTY_ID;
@@ -72,6 +74,10 @@ public class Camp implements Model, Displayable {
 
 	public String getLocation() {
 		return this.location;
+	}
+
+	public int getFilledSlots() {
+		return this.filledSlots;
 	}
 
 	public int getTotalSlots() {
@@ -118,6 +124,10 @@ public class Camp implements Model, Displayable {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public void setFilledSlots(int filledSlots) {
+		this.filledSlots = filledSlots;
 	}
 
 	public void setTotalSlots(int totalSlots) {

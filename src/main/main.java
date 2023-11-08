@@ -4,8 +4,7 @@ import main.boundary.UIEntry;
 
 public class main {
     public static void main(String[] args) {
-        //start the userinterface
+        // For testing the app
         UIEntry.start();
-
     }
 }
