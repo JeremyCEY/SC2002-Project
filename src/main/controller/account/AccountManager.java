@@ -134,7 +134,7 @@ public class AccountManager {
             String name = row.get(0);
             String email = row.get(1);
             String userID = getID(email);
-            String facultyString = row.get(3);
+            String facultyString = row.get(2);
             Faculty faculty = Faculty.NA;
 
             if (facultyString == "ADM")

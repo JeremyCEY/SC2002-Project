@@ -33,10 +33,11 @@ public class Staff implements User {
      * @param staffName the name of the staff.
      * @param email          the email of the staff.
      */
-    public Staff(String staffID, String staffName, String email) {
+    public Staff(String staffID, String staffName, String email, Faculty faculty) {
         this.staffID = staffID;
         this.staffName = staffName;
         this.email = email;
+        this.faculty = faculty;
     }
 
     /**
@@ -47,11 +48,12 @@ public class Staff implements User {
      * @param email          the email of the staff.
      * @param hashedPassword the password of the staff.
      */
-    public Staff(String staffID, String staffName, String email, @NotNull String hashedPassword) {
+    public Staff(String staffID, String staffName, String email, @NotNull String hashedPassword, Faculty faculty) {
         this.hashedPassword = hashedPassword;
         this.staffID = staffID;
         this.staffName = staffName;
         this.email = email;
+        this.faculty = faculty;
     }
 
     /**
@@ -124,5 +126,9 @@ public class Staff implements User {
     @Override
     public String getEmail() {
         return this.email;
+    }
+
+    public Faculty getFaculty(){
+        return this.faculty;
     }
 }

@@ -16,7 +16,7 @@ public class Camp implements Model, Displayable {
 
 	private String campID;
 	private String campName;
-	private String[] dates;
+	private String dates;
 	private String registrationClosingDate;
 	private Faculty openTo;
 	private String location;
@@ -31,7 +31,7 @@ public class Camp implements Model, Displayable {
 	public Camp(String campID, String campName, String location, String staffID) {
 		this.campID = campID;
 		this.campName = campName;
-		this.dates =  new String[30];//to decide how much space needed
+		this.dates =  EmptyID.EMPTY_ID;
 		this.registrationClosingDate = EmptyID.EMPTY_ID;
 		this.openTo = Faculty.NTU;
 		this.location = location;
@@ -60,7 +60,7 @@ public class Camp implements Model, Displayable {
 		return this.campName;
 	}
 
-	public String[] getDates() {
+	public String getDates() {
 		return this.dates;
 	}
 
@@ -108,7 +108,7 @@ public class Camp implements Model, Displayable {
 		this.campName = name;
 	}
 
-	public void setDates(String[] dates) {
+	public void setDates(String dates) {
 		this.dates = dates;
 	}
 
@@ -117,8 +117,6 @@ public class Camp implements Model, Displayable {
 	}
 
 	public void setCampType(Faculty faculty) {
-		//true = open to whole of NTU
-		//false = open only to faculty
 		this.openTo = faculty;
 	}
 
@@ -156,52 +154,52 @@ public class Camp implements Model, Displayable {
      * Display the complete information of the project.
      */
     private String getSingleProjectString() {
-        // String projectTitle = getProjectTitle();
-        // int maxTitleLength = 60;
-        // String titleLine1;
-        // String titleLine2;
+        String projectTitle = getProjectTitle();
+        int maxTitleLength = 60;
+        String titleLine1;
+        String titleLine2;
 
-        // if (projectTitle.length() <= maxTitleLength) {
-        //     int leftPadding = (maxTitleLength - projectTitle.length()) / 2;
-        //     int rightPadding = maxTitleLength - projectTitle.length() - leftPadding;
-        //     titleLine1 = String.format("| %-" + leftPadding + "s%-" + projectTitle.length() + "s%-" + rightPadding + "s |\n", "", projectTitle, "");
-        //     titleLine2 = "";
-        // } else {
-        //     String[] words = projectTitle.split("\\s+");
-        //     String firstLine = "";
-        //     String secondLine = "";
-        //     int remainingLength = maxTitleLength;
-        //     int i = 0;
-        //     while (i < words.length) {
-        //         if (firstLine.length() + words[i].length() + 1 <= maxTitleLength) {
-        //             firstLine += words[i] + " ";
-        //             remainingLength = maxTitleLength - firstLine.length();
-        //             i++;
-        //         } else {
-        //             break;
-        //         }
-        //     }
-        //     for (; i < words.length; i++) {
-        //         if (secondLine.length() + words[i].length() + 1 <= maxTitleLength) {
-        //             secondLine += words[i] + " ";
-        //         } else {
-        //             break;
-        //         }
-        //     }
-        //     int leftPadding1 = (maxTitleLength - firstLine.length()) / 2;
-        //     int leftPadding2 = (maxTitleLength - secondLine.length()) / 2;
-        //     int rightPadding1 = maxTitleLength - firstLine.length() - leftPadding1;
-        //     int rightPadding2 = maxTitleLength - secondLine.length() - leftPadding2;
-        //     titleLine1 = String.format("| %-" + leftPadding1 + "s%-" + firstLine.length() + "s%-" + rightPadding1 + "s |\n", "", firstLine.trim(), "");
-        //     titleLine2 = String.format("| %-" + leftPadding2 + "s%-" + secondLine.length() + "s%-" + rightPadding2 + "s |\n", "", secondLine.trim(), "");
-        // }
+        if (projectTitle.length() <= maxTitleLength) {
+            int leftPadding = (maxTitleLength - projectTitle.length()) / 2;
+            int rightPadding = maxTitleLength - projectTitle.length() - leftPadding;
+            titleLine1 = String.format("| %-" + leftPadding + "s%-" + projectTitle.length() + "s%-" + rightPadding + "s |\n", "", projectTitle, "");
+            titleLine2 = "";
+        } else {
+            String[] words = projectTitle.split("\\s+");
+            String firstLine = "";
+            String secondLine = "";
+            int remainingLength = maxTitleLength;
+            int i = 0;
+            while (i < words.length) {
+                if (firstLine.length() + words[i].length() + 1 <= maxTitleLength) {
+                    firstLine += words[i] + " ";
+                    remainingLength = maxTitleLength - firstLine.length();
+                    i++;
+                } else {
+                    break;
+                }
+            }
+            for (; i < words.length; i++) {
+                if (secondLine.length() + words[i].length() + 1 <= maxTitleLength) {
+                    secondLine += words[i] + " ";
+                } else {
+                    break;
+                }
+            }
+            int leftPadding1 = (maxTitleLength - firstLine.length()) / 2;
+            int leftPadding2 = (maxTitleLength - secondLine.length()) / 2;
+            int rightPadding1 = maxTitleLength - firstLine.length() - leftPadding1;
+            int rightPadding2 = maxTitleLength - secondLine.length() - leftPadding2;
+            titleLine1 = String.format("| %-" + leftPadding1 + "s%-" + firstLine.length() + "s%-" + rightPadding1 + "s |\n", "", firstLine.trim(), "");
+            titleLine2 = String.format("| %-" + leftPadding2 + "s%-" + secondLine.length() + "s%-" + rightPadding2 + "s |\n", "", secondLine.trim(), "");
+        }
 
-        // return titleLine1 + titleLine2 +
-        //         "|--------------------------------------------------------------|\n" +
-        //         String.format("| Project ID                  | %-30s |\n", getID()) +
-        //         getProjectSupervisorInformationString() +
-        //         getProjectStudentInformationString() +
-        //         getProjectInformationString();
+        return titleLine1 + titleLine2 +
+                "|--------------------------------------------------------------|\n" +
+                String.format("| Project ID                  | %-30s |\n", getID()) +
+                getProjectSupervisorInformationString() +
+                getProjectStudentInformationString() +
+                getProjectInformationString();
 		return "EXAMPLE";
     }
 
