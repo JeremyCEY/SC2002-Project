@@ -5,117 +5,246 @@ import main.utils.parameters.NotNull;
 
 import java.util.Map;
 
-public class Student implements User{
-
-	private String userID;
-	private String name;
+/**
+ * This class represents a student, which is a type of user.
+ * It extends the User class and includes a student ID field.
+ */
+public class Student implements User {
+	/**
+	 * The ID of the student.
+	 */
+	private String studentID;
+	/**
+	 * The name of a student
+	 */
+	private String studentName;
+	/**
+	 * The email of a student
+	 */
+	private String email;
+	/**
+	 * The status of a student - no need
+	 */
+	// private StudentStatus status;
+	/**
+	 * The ID of the supervisor - no need
+	 */
+	// private String supervisorID;
+	/**
+	 * The ID of the project - no need
+	 */
+	// private String projectID;
 	private String hashedPassword;
-	private String faculty;
-	private String[] registeredCamps;
-	//private String status;//check for camp comm status???
-	private String[] campDates;
-	private int points;
 
+	private String aCamps;
 
-	//Constructors
+	private String cCamps;
 
-	//Constructor for new Student object with specified student ID and default password
-	public Student(String studentID, String studentName, String faculty) {
-		this.userID = studentID;
-		this.name = studentName;
+	private Faculty faculty;
+
+	/**
+	 * Constructs a new Student object with the specified student ID and default
+	 * password.
+	 *
+	 * @param studentID   the ID of the student.
+	 * @param studentName the name of the student.
+	 * @param email       the email of the student.
+	 */
+	public Student(String studentID, String studentName, String email, Faculty faculty) {
+		this.studentID = studentID;
+		this.studentName = studentName;
+		this.email = email;
+		this.aCamps = "";
+		this.cCamps = "";
 		this.faculty = faculty;
-		this.points = 0;
+		// this.status = StudentStatus.UNREGISTERED;
+		// supervisorID = EmptyID.EMPTY_ID;
+		// projectID = EmptyID.EMPTY_ID;
 	}
 
-	//Constructor for new Student object with speicified student ID and password
-	public Student(String studentID, String studentName, String faculty, @NotNull String hashedPassword){
-		this.userID = studentID;
-		this.name = studentName;
+	/**
+	 * Constructs a new Student object with the specified student ID and password.
+	 *
+	 * @param studentID      the ID of the student.
+	 * @param studentName    the name of the student.
+	 * @param email          the email of the student.
+	 * @param hashedPassword the password of the student.
+	 */
+	public Student(String studentID, String studentName, String email, @NotNull String hashedPassword,
+			Faculty faculty) {
+		this.studentID = studentID;
+		this.studentName = studentName;
+		this.email = email;
+		this.aCamps = "";
+		this.cCamps = "";
 		this.faculty = faculty;
+		// this.status = StudentStatus.UNREGISTERED;
+		// supervisorID = EmptyID.EMPTY_ID;
+		// projectID = EmptyID.EMPTY_ID;
 		this.hashedPassword = hashedPassword;
-		this.points = 0;
 	}
 
-	public Student(Map<String, String> informationMap){
+	/**
+	 * Constructs a new Student object with the specified student ID and password.
+	 *
+	 * @param informationMap the map
+	 */
+	public Student(Map<String, String> informationMap) {
 		fromMap(informationMap);
 	}
-	
 
-	//Default Constructor
-	public Student(){
+	/**
+	 * default constructor for Student class
+	 */
+	public Student() {
 		super();
-		this.userID = EmptyID.EMPTY_ID;
-		this.name = EmptyID.EMPTY_ID;
-		this.faculty = EmptyID.EMPTY_ID;
-		this.points = 0;
+		this.email = EmptyID.EMPTY_ID;
+		this.studentID = EmptyID.EMPTY_ID;
+		this.studentName = EmptyID.EMPTY_ID;
+		this.aCamps = EmptyID.EMPTY_ID;
+		this.cCamps = EmptyID.EMPTY_ID;
+		this.faculty = Faculty.NA;
+		// this.status = StudentStatus.UNREGISTERED;
 	}
 
-	//Methods
-	public String getUserID() {
-		return this.userID;
+	/**
+	 * 
+	 * Creates a new Student object based on the information in the provided map.
+	 * The map should contain the necessary information to construct the Student
+	 * object,
+	 * such as the student's name, email, and ID.
+	 * 
+	 * @param informationMap a map containing the information required to create a
+	 *                       new Student object
+	 * @return a new Student object with the information provided in the map
+	 */
+	public static User getUser(Map<String, String> informationMap) {
+		return new Student(informationMap);
 	}
 
-	public String getName(){
-		return this.name;
+	/**
+	 * Gets the email of the user
+	 *
+	 * @return the email of the user
+	 */
+	@Override
+	public String getID() {
+		return this.studentID;
 	}
 
+	/**
+	 * Gets the username of the user
+	 *
+	 * @return the name of the user
+	 */
+	@Override
+	public String getUserName() {
+		return this.studentName;
+	}
 
+	/**
+	 * Gets the email of the user
+	 *
+	 * @return the email of the user
+	 */
+	@Override
+	public String getEmail() {
+		return this.email;
+	}
+
+	/**
+	 * Gets the status of the student
+	 *
+	 * @return the status of the student
+	 */
+	// public StudentStatus getStatus() {
+	// return this.status;
+	// }
+
+	/**
+	 * Sets the status of the student
+	 *
+	 * @param status the new status of the student
+	 */
+	// public void setStatus(StudentStatus status) {
+	// this.status = status;
+	// }
+
+	/**
+	 * Gets the ID of the supervisor
+	 *
+	 * @return the ID of the supervisor
+	 */
+	// public String getSupervisorID() {
+	// return supervisorID;
+	// }
+
+	/**
+	 * Sets the ID of the supervisor
+	 *
+	 * @param supervisorID the ID of the supervisor
+	 */
+	// public void setSupervisorID(String supervisorID) {
+	// this.supervisorID = supervisorID;
+	// }
+
+	/**
+	 * Gets the ID of the project
+	 *
+	 * @return the ID of the project
+	 */
+	// public String getProjectID() {
+	// return projectID;
+	// }
+
+	/**
+	 * Sets the ID of the project
+	 *
+	 * @param projectID the ID of the project
+	 */
+	// public void setProjectID(String projectID) {
+	// this.projectID = projectID;
+	// }
+
+	/**
+	 * getter for the password
+	 *
+	 * @return hashedPassword
+	 */
 	public String getHashedPassword() {
-		return this.hashedPassword;
+		return hashedPassword;
 	}
 
-	public String getFaculty(){
-		return this.faculty;
-	}
-
-	public String[] getRegisteredCamps(){
-		return this.registeredCamps;
-	}
-
-	/*public String getStatus() {
-		return this.status;
-	}*/
-
-	public String[] getCampDates(){
-		return this.campDates;
-	}
-
-	public int getPoints(){
-		return this.points;
-	}
-
-	public void setUserID(String userID){
-		this.userID = userID;
-	}
-
-	public void setName(String name){
-		this.name = name;
-	}
-
-
+	/**
+	 * setter for the password
+	 *
+	 * @param hashedPassword the password that to be set
+	 */
 	public void setHashedPassword(String hashedPassword) {
 		this.hashedPassword = hashedPassword;
 	}
 
-	public void setFaculty(String faculty){
+	public String getACamps() {
+		return aCamps;
+	}
+
+	public void setACamps(String aCamps) {
+		this.aCamps = aCamps;
+	}
+
+	public String getCCamps() {
+		return cCamps;
+	}
+
+	public void setCCamps(String cCamps) {
+		this.cCamps = cCamps;
+	}
+
+	public Faculty getFaculty() {
+		return this.faculty;
+	}
+
+	public void setFaculty(Faculty faculty) {
 		this.faculty = faculty;
-	}
-
-	public void setRegisteredCamps(String[] registeredCamps){
-		//do the appending in manager, retrieve,append,set
-		this.registeredCamps = registeredCamps;
-	}
-
-	/*public void setStatus(String status){
-		//participant or committee
-		this.status = status;
-	}*/
-
-	public void setCampDates(String[] campDates){
-		this.campDates = campDates;
-	}
-
-	public void setPoints(int points){
-		this.points = points;
 	}
 }

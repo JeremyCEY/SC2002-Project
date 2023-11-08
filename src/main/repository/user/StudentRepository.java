@@ -1,31 +1,61 @@
 package main.repository.user;
 
-public class StudentRepository extends Repository {
+import main.model.user.Student;
+import main.repository.Repository;
 
-	private String FILE_PATH;
+import java.util.List;
+import java.util.Map;
 
-	public StudentRepository() {
-		// TODO - implement StudentRepository.StudentRepository
-		throw new UnsupportedOperationException();
-	}
+import static main.utils.config.Location.RESOURCE_LOCATION;
 
-	public String getFilePath() {
-		// TODO - implement StudentRepository.getFilePath
-		throw new UnsupportedOperationException();
-	}
+/**
+ * The StudentRepository class is a repository for managing the persistence of student objects
+ * through file I/O operations.
+ * It extends the Repository class, which provides basic CRUD operations for the repository.
+ */
+public class StudentRepository extends Repository<Student> {
 
-	public StudentRepository getInstance() {
-		// TODO - implement StudentRepository.getInstance
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * The path of the repository file.
+     */
+    private static final String FILE_PATH = "/data/user/student.txt";
 
-	/**
-	 * 
-	 * @param List
-	 */
-	public void setAll(int List) {
-		// TODO - implement StudentRepository.setAll
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * Constructor for the StudentRepository class.
+     */
+    StudentRepository() {
+        super();
+        load();
+    }
 
+    /**
+     * Gets a new instance of the StudentRepository class.
+     *
+     * @return a new instance of the StudentRepository class
+     */
+    public static StudentRepository getInstance() {
+        return new StudentRepository();
+    }
+
+    /**
+     * Gets the path of the repository file.
+     *
+     * @return the path of the repository file
+     */
+    @Override
+    public String getFilePath() {
+        return RESOURCE_LOCATION + FILE_PATH;
+    }
+
+    /**
+     * Sets the list of mappable objects.
+     *
+     * @param listOfMappableObjects the list of mappable objects
+     */
+    @Override
+    public void setAll(List<Map<String, String>> listOfMappableObjects) {
+        for (Map<String, String> map : listOfMappableObjects) {
+            getAll().add(new Student(map));
+        }
+    }
 }
