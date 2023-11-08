@@ -1,6 +1,7 @@
 package main;
 
 import main.boundary.UIEntry;
+import main.boundary.mainpage.StaffMainPage;
 import main.boundary.mainpage.StudentMainPage;
 import main.controller.account.AccountManager;
 import main.model.user.User;

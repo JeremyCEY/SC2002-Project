@@ -159,21 +159,35 @@ public class AccountManager {
     /**
      * Loads the coordinators from the CSV resource file
      */
-    // private static void loadStaffs() {
-    // List<List<String>> coordinatorList =
-    // CSVReader.read(Location.RESOURCE_LOCATION + "/resources/StaffList.csv",
-    // true);
-    // for (List<String> row : coordinatorList) {
-    // String name = row.get(0);
-    // String email = row.get(1);
-    // String userID = getID(email);
-    // try {
-    // register(UserType.STAFF, userID, name, email);
-    // } catch (ModelAlreadyExistsException e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // }
+    private static void loadStaffs() {
+    List<List<String>> staffList =
+    CSVReader.read(Location.RESOURCE_LOCATION + "/resources/StaffList.csv",
+    true);
+    for (List<String> row : staffList) {
+    String name = row.get(0);
+    String email = row.get(1);
+    String userID = getID(email);
+    String facultyString = row.get(2);
+            Faculty faculty = Faculty.NA;
+
+            if (facultyString == "ADM")
+                faculty = Faculty.ADM;
+            else if (facultyString == "EEE")
+                faculty = Faculty.EEE;
+            else if (facultyString == "NBS")
+                faculty = Faculty.NBS;
+            else if (facultyString == "SCSE")
+                faculty = Faculty.SCSE;
+            else if (facultyString == "SSS")
+                faculty = Faculty.SSS;
+
+    try {
+    register(UserType.STAFF, userID, name, email, faculty);
+    } catch (ModelAlreadyExistsException e) {
+    e.printStackTrace();
+    }
+    }
+    }
 
     /**
      * Loads all users from the CSV resource file
