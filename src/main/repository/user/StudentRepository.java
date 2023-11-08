@@ -23,6 +23,7 @@ public class StudentRepository extends Repository<Student> {
     /**
      * Constructor for the StudentRepository class.
      */
+	
     StudentRepository() {
         super();
         load();

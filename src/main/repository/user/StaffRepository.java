@@ -1,31 +1,61 @@
 package main.repository.user;
 
-public class StaffRepository extends Repository {
+import main.model.user.Staff;
+import main.repository.Repository;
 
-	private String FILE_PATH;
+import java.util.List;
+import java.util.Map;
 
-	public StaffRepository() {
-		// TODO - implement StaffRepository.StaffRepository
-		throw new UnsupportedOperationException();
-	}
+import static main.utils.config.Location.RESOURCE_LOCATION;
 
-	public StaffRepository getInstance() {
-		// TODO - implement StaffRepository.getInstance
-		throw new UnsupportedOperationException();
-	}
+/**
+ * The staffRepository class is a repository that stores staff objects
+ * through file I/O operations.
+ * It extends the Repository class, which provides basic CRUD operations for the repository.
+ */
+public class StaffRepository extends Repository<Staff> {
 
-	public String getFilePath() {
-		// TODO - implement StaffRepository.getFilePath
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * The path of the repository file.
+     */
+    private static final String FILE_PATH = "/data/user/staff.txt";
 
-	/**
-	 * 
-	 * @param List
-	 */
-	public void setAll(int List) {
-		// TODO - implement StaffRepository.setAll
-		throw new UnsupportedOperationException();
-	}
+    /**
+     * Constructor for creating a new staffRepository object.
+     */
+    StaffRepository() {
+        super();
+        load();
+    }
 
+    /**
+     * Gets a new instance of staffRepository.
+     *
+     * @return a new instance of staffRepository
+     */
+    public static StaffRepository getInstance() {
+        return new StaffRepository();
+    }
+
+    /**
+     * Gets the file path of the repository.
+     *
+     * @return the file path of the repository
+     */
+    @Override
+    public String getFilePath() {
+        return RESOURCE_LOCATION + FILE_PATH;
+    }
+
+    /**
+     * Sets the list of mappable objects in the repository.
+     *
+     * @param listOfMappableObjects the list of mappable objects to set
+     */
+    @Override
+    public void setAll(List<Map<String, String>> listOfMappableObjects) {
+        for (Map<String, String> map : listOfMappableObjects) {
+            getAll().add(new Staff(map));
+        }
+    }
 }
