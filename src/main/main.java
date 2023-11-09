@@ -15,10 +15,22 @@ public class main {
         //UIEntry.start();
 
         // Skip to student page
+        // AccountManager.loadUsers();
+        // try {
+        //     User user = AccountManager.login(UserType.STUDENT, "YCHERN", "password");
+        //     StudentMainPage.studentMainPage(user);
+        //     return;
+        // } catch (PasswordIncorrectException e) {
+        //     System.out.println("Password incorrect.");
+        // } catch (ModelNotFoundException e) {
+        //     System.out.println("User not found.");
+        // }
+
+        // Skip to staff page
         AccountManager.loadUsers();
         try {
-            User user = AccountManager.login(UserType.STUDENT, "YCHERN", "password");
-            StudentMainPage.studentMainPage(user);
+            User user = AccountManager.login(UserType.STAFF, "HUKUMAR", "password");
+            StaffMainPage.staffMainPage(user);
             return;
         } catch (PasswordIncorrectException e) {
             System.out.println("Password incorrect.");
