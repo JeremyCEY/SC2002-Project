@@ -243,8 +243,4 @@ public class Student implements User {
 	public Faculty getFaculty() {
 		return this.faculty;
 	}
-
-	public void setFaculty(Faculty faculty) {
-		this.faculty = faculty;
-	}
 }

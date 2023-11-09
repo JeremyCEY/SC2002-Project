@@ -1,11 +1,3 @@
-/**package main.utils.ui;
-
-*public class UserTypeGetter {
-    
-}
-*/
-
-
 package main.utils.ui;
 
 import main.model.user.User;

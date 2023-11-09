@@ -1,0 +1,12 @@
+studentIDYCHERNaCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameCHERNemailYCHERN@e.ntu.edu.sgfacultySCSE
+studentIDKOH1aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameKOHemailKOH1@e.ntu.edu.sgfacultyADM
+studentIDBR015aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameBRANDONemailBR015@e.ntu.edu.sgfacultyEEE
+studentIDCT113aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameCALVINemailCT113@e.ntu.edu.sgfacultySCSE
+studentIDYCN019aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameCHANemailYCN019@e.ntu.edu.sgfacultyNBS
+studentIDDL007aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameDENISEemailDL007@e.ntu.edu.sgfacultySCSE
+studentIDDON84aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameDONGemailDON84@e.ntu.edu.sgfacultyADM
+studentIDELI34aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameERNESTemailELI34@e.ntu.edu.sgfacultyEEE
+studentIDLE51aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameLEEemailLE51@e.ntu.edu.sgfacultySCSE
+studentIDSL22aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameLIUemailSL22@e.ntu.edu.sgfacultyNBS
+studentIDAKY013aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameRAWALemailAKY013@e.ntu.edu.sgfacultySSS
+studentIDHUKUMARaCampscCampshashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameMadhukumaremailHUKUMAR@NTU.EDU.SGfacultyNA
