@@ -21,8 +21,7 @@ public class UserFactory {
         String hashedPassword = PasswordHashManager.hashPassword(password);
         return switch (userType) {
             case STUDENT -> new Student(userID, name, email, hashedPassword, faculty);
-            //case STAFF -> new Staff(userID, name, email, hashedPassword, faculty);
-            case STAFF -> new Student(userID, name, email, hashedPassword, faculty);
+            case STAFF -> new Staff(userID, name, email, hashedPassword, faculty);
         };
     }
 }

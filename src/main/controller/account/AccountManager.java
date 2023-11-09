@@ -194,7 +194,7 @@ public class AccountManager {
      */
     public static void loadUsers() {
         loadStudents();
-        //loadStaffs();
+        loadStaffs();
     }
 
     /**
