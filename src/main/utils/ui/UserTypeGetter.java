@@ -1,8 +1,9 @@
-/*package main.utils.ui;
+/**package main.utils.ui;
 
-public class UserTypeGetter {
+*public class UserTypeGetter {
     
-}*/
+}
+*/
 
 
 package main.utils.ui;
