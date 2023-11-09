@@ -16,7 +16,7 @@ public class Camp implements Model, Displayable {
 
 	private String campID;
 	private String campName;
-	private String dates;
+	private String dates;//separated with comma DD-MM-YY,DD-MM-YY
 	private String registrationClosingDate;
 	private Faculty openTo;
 	private String location;
@@ -28,10 +28,10 @@ public class Camp implements Model, Displayable {
 	private boolean visibility;
 
 	//Constructor TO EDIT
-	public Camp(String campID, String campName, String location, String staffID) {
+	public Camp(String campID, String campName, String dates,String location, String staffID) {
 		this.campID = campID;
 		this.campName = campName;
-		this.dates =  EmptyID.EMPTY_ID;
+		this.dates = EmptyID.EMPTY_ID;
 		this.registrationClosingDate = EmptyID.EMPTY_ID;
 		this.openTo = Faculty.NTU;
 		this.location = location;
@@ -151,21 +151,21 @@ public class Camp implements Model, Displayable {
 	}
 
 	 /** TO DO TO DO TO DO
-     * Display the complete information of the project.
+     * Display the complete information of the camp.
      */
-    private String getSingleProjectString() {
-        String projectTitle = getProjectTitle();
+    private String getSingleCampString() {
+        String campName = getCampName();
         int maxTitleLength = 60;
         String titleLine1;
         String titleLine2;
 
-        if (projectTitle.length() <= maxTitleLength) {
-            int leftPadding = (maxTitleLength - projectTitle.length()) / 2;
-            int rightPadding = maxTitleLength - projectTitle.length() - leftPadding;
-            titleLine1 = String.format("| %-" + leftPadding + "s%-" + projectTitle.length() + "s%-" + rightPadding + "s |\n", "", projectTitle, "");
+        if (campName.length() <= maxTitleLength) {
+            int leftPadding = (maxTitleLength - campName.length()) / 2;
+            int rightPadding = maxTitleLength - campName.length() - leftPadding;
+            titleLine1 = String.format("| %-" + leftPadding + "s%-" + campName.length() + "s%-" + rightPadding + "s |\n", "", campName, "");
             titleLine2 = "";
         } else {
-            String[] words = projectTitle.split("\\s+");
+            String[] words = campName.split("\\s+");
             String firstLine = "";
             String secondLine = "";
             int remainingLength = maxTitleLength;
@@ -197,15 +197,15 @@ public class Camp implements Model, Displayable {
         return titleLine1 + titleLine2 +
                 "|--------------------------------------------------------------|\n" +
                 String.format("| Project ID                  | %-30s |\n", getID()) +
-                getProjectSupervisorInformationString() +
-                getProjectStudentInformationString() +
-                getProjectInformationString();
-		return "EXAMPLE";
+                getStaffID() +
+                //getProjectStudentInformationString() +  //getStudentList?
+                getDescription();
+		//return "EXAMPLE";
     }
 
 	@Override
     public String getDisplayableString() {
-        return getSingleProjectString();
+        return getSingleCampString();
     }
 
     @Override
