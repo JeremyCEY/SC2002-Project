@@ -9,4 +9,3 @@ studentIDELI34aCampsnullcCampsnullhashedPasswordwAZ9SvTofwD
 studentIDLE51aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameLEEemailLE51@e.ntu.edu.sgfacultySCSE
 studentIDSL22aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameLIUemailSL22@e.ntu.edu.sgfacultyNBS
 studentIDAKY013aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameRAWALemailAKY013@e.ntu.edu.sgfacultySSS
-studentIDHUKUMARaCampscCampshashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameMadhukumaremailHUKUMAR@NTU.EDU.SGfacultyNA
