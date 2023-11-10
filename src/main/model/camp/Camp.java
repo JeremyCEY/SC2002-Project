@@ -96,7 +96,7 @@ public class Camp implements Model, Displayable {
 		return this.staffID;
 	}
 
-	public boolean getVisibility(){
+	public String getVisibility(){
 		return this.visibility;
 	}
 
@@ -144,7 +144,7 @@ public class Camp implements Model, Displayable {
 		this.staffID = staffID;
 	}
 
-	public void setVisibility(boolean visibility){
+	public void setVisibility(String visibility){
 		//true = on
 		//false = off
 		this.visibility = visibility;

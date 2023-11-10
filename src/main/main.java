@@ -39,7 +39,7 @@ public class main {
         //     System.out.println("User not found.");
         // }
         
-        AccountManager.loadUsers();
+        //AccountManager.loadUsers();
         CampManager.loadcamps();
         //CampManager.createcamp("SOP", "HUKUMAR");
     }

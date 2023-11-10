@@ -118,7 +118,7 @@ public class CampManager {
                 max = id;
             }
         }
-        return "P" + (max + 1);
+        return "C" + (max + 1);
     }
 
     /**
