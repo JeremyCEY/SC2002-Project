@@ -1,6 +1,7 @@
 package main.model.request;
 
 import java.util.Map;
+import main.utils.parameters.EmptyID;
 
 public class Enquiry implements Request{
 
@@ -12,6 +13,7 @@ public class Enquiry implements Request{
 	private String senderID;
 	private String replierID;
 	private String message;
+	private String reply;
 
 	//Constructor
 	public Enquiry(String requestID, String campID, String senderID, String replierID, String message){
@@ -21,6 +23,7 @@ public class Enquiry implements Request{
 		this.senderID = senderID;
 		this.replierID = replierID;
 		this.message = message;
+		this.reply = EmptyID.EMPTY_ID;
 	}
 
 	public Enquiry(Map<String, String> map){
@@ -47,6 +50,10 @@ public class Enquiry implements Request{
 
 	public String getMessage() {
 		return this.message;
+	}
+
+	public String getReply(){
+		return this.reply;
 	}
 
 	public RequestStatus getRequestStatus(){
@@ -80,6 +87,10 @@ public class Enquiry implements Request{
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public void setReply(String reply){
+		this.reply = reply;
 	}
 
 	public void setRequestStatus(RequestStatus status){

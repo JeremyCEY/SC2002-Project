@@ -1,6 +1,6 @@
 package main.repository.request;
 
-import repository.Repository;
+import main.repository.Repository;
 
 public class RequestRepository extends Repository {
 
