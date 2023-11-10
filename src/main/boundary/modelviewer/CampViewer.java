@@ -1,12 +1,12 @@
 package main.boundary.modelviewer;
 
-import main.controller.project.ProjectManager;
-import main.model.project.Project;
-import main.model.project.ProjectStatus;
+import main.controller.camp.CampManager;
+import main.model.camp.Camp;
+//import main.model.project.ProjectStatus;
 import main.model.user.Student;
-import main.model.user.StudentStatus;
-import main.repository.project.ProjectRepository;
-import main.repository.user.FacultyRepository;
+//import main.model.user.StudentStatus;
+import main.repository.camp.CampRepository;
+import main.repository.user.StaffRepository;
 import main.utils.exception.ModelNotFoundException;
 import main.utils.exception.PageBackException;
 import main.utils.iocontrol.IntGetter;
@@ -20,7 +20,7 @@ import java.util.Scanner;
 /**
  * Displays the project details.
  */
-public class ProjectViewer {
+public class CampViewer {
 
     /**
      * Displays a menu to the user to select a project status and returns the selected ProjectStatus enum value. If an invalid option is selected, it prompts the user to retry or go back, and throws a PageBackException if the user chooses to go back.
@@ -28,7 +28,7 @@ public class ProjectViewer {
      * @return the selected ProjectStatus enum value.
      * @throws PageBackException if the user chooses to go back to the previous page.
      */
-    public static ProjectStatus getProjectStatus() throws PageBackException {
+    public static CampStatus getCampStatus() throws PageBackException {
         System.out.println("\t1. Available");
         System.out.println("\t2. Unavailable");
         System.out.println("\t3. Reserved");
@@ -58,20 +58,20 @@ public class ProjectViewer {
      *
      * @throws PageBackException if the user chooses to go back to the previous page.
      */
-    public static void generateDetailsByProjectID() throws PageBackException {
+    public static void generateDetailsByCampID() throws PageBackException {
         System.out.println("Please Enter the ProjectID to search: ");
         String s1 = new Scanner(System.in).nextLine();
         try {
-            Project p1 = ProjectRepository.getInstance().getByID(s1);
-            p1.displayProject();
+            Camp p1 = CampRepository.getInstance().getByID(s1);
+            p1.displayCamp();
         } catch (ModelNotFoundException e) {
-            System.out.println("Cannot find the project matching this ID");
+            System.out.println("Cannot find the camp matching this ID");
             System.out.println("Press enter to retry, or enter [b] to go back");
             String input = new Scanner(System.in).nextLine().trim();
             if (input.equals("b")) {
                 throw new PageBackException();
             } else {
-                generateDetailsByProjectID();
+                generateDetailsByCampID();
             }
         }
         System.out.println("Enter <Enter> to continue");
@@ -86,7 +86,7 @@ public class ProjectViewer {
     public static void generateDetailsBySupervisorID() throws PageBackException {
         System.out.println("Please enter the SupervisorID to search: ");
         String s1 = new Scanner(System.in).nextLine();
-        if (!FacultyRepository.getInstance().contains(s1)) {
+        if (!CampRepository.getInstance().contains(s1)) {
             System.out.println("Supervisor Not Found.");
             System.out.println("Press enter to retry, or enter [b] to go back");
             String input = new Scanner(System.in).nextLine().trim();
@@ -97,7 +97,7 @@ public class ProjectViewer {
                 return;
             }
         }
-        List<Project> projectList = ProjectRepository.getInstance().findByRules(p -> p.getSupervisorID().equalsIgnoreCase(s1));
+        List<Camp> campList = CampRepository.getInstance().findByRules(p -> p.getSupervisorID().equalsIgnoreCase(s1));
         ModelViewer.displayListOfDisplayable(projectList);
         System.out.println("Enter <Enter> to continue");
         new Scanner(System.in).nextLine();
@@ -112,7 +112,7 @@ public class ProjectViewer {
     public static void generateDetailsByStudentID() throws PageBackException {
         System.out.println("Enter the StudentID to search");
         String s1 = new Scanner(System.in).nextLine();
-        ModelViewer.displayListOfDisplayable(ProjectRepository.getInstance().findByRules(p -> Objects.equals(p.getStudentID(), s1)));
+        ModelViewer.displayListOfDisplayable(CampRepository.getInstance().findByRules(p -> Objects.equals(p.getStudentID(), s1)));
         System.out.println("Enter <Enter> to continue");
         new Scanner(System.in).nextLine();
         throw new PageBackException();
@@ -124,8 +124,8 @@ public class ProjectViewer {
      * @throws PageBackException if the user wants to go back
      */
     public static void generateDetailsByStatus() throws PageBackException {
-        ProjectStatus status = getProjectStatus();
-        ModelViewer.displayListOfDisplayable(ProjectRepository.getInstance().findByRules(p -> Objects.equals(p.getStatus(), status)));
+        CampStatus status = getCampStatus();
+        ModelViewer.displayListOfDisplayable(CampRepository.getInstance().findByRules(p -> Objects.equals(p.getStatus(), status)));
         System.out.println("Enter <Enter> to continue");
         new Scanner(System.in).nextLine();
         throw new PageBackException();
@@ -137,7 +137,7 @@ public class ProjectViewer {
      *
      * @throws PageBackException if the user wants to go back
      */
-    public static void generateProjectDetails() throws PageBackException {
+    public static void generateCampDetails() throws PageBackException {
         ChangePage.changePage();
         System.out.println(BoundaryStrings.separator);
         System.out.println("Please select the way to search:");
@@ -154,7 +154,7 @@ public class ProjectViewer {
         }
         try {
             switch (c) {
-                case 1 -> generateDetailsByProjectID();
+                case 1 -> generateDetailsByCampID();
                 case 2 -> generateDetailsBySupervisorID();
                 case 3 -> generateDetailsByStudentID();
                 case 4 -> generateDetailsByStatus();
@@ -180,7 +180,7 @@ public class ProjectViewer {
             System.out.println("You are not allowed to view available projects as you are registered to a project.");
         } else {
             System.out.println("View Available Project List");
-            ModelViewer.displayListOfDisplayable(ProjectManager.viewAvailableProjects());
+            ModelViewer.displayListOfDisplayable(CampManager.viewAvailableProjects());
         }
         System.out.println("Press Enter to go back.");
         new Scanner(System.in).nextLine();
@@ -195,7 +195,7 @@ public class ProjectViewer {
     public static void viewAllProject() throws PageBackException {
         ChangePage.changePage();
         System.out.println("View All Project List");
-        ModelViewer.displayListOfDisplayable(ProjectManager.viewAllProject());
+        ModelViewer.displayListOfDisplayable(CampManager.viewAllcamp());
         System.out.println("Press Enter to go back.");
         new Scanner(System.in).nextLine();
         throw new PageBackException();
@@ -210,7 +210,7 @@ public class ProjectViewer {
     public static void viewStudentProject(Student student) throws PageBackException {
         ChangePage.changePage();
         System.out.println("View Student Project");
-        Project p = ProjectManager.getStudentProject(student);
+        Camp p = CampManager.getStudentCamp(student);
         if (p == null) {
             System.out.println("Student has no project yet.");
         } else {
