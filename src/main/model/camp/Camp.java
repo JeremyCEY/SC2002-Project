@@ -25,10 +25,10 @@ public class Camp implements Model, Displayable {
 	private int campCommSlots;
 	private String description;
 	private String staffID;
-	private boolean visibility;
+	private String visibility;
 
 	public Camp(String campID, String campName, String dates, String registrationClosingDate,
-		Faculty openTo, String location, int filledSlots, int totalSlots, int campCommSlots, String description, String staffID, boolean visibility) {
+		Faculty openTo, String location, int filledSlots, int totalSlots, int campCommSlots, String description, String staffID, String visibility) {
 		this.campID = campID;
 		this.campName = campName;
 		this.dates = dates;
@@ -96,7 +96,7 @@ public class Camp implements Model, Displayable {
 		return this.staffID;
 	}
 
-	public boolean getVisibility(){
+	public String getVisibility(){
 		return this.visibility;
 	}
 
@@ -144,7 +144,7 @@ public class Camp implements Model, Displayable {
 		this.staffID = staffID;
 	}
 
-	public void setVisibility(boolean visibility){
+	public void setVisibility(String visibility){
 		//true = on
 		//false = off
 		this.visibility = visibility;

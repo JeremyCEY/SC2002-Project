@@ -1,10 +1,11 @@
 package main;
-
+import java.util.*;
 import main.boundary.UIEntry;
 import main.boundary.mainpage.StaffMainPage;
 import main.boundary.mainpage.StudentMainPage;
 import main.controller.account.AccountManager;
 import main.controller.camp.CampManager;
+import main.model.camp.Camp;
 import main.model.user.User;
 import main.model.user.UserType;
 import main.utils.exception.ModelNotFoundException;
@@ -42,7 +43,10 @@ public class main {
         //AccountManager.loadUsers();
         //CampManager.loadcamps();
         //CampManager.createcamp("SOP", "HUKUMAR");
-        System.out.println(CampManager.getAllcamps());
-        
+        System.out.println(CampManager.getAllcamps().get(0));
+        List<Camp> camps = CampManager.getAllcamps();
+        for (int i = 0; i < camps.size(); i++) {
+            System.out.println(camps.get(i).getCampName());
+        }
     }
 }

@@ -68,7 +68,7 @@ public class CampManager {
      */
     public static void createcamp(String campID, String campName, String dates, String registrationClosingDate,
             Faculty openTo, String location, int filledSlots, int totalSlots, int campCommSlots, String description,
-            String staffID, boolean visibility) throws ModelAlreadyExistsException {
+            String staffID, String visibility) throws ModelAlreadyExistsException {
         Camp c1 = new Camp(campID, campName, dates, registrationClosingDate,
                 openTo, location, filledSlots, totalSlots, campCommSlots, description, staffID, visibility);
         CampRepository.getInstance().add(c1);
@@ -86,7 +86,7 @@ public class CampManager {
      */
     public static void createcamp(String campName, String dates, String registrationClosingDate,
             Faculty openTo, String location, int filledSlots, int totalSlots, int campCommSlots, String description,
-            String staffID, boolean visibility) throws ModelAlreadyExistsException {
+            String staffID, String visibility) throws ModelAlreadyExistsException {
         Camp c1 = new Camp(getNewcampID(), campName, dates, registrationClosingDate,
                 openTo, location, filledSlots, totalSlots, campCommSlots, description, staffID, visibility);
         CampRepository.getInstance().add(c1);
@@ -253,7 +253,7 @@ public class CampManager {
                     CampManager.createcamp(camp.get(0), camp.get(1), camp.get(2),
                             faculty, camp.get(4), Integer.parseInt(camp.get(5)), Integer.parseInt(camp.get(6)),
                             Integer.parseInt(camp.get(7)), camp.get(8),
-                            staff.get(0).getID(), Boolean.valueOf(camp.get(10)));
+                            staff.get(0).getID(), camp.get(10));
                 } else {
                     System.out.println("Load camp " + campName + " failed: multiple staff found");
                 }
@@ -328,7 +328,7 @@ public class CampManager {
      * @return all available camps
      */
     public static List<Camp> getAllVisibleCamps() {
-    return CampRepository.getInstance().findByRules(p -> p.getVisibility() == true);
+    return CampRepository.getInstance().findByRules(p -> p.getVisibility() != "true");
     }
 
     /**
