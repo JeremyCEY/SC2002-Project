@@ -38,8 +38,9 @@ public class main {
         // } catch (ModelNotFoundException e) {
         //     System.out.println("User not found.");
         // }
-
-        //CampManager.loadcamps();
-        CampManager.createcamp("SOP", "HUKUMAR");
+        
+        AccountManager.loadUsers();
+        CampManager.loadcamps();
+        //CampManager.createcamp("SOP", "HUKUMAR");
     }
 }

@@ -25,7 +25,7 @@ public class Camp implements Model, Displayable {
 	private int campCommSlots;
 	private String description;
 	private String staffID;
-	private boolean visibility;
+	private String visibility;
 
 	//Constructor TO EDIT
 	public Camp(String campID, String campName, String staffID) {
@@ -40,7 +40,7 @@ public class Camp implements Model, Displayable {
 		this.campCommSlots = 0; // number of comm that has joined the camp // total slots default to 10
 		this.description = EmptyID.EMPTY_ID;
 		this.staffID = staffID;
-		this.visibility = false;
+		this.visibility = "true";
 	}
 
 	public Camp(Map<String, String> map){

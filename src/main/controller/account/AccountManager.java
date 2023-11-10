@@ -193,7 +193,7 @@ public class AccountManager {
      * Loads all users from the CSV resource file
      */
     public static void loadUsers() {
-        loadStudents();
+        //loadStudents();
         loadStaffs();
     }
 
