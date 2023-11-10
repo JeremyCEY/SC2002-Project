@@ -1,2 +1,1 @@
-visibilitytruecampIDC1openToNTUtotalSlots0filledSlots0descriptionnulldatesnulllocationnullcampNameFOPcampCommSlots0registrationClosingDatenullstaffIDHUKUMAR
-visibilitytruecampIDC2openToNTUtotalSlots0filledSlots0descriptionnulldatesnulllocationnullcampNameSCES CAMPcampCommSlots0registrationClosingDatenullstaffIDASFLI
+visibilitytruecampIDC1openToNTUtotalSlots50filledSlots0descriptionnulldates020123locationNTUcampNameFOPcampCommSlots10registrationClosingDate010123staffIDHUKUMAR

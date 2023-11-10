@@ -1,3 +1,2 @@
-Staff,Title
-Madhukumar,FOP
-Alexei,SCES CAMP
+campName,dates,registrationClosingDate,openTo,location,filledSlots,totalSlots,campCommSlots,description,staffID,visibility
+FOP,020123,010123,NTU,NTU,0,50,10,desc,Madhukumar,true

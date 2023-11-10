@@ -40,7 +40,9 @@ public class main {
         // }
         
         //AccountManager.loadUsers();
-        CampManager.loadcamps();
+        //CampManager.loadcamps();
         //CampManager.createcamp("SOP", "HUKUMAR");
+        System.out.println(CampManager.getAllcamps());
+        
     }
 }

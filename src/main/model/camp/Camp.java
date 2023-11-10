@@ -25,22 +25,22 @@ public class Camp implements Model, Displayable {
 	private int campCommSlots;
 	private String description;
 	private String staffID;
-	private String visibility;
+	private boolean visibility;
 
-	//Constructor TO EDIT
-	public Camp(String campID, String campName, String staffID) {
+	public Camp(String campID, String campName, String dates, String registrationClosingDate,
+		Faculty openTo, String location, int filledSlots, int totalSlots, int campCommSlots, String description, String staffID, boolean visibility) {
 		this.campID = campID;
 		this.campName = campName;
-		this.dates = EmptyID.EMPTY_ID;
-		this.registrationClosingDate = EmptyID.EMPTY_ID;
-		this.openTo = Faculty.NTU;
-		this.location = EmptyID.EMPTY_ID;
-		this.filledSlots = 0; // number of attendees that has joined the camp
-		this.totalSlots = 0; // total number of attendees that can join the camp
-		this.campCommSlots = 0; // number of comm that has joined the camp // total slots default to 10
+		this.dates = dates;
+		this.registrationClosingDate = registrationClosingDate;
+		this.openTo = openTo;
+		this.location = location;
+		this.filledSlots = filledSlots; // number of attendees that has joined the camp
+		this.totalSlots = totalSlots; // total number of attendees that can join the camp
+		this.campCommSlots = campCommSlots; // number of comm that has joined the camp // total slots default to 10
 		this.description = EmptyID.EMPTY_ID;
 		this.staffID = staffID;
-		this.visibility = "true";
+		this.visibility = visibility;
 	}
 
 	public Camp(Map<String, String> map){
@@ -96,7 +96,7 @@ public class Camp implements Model, Displayable {
 		return this.staffID;
 	}
 
-	public String getVisibility(){
+	public boolean getVisibility(){
 		return this.visibility;
 	}
 
@@ -144,7 +144,7 @@ public class Camp implements Model, Displayable {
 		this.staffID = staffID;
 	}
 
-	public void setVisibility(String visibility){
+	public void setVisibility(boolean visibility){
 		//true = on
 		//false = off
 		this.visibility = visibility;
