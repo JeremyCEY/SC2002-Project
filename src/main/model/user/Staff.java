@@ -85,8 +85,7 @@ public class Staff implements User {
      */
     @Override
     public String getID() {
-        //return this.staffID;
-        return "HUKUMAR";
+        return this.staffID;
     }
 
     /**

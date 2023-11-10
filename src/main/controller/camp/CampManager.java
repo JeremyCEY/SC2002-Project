@@ -214,12 +214,11 @@ public class CampManager {
      * load camps from csv resource file
      */
     public static void loadcamps() {
-        List<List<String>> camps = CSVReader.read(Location.RESOURCE_LOCATION + "/resources/campList.csv", true);
+        List<List<String>> camps = CSVReader.read(Location.RESOURCE_LOCATION + "/resources/CampList.csv", true);
         for (List<String> camp : camps) {
             try {
                 String staffName = camp.get(0);
                 String campName = camp.get(1);
-                
                 List<Staff> staff = StaffRepository.getInstance().findByRules(s -> s.checkUsername(staffName));
                 
                 if (staff.size() == 0) {
