@@ -65,8 +65,8 @@ public class StudentMainPage {
                 switch (choice) {
                     case 1 -> ViewUserProfile.viewUserProfilePage(student);
                     case 2 -> ChangeAccountPassword.changePassword(UserType.STUDENT, student.getID());
-                    case 3 -> ProjectViewer.viewAvailableProjectList(student);
-                    case 4 -> ProjectViewer.viewStudentProject(student);
+                    //case 3 -> ProjectViewer.viewAvailableProjectList(student);
+                    //case 4 -> ProjectViewer.viewStudentProject(student);
                     case 5 -> Logout.logout();
                     case 6 -> Logout.logout();
                     case 7 -> Logout.logout();

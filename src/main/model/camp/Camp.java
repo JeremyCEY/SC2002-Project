@@ -28,16 +28,16 @@ public class Camp implements Model, Displayable {
 	private boolean visibility;
 
 	//Constructor TO EDIT
-	public Camp(String campID, String campName, String dates,String location, String staffID) {
+	public Camp(String campID, String campName, String staffID) {
 		this.campID = campID;
 		this.campName = campName;
 		this.dates = EmptyID.EMPTY_ID;
 		this.registrationClosingDate = EmptyID.EMPTY_ID;
 		this.openTo = Faculty.NTU;
-		this.location = location;
-		this.filledSlots = 0;
-		this.totalSlots = 0;
-		this.campCommSlots = 0;
+		this.location = EmptyID.EMPTY_ID;
+		this.filledSlots = 0; // number of attendees that has joined the camp
+		this.totalSlots = 0; // total number of attendees that can join the camp
+		this.campCommSlots = 0; // number of comm that has joined the camp // total slots default to 10
 		this.description = EmptyID.EMPTY_ID;
 		this.staffID = staffID;
 		this.visibility = false;

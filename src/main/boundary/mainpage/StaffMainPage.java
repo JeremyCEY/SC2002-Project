@@ -72,7 +72,7 @@ public class StaffMainPage {
                 switch (choice) {
                     case 1 -> ViewUserProfile.viewUserProfilePage(staff);
                     case 2 -> ChangeAccountPassword.changePassword(UserType.STAFF, user.getID());
-                    case 3 -> ProjectViewer.viewAllProject();
+                    //case 3 -> ProjectViewer.viewAllProject();
                     //case 4 -> viewPendingRequests();
                     //case 5 -> viewAllRequests();
                     //case 6 -> acceptOrRejectRequest();
@@ -98,19 +98,19 @@ public class StaffMainPage {
      *
      * @throws PageBackException if the user chooses to go back to the previous page.
      */
-    // public static void viewPendingRequests() throws PageBackException {
-    //     ChangePage.changePage();
-    //     System.out.println(BoundaryStrings.separator);
-    //     System.out.println("View Pending Requests");
-    //     System.out.println();
-    //     System.out.println("Here are the pending requests:");
-    //     System.out.println();
-    //     ModelViewer.displayListOfDisplayable(CoordinatorManager.getPendingRequests());
-    //     System.out.println();
-    //     System.out.println("Press enter to go back.");
-    //     new Scanner(System.in).nextLine();
-    //     throw new PageBackException();
-    // }
+    public static void viewPendingRequests() throws PageBackException {
+        ChangePage.changePage();
+        System.out.println(BoundaryStrings.separator);
+        System.out.println("View Pending Requests");
+        System.out.println();
+        System.out.println("Here are the pending requests:");
+        System.out.println();
+        //ModelViewer.displayListOfDisplayable(CoordinatorManager.getPendingRequests());
+        System.out.println();
+        System.out.println("Press enter to go back.");
+        new Scanner(System.in).nextLine();
+        throw new PageBackException();
+    }
 
     /**
      * Displays all requests for the staff.
