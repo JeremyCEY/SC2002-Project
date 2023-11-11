@@ -4,7 +4,7 @@ import main.boundary.account.ChangeAccountPassword;
 import main.boundary.account.Logout;
 import main.boundary.account.ViewUserProfile;
 import main.boundary.modelviewer.ModelViewer;
-import main.boundary.modelviewer.ProjectViewer;
+//import main.boundary.modelviewer.ProjectViewer;
 import main.controller.request.StaffManager;
 import main.controller.request.RequestManager;
 //import main.model.request.Request;
@@ -24,7 +24,7 @@ import main.utils.ui.ChangePage;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static main.boundary.modelviewer.ProjectViewer.generateProjectDetails;
+//import static main.boundary.modelviewer.ProjectViewer.generateProjectDetails;
 
 /**
  * This class provides a user interface for coordinators to view their main page.
@@ -117,19 +117,19 @@ public class StaffMainPage {
      *
      * @throws PageBackException if the user chooses to go back to the previous page.
      */
-    // private static void viewAllRequests() throws PageBackException {
-    //     ChangePage.changePage();
-    //     System.out.println(BoundaryStrings.separator);
-    //     System.out.println("View All Requests");
-    //     System.out.println();
-    //     System.out.println("Here are all the requests:");
-    //     System.out.println();
-    //     ModelViewer.displayListOfDisplayable(CoordinatorManager.getAllRequests());
-    //     System.out.println();
-    //     System.out.println("Press enter to go back.");
-    //     new Scanner(System.in).nextLine();
-    //     throw new PageBackException();
-    // }
+     private static void viewAllRequests() throws PageBackException {
+         ChangePage.changePage();
+         System.out.println(BoundaryStrings.separator);
+         System.out.println("View All Requests");
+         System.out.println();
+         System.out.println("Here are all the requests:");
+         System.out.println();
+         //ModelViewer.displayListOfDisplayable(Staff.getAllRequests());
+         System.out.println();
+         System.out.println("Press enter to go back.");
+         new Scanner(System.in).nextLine();
+         throw new PageBackException();
+     }
 
     /**
      * Allows the staff to accept or reject requests.
