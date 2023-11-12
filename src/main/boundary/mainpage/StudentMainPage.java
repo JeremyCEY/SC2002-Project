@@ -112,7 +112,7 @@ public class StudentMainPage {
     //     ChangePage.changePage();
     //     Camp camp;
     //     try {
-    //         project = ProjectRepository.getInstance().getByID(student.getProjectID());
+    //         camp = CampRepository.getInstance().getByID(student.getProjectID());
     //     } catch (ModelNotFoundException e) {
     //         System.out.println("You are not registered for any camps.");
     //         System.out.println("Press Enter to go back.");
@@ -120,8 +120,8 @@ public class StudentMainPage {
     //         throw new PageBackException();
     //     }
     //     System.out.println("Here is your camps: ");
-    //     ModelViewer.displaySingleDisplayable(project);
-    //     System.out.println("Are you sure you want to change the title of this project?");
+    //     ModelViewer.displaySingleDisplayable(camp);
+    //     System.out.println("Are you sure you want to change the title of this camp?");
     //     System.out.println("Enter [y] to confirm, or press enter to go back.");
     //     String choice = new Scanner(System.in).nextLine();
     //     if (!choice.equalsIgnoreCase("y")) {
@@ -131,22 +131,22 @@ public class StudentMainPage {
     //     String newTitle = new Scanner(System.in).nextLine();
     //     project.setProjectTitle(newTitle);
     //     ChangePage.changePage();
-    //     System.out.println("Your new project is: ");
-    //     ModelViewer.displaySingleDisplayable(project);
-    //     System.out.println("Are you sure you want to change the title of this project?");
+    //     System.out.println("Your new camp is: ");
+    //     ModelViewer.displaySingleDisplayable(camp);
+    //     System.out.println("Are you sure you want to change the title of this camp?");
     //     System.out.println("Enter [y] to confirm, or press enter to go back.");
     //     String choice1 = new Scanner(System.in).nextLine();
     //     if (!choice1.equalsIgnoreCase("y")) {
     //         throw new PageBackException();
     //     }
     //     try {
-    //         StudentManager.changeProjectTitle(project.getID(), newTitle, student.getID());
+    //         StudentManager.changeCampTitle(project.getID(), newTitle, student.getID());
     //     } catch (Exception e) {
     //         System.out.println("Change Title Error: " + e.getMessage());
     //         System.out.println("Enter [b] to go back, or press enter to retry.");
     //         String choice2 = new Scanner(System.in).nextLine();
     //         if (!choice2.equals("b")) {
-    //             changeTitleForProject(student);
+    //             changeTitleForCamp(student);
     //         }
     //         throw new PageBackException();
     //     }
@@ -165,7 +165,7 @@ public class StudentMainPage {
     private static void deregisterCamp(Student student) throws PageBackException {
         ChangePage.changePage();
 
-        if (EmptyID.isEmptyID(student.getCampID())) {
+        if (EmptyID.isEmptyID(student.getID())) {
             System.out.println("You are not registered for any camp.");
             System.out.println("Press Enter to go back.");
             new Scanner(System.in).nextLine();
@@ -175,13 +175,13 @@ public class StudentMainPage {
         System.out.println("Your current project is: ");
 
         try {
-            Camp project = CampRepository.getInstance().getByID(student.getCampID());
+            Camp project = CampRepository.getInstance().getByID(student.getID());
             ModelViewer.displaySingleDisplayable(project);
         } catch (ModelNotFoundException e) {
-            throw new IllegalArgumentException("Project not found.");
+            throw new IllegalArgumentException("Camp not found.");
         }
 
-        System.out.println("Are you sure you want to deregister from this project? (y/[n])");
+        System.out.println("Are you sure you want to deregister from this camp? (y/[n])");
         String choice = new Scanner(System.in).nextLine();
         if (!choice.equals("y")) {
             System.out.println("Deregistration cancelled.");
@@ -190,16 +190,16 @@ public class StudentMainPage {
             throw new PageBackException();
         }
 
-        String projectID = student.getProjectID();
+        String CampID = student.getID();
 
         try {
-            StudentManager.deregisterStudent(projectID, student.getID());
+            StudentManager.deregisterStudent(CampID, student.getID());
         } catch (Exception e) {
             System.out.println("Deregistration Error: " + e.getMessage());
             System.out.println("Enter [b] to go back, or press enter to retry.");
             String choice2 = new Scanner(System.in).nextLine();
             if (!choice2.equals("b")) {
-                deregisterForProject(student);
+                deregisterForCamp(student);
             }
             throw new PageBackException();
         }
@@ -269,8 +269,8 @@ public class StudentMainPage {
         ModelViewer.displayListOfDisplayable(CampManager.getAllAvailablecamp());
         System.out.print("Please enter the project ID: ");
         String projectID = new Scanner(System.in).nextLine();
-        if (ProjectManager.notContainsProjectByID(projectID)) {
-            System.out.println("Project not found.");
+        if (CampManager.notContainsCampByID(campID)) {
+            System.out.println("Camp not found.");
             System.out.println("Press Enter to go back, or enter [r] to retry.");
             String choice = new Scanner(System.in).nextLine();
             if (choice.equals("r")) {
@@ -280,7 +280,7 @@ public class StudentMainPage {
         }
         Camp camp;
         try {
-            camp = CampManager.getByID(projectID);
+            camp = CampManager.getByID(campID);
             if (camp.getStatus() != CampStatus.AVAILABLE) {
                 System.out.println("Camp is not available.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -306,7 +306,7 @@ public class StudentMainPage {
         String choice = new Scanner(System.in).nextLine();
         if (choice.equalsIgnoreCase("y")) {
             try {
-                StudentManager.registerStudent(projectID, student.getID());
+                StudentManager.registerStudent(campID, student.getID());
                 System.out.println("Request submitted!");
             } catch (Exception e) {
                 System.out.println("Enter [b] to go back, or press enter to retry.");
