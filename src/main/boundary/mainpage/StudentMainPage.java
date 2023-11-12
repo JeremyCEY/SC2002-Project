@@ -4,7 +4,7 @@ import main.boundary.account.ChangeAccountPassword;
 import main.boundary.account.Logout;
 import main.boundary.account.ViewUserProfile;
 import main.boundary.modelviewer.ModelViewer;
-import main.boundary.modelviewer.ProjectViewer;
+import main.boundary.modelviewer.CampViewer;
 import main.controller.account.AccountManager;
 import main.controller.camp.CampManager;
 import main.controller.request.StudentManager;
