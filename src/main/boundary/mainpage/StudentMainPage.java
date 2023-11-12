@@ -38,11 +38,11 @@ public class StudentMainPage {
             System.out.println("Welcome to Student Main Page");
             System.out.println("Hello, " + student.getUserName() + "!");
             System.out.println();
-            System.out.println("\t1. View my profile");
+            System.out.println("\t1. View my profile (Feature Complete)");
             System.out.println("\t2. Change my password (Feature Complete)");
             System.out.println("\t3. View all camps");
             System.out.println("\t4. View registered camps");
-            System.out.println("\t5. Register for a camp as atendee");
+            System.out.println("\t5. Register for a camp as attendee");
             System.out.println("\t6. Deregister for a camp as attendee");
             System.out.println("\t7. Register for a camp as committee");
             System.out.println("\t8. Handle enquiry");
@@ -65,7 +65,7 @@ public class StudentMainPage {
                 switch (choice) {
                     case 1 -> ViewUserProfile.viewUserProfilePage(student);
                     case 2 -> ChangeAccountPassword.changePassword(UserType.STUDENT, student.getID());
-                    //case 3 -> ProjectViewer.viewAvailableProjectList(student);
+                    case 3 -> CampViewer.viewAllCamp();
                     //case 4 -> ProjectViewer.viewStudentProject(student);
                     case 5 -> Logout.logout();
                     case 6 -> Logout.logout();

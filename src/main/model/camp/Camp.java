@@ -22,13 +22,14 @@ public class Camp implements Model, Displayable {
 	private String location;
 	private int filledSlots;
 	private int totalSlots; // assuming total attendee slots ONLY (exclude comm)
+	private int filledCampCommSlots;
 	private int campCommSlots;
 	private String description;
 	private String staffID;
 	private String visibility;
 
 	public Camp(String campID, String campName, String dates, String registrationClosingDate,
-		Faculty openTo, String location, int filledSlots, int totalSlots, int campCommSlots, String description, String staffID, String visibility) {
+		Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots, int campCommSlots, String description, String staffID, String visibility) {
 		this.campID = campID;
 		this.campName = campName;
 		this.dates = dates;
@@ -37,8 +38,9 @@ public class Camp implements Model, Displayable {
 		this.location = location;
 		this.filledSlots = filledSlots; // number of attendees that has joined the camp
 		this.totalSlots = totalSlots; // total number of attendees that can join the camp
+		this.filledCampCommSlots = filledCampCommSlots;
 		this.campCommSlots = campCommSlots; // number of comm that has joined the camp // total slots default to 10
-		this.description = EmptyID.EMPTY_ID;
+		this.description = description;
 		this.staffID = staffID;
 		this.visibility = visibility;
 	}
@@ -82,6 +84,10 @@ public class Camp implements Model, Displayable {
 
 	public int getTotalSlots() {
 		return this.totalSlots;
+	}
+
+	public int getFilledCampCommSlots(){
+		return this.filledCampCommSlots;
 	}
 
 	public int getCampCommSlots() {
@@ -130,6 +136,10 @@ public class Camp implements Model, Displayable {
 
 	public void setTotalSlots(int totalSlots) {
 		this.totalSlots = totalSlots;
+	}
+
+	public void setFilledCampCommSlots(int filledCampCommSlots){
+		this.filledCampCommSlots = filledCampCommSlots;
 	}
 
 	public void setCampCommSlots(int slots) {
@@ -196,10 +206,14 @@ public class Camp implements Model, Displayable {
 
         return titleLine1 + titleLine2 +
                 "|--------------------------------------------------------------|\n" +
-                String.format("| Project ID                  | %-30s |\n", getID()) +
-                getStaffID() +
-                //getProjectStudentInformationString() +  //getStudentList?
-                getDescription();
+                String.format("| Camp ID                     | %-30s |\n", getID()) +
+                String.format("| Staff ID                    | %-30s |\n", getStaffID()) +
+                String.format("| Dates                       | %-30s |\n", getDates()) +
+				String.format("| Attendee Slots              | %s/%-29s|\n", getFilledSlots(), getTotalSlots())+
+				String.format("| Committee Slots             | %s/%-29s|\n", getFilledCampCommSlots(), getCampCommSlots())+
+				String.format("| Registration Closing        | %-30s |\n", getRegistrationClosingDate()) +
+				String.format("| Description                 | %-30s |\n", getDescription());
+				//getProjectStudentInformationString() +  //getStudentList?
 		//return "EXAMPLE";
     }
 

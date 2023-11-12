@@ -1,2 +1,2 @@
-campName,dates,registrationClosingDate,openTo,location,filledSlots,totalSlots,campCommSlots,description,staffID,visibility
-FOP,020123,010123,NTU,NTU,0,50,10,desc,Madhukumar,true
+campName,dates,registrationClosingDate,openTo,location,filledSlots,totalSlots,filledCampCommSlots,campCommSlots,description,staffID,visibility
+FOP,020123,010123,NTU,NTU,0,50,0,10,desc,Madhukumar,true
