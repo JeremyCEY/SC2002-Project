@@ -65,7 +65,7 @@ public class StudentMainPage {
                 switch (choice) {
                     case 1 -> ViewUserProfile.viewUserProfilePage(student);
                     case 2 -> ChangeAccountPassword.changePassword(UserType.STUDENT, student.getID());
-                    case 3 -> CampViewer.viewAllCamp();
+                    case 3 -> CampViewer.viewAllCamps();
                     //case 4 -> ProjectViewer.viewStudentProject(student);
                     case 5 -> Logout.logout();
                     case 6 -> Logout.logout();

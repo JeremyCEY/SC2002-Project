@@ -1,8 +1,15 @@
 package main.controller.request;
 
-import main.controller.project.CampManager;
-import main.model.project.Project;
-import main.model.project.ProjectStatus;
+
+import main.boundary.account.Logout;
+import main. boundary.account.ViewUserProfile;
+import main.boundary.modelviewer.ModelViewer;
+import main.boundary.modelviewer.CampViewer;
+
+import main.controller.account.AccountManager;
+import main.controller.camp.CampManager;
+import main.controller.request.StudentManager;
+
 import main.model.request.Request;
 //import main.model.request.StudentChangeTitleRequest;
 //import main.model.request.StudentDeregistrationRequest;

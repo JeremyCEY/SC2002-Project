@@ -192,7 +192,7 @@ public class CampViewer {
      *
      * @throws PageBackException if the user wants to go back
      */
-    public static void viewAllCamp() throws PageBackException {
+    public static void viewAllCamps() throws PageBackException {
         ChangePage.changePage();
         System.out.println("View All Camp List");
         ModelViewer.displayListOfDisplayable(CampManager.viewAllcamp());

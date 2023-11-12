@@ -1,3 +1,4 @@
+package main.boundary.mainpage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -5,28 +6,43 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+
 import main.boundary.account.ChangeAccountPassword;
 import main.boundary.account.Logout;
 import main.boundary.account.ViewUserProfile;
 import main.boundary.modelviewer.CampViewer;
 import main.boundary.modelviewer.ModelViewer;
-//import main.boundary.modelviewer.ProjectViewer;
+
 import main.controller.request.StaffManager;
+import main.controller.camp.CampManager;
 import main.controller.request.RequestManager;
 //import main.model.request.Request;
 //import main.model.request.RequestStatus;
 //import main.model.request.RequestType;
+import main.model.camp.Camp;
+import main.model.request.Enquiry;
+import main.model.request.RequestStatus;
+import main.model.request.RequestType;
+import main.model.request.Suggestion;
+import main.model.user.Faculty;
 import main.model.user.Staff;
 import main.model.user.Student;
 import main.model.user.User;
 import main.model.user.UserType;
+import main.repository.request.RequestRepository;
 import main.repository.user.StaffRepository;
+import main.repository.user.StudentRepository;
+import main.repository.camp.CampRepository;
+import main.utils.exception.ModelAlreadyExistsException;
 import main.utils.exception.ModelNotFoundException;
 import main.utils.exception.PageBackException;
-import main.utils.iocontrol.CSVWritter;
+//import main.utils.exception.SupervisorStudentsLimitExceedException;
+//import main.utils.iocontrol.CSVWritter;
 import main.utils.iocontrol.IntGetter;
 import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
+
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -48,16 +64,13 @@ public class StaffMainPage {
             System.out.println();
             System.out.println("\t1. View my profile");
             System.out.println("\t2. Change my password");
-            System.out.println("\t3. View all projects");
-            System.out.println("\t4. View pending requests");
-            System.out.println("\t5. View all requests' history and status");
-            // if (CoordinatorManager.getAllPendingRequestsCoordinatorCanManage().size() > 0) {
-            //     System.out.println("\t6. Accept or reject requests " + BoundaryStrings.NEW);
-            // } else {
-            //     System.out.println("\t6. Accept or reject requests");
-            // }
-            System.out.println("\t7. Generate project details");
-            System.out.println("\t8. Logout");
+            System.out.println("\t3. View all Camps");
+            System.out.println("\t4. Create a new Camp");
+            System.out.println("\t5. Edit an existing Camp");
+            System.out.println("\t6. Delete an existing Camp");
+            System.out.println("\t7. View and Reply enquiries");
+            System.out.println("\t8. View and Handle suggestions");
+            System.out.println("\t9. Generate Reports");
             System.out.println(BoundaryStrings.separator);
 
             System.out.println();
@@ -76,12 +89,13 @@ public class StaffMainPage {
                     case 0 -> Logout.logout();
                     case 1 -> ViewUserProfile.viewUserProfilePage(staff);
                     case 2 -> ChangeAccountPassword.changePassword(UserType.STAFF, user.getID());
-                    //case 3 -> ProjectViewer.viewAllProject();
-                    //case 4 -> viewPendingRequests();
-                    //case 5 -> viewAllRequests();
-                    //case 6 -> acceptOrRejectRequest();
-                    //case 7 -> generateProjectDetails();
-                    //case 8 -> Logout.logout();
+                    case 3 -> CampViewer.viewAllCamps();
+                    case 4 -> createCamp(user);
+                    case 5 -> editExistingCamp(user);
+                    //case 6 -> deleteExistingCamp(user);
+                    case 7 -> viewAndReplyPendingEnquiries(user);
+                    case 8 -> viewAndHandlePendingSuggestions(user);
+                    case 9 -> generateReports(user);
                     default -> {
                         System.out.println("Invalid choice. Please press <enter> to try again.");
                         new Scanner(System.in).nextLine();
@@ -105,31 +119,84 @@ public class StaffMainPage {
     private static void createCamp(User user) throws PageBackException {
         ChangePage.changePage();
         System.out.println(BoundaryStrings.separator);
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter a camp Name:");
-        String name = scanner.nextLine();
-        System.out.println("Enter a camp Date, like 20120304:");
-        String date = scanner.nextLine();
-        System.out.println("Enter a camp Registration Closing Date, like 20120304:");
-        String registrationClosingDateDate = scanner.nextLine();
-        System.out.println("Enter a camp Faculty Open To:");
-        Faculty faculty = Faculty.valueOf(scanner.nextLine());
+        String name = new Scanner(System.in).nextLine();
+        System.out.println("Enter a camp Date, YYYY-MM-DD:");
+        String date = new Scanner(System.in).nextLine();
+        System.out.println("Enter a camp Registration Closing Date, YYYY-MM-DD:");
+        String registrationClosingDateDate = new Scanner(System.in).nextLine();
+        System.out.println("Please select school that camp is open to:");
+        String userInput = new Scanner(System.in).nextLine();
+        Faculty faculty = Faculty.NTU;
+
+        switch (userInput) {
+            case "ADM" -> {
+                faculty = Faculty.ADM;
+                break;
+            }
+            case "EEE" -> {
+                faculty = Faculty.EEE;
+                break;
+            }
+            case "NBS" -> {
+                faculty = Faculty.NBS;
+                break;
+            }
+            case "NTU" -> {
+                faculty = Faculty.NTU;
+                break;
+            }
+            case "SCSE" -> {
+                faculty = Faculty.SCSE;
+                break;
+            }
+            case "SSS" -> {
+                faculty = Faculty.SSS;
+                break;
+            }
+            default -> {
+                System.out.println("Invalid input. Please enter a valid school code.");
+            }
+        }
+
+        System.out.println("Selected faculty: " + faculty);
+    
         System.out.println("Enter a camp Location:");
-        String location = scanner.nextLine();
-        System.out.println("Enter a camp Total Slots:");
-        int totalSlots = scanner.nextInt();
+        String location = new Scanner(System.in).nextLine();
+        System.out.println("Enter a camp attendee Slots:");
+        int totalSlots = new Scanner(System.in).nextInt();
+        System.out.println("Enter a camp committee Slots:");
+        int campCommSlots = new Scanner(System.in).nextInt();
+    
         System.out.println("Enter a camp Description:");
-        String desc = scanner.next();
-        Camp camp =
+        String description = new Scanner(System.in).nextLine();
+        Camp camp;
+        try {
+            camp =
             CampManager.createCamp(
                 name, date, registrationClosingDateDate, faculty, location, 0, totalSlots,
-                0, desc, user.getID(), "True");
-        System.out.println("Successfully created a new camp:");
-        CampViewer.viewCamp(camp);
-        System.out.println(BoundaryStrings.separator);
-        System.out.println();
-        System.out.println("Press enter to go back.");
-        scanner.nextLine();
+                0, campCommSlots, description, user.getID(), "True");
+        } catch (ModelAlreadyExistsException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("The camp details are as follows:");
+        ModelViewer.displaySingleDisplayable(camp);
+        System.out.println("Are you sure you want to create this camp? (Y/N)");
+        String input = new Scanner(System.in).nextLine();
+        if (!input.equalsIgnoreCase("Y")) {
+            System.out.println("Camp creation cancelled!");
+            try {
+                CampRepository.getInstance().remove(camp.getID());
+            } catch (ModelNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("Enter enter to continue");
+            new Scanner(System.in).nextLine();
+            throw new PageBackException();
+        }
+        System.out.println("Project created successfully!");
+        System.out.println("Enter enter to continue");
+        new Scanner(System.in).nextLine();
         throw new PageBackException();
     }
 
