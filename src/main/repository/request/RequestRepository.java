@@ -11,7 +11,7 @@ public class RequestRepository extends Repository {
 		throw new UnsupportedOperationException();
 	}
 
-	public RequestRepository getInstance() {
+	public static RequestRepository getInstance() {
 		// TODO - implement RequestRepository.getInstance
 		throw new UnsupportedOperationException();
 	}
