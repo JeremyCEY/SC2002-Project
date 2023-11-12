@@ -1,42 +1,36 @@
-package main.boundary.mainpage;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import main.boundary.account.ChangeAccountPassword;
 import main.boundary.account.Logout;
 import main.boundary.account.ViewUserProfile;
-import main.boundary.modelviewer.ModelViewer;
 import main.boundary.modelviewer.CampViewer;
+import main.boundary.modelviewer.ModelViewer;
+//import main.boundary.modelviewer.ProjectViewer;
 import main.controller.request.StaffManager;
-import main.controller.camp.CampManager;
 import main.controller.request.RequestManager;
 //import main.model.request.Request;
 //import main.model.request.RequestStatus;
 //import main.model.request.RequestType;
-import main.model.camp.Camp;
-import main.model.request.Request;
-import main.model.request.RequestStatus;
-import main.model.request.RequestType;
-import main.model.user.Faculty;
 import main.model.user.Staff;
+import main.model.user.Student;
 import main.model.user.User;
 import main.model.user.UserType;
-import main.controller.camp.CampManager;
-import main.repository.camp.CampRepository;
 import main.repository.user.StaffRepository;
-import main.utils.exception.ModelAlreadyExistsException;
 import main.utils.exception.ModelNotFoundException;
 import main.utils.exception.PageBackException;
-//import main.utils.exception.SupervisorStudentsLimitExceedException;
+import main.utils.iocontrol.CSVWritter;
 import main.utils.iocontrol.IntGetter;
 import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
-
-import java.util.Objects;
 import java.util.Scanner;
 
-//import static main.boundary.modelviewer.ProjectViewer.generateProjectDetails;
-
 /**
- * This class provides a user interface for coordinators to view their main page.
+ * This class provides a user interface for {@link Staff}s to view their main page.
  */
 public class StaffMainPage {
 
@@ -52,21 +46,18 @@ public class StaffMainPage {
             System.out.println("Welcome to Staff Main Page");
             System.out.println("Hello, " + user.getUserName() + "!");
             System.out.println();
-            System.out.println("\t1. View my profile (Feature Complete)");
-            System.out.println("\t2. Change my password (Feature Complete)");
-            System.out.println("\t3. View all camps");
-            System.out.println("\t4. Create new camp");
-            System.out.println("\t5. Edit camp");//view separate menu list of camps staff created
-            System.out.println("\t6. Delete camp");
-            System.out.println("\t5. View all requests' history and status");//view and reply to enquires and approve suggestions
+            System.out.println("\t1. View my profile");
+            System.out.println("\t2. Change my password");
+            System.out.println("\t3. View all projects");
+            System.out.println("\t4. View pending requests");
+            System.out.println("\t5. View all requests' history and status");
             // if (CoordinatorManager.getAllPendingRequestsCoordinatorCanManage().size() > 0) {
             //     System.out.println("\t6. Accept or reject requests " + BoundaryStrings.NEW);
             // } else {
             //     System.out.println("\t6. Accept or reject requests");
             // }
-            System.out.println("\t7. Generate camp report");
-            System.out.println("\t7. Generate camp committee performance report");   
-            System.out.println("\t9. Logout");
+            System.out.println("\t7. Generate project details");
+            System.out.println("\t8. Logout");
             System.out.println(BoundaryStrings.separator);
 
             System.out.println();
@@ -82,13 +73,13 @@ public class StaffMainPage {
 
             try {
                 switch (choice) {
+                    case 0 -> Logout.logout();
                     case 1 -> ViewUserProfile.viewUserProfilePage(staff);
                     case 2 -> ChangeAccountPassword.changePassword(UserType.STAFF, user.getID());
-                    case 3 -> CampViewer.viewAllCamp();
-                    case 4 -> staffCreateCamp(staff);
-                    //case 5 -> staffEditCamp(staff);
-                    //case 6 -> staffDeleteCamp(staff);
-                    //case 7 -> acceptOrRejectRequest();
+                    //case 3 -> ProjectViewer.viewAllProject();
+                    //case 4 -> viewPendingRequests();
+                    //case 5 -> viewAllRequests();
+                    //case 6 -> acceptOrRejectRequest();
                     //case 7 -> generateProjectDetails();
                     //case 8 -> Logout.logout();
                     default -> {
@@ -97,8 +88,13 @@ public class StaffMainPage {
                         throw new PageBackException();
                     }
                 }
-            } catch (PageBackException e) {
+            } catch (PageBackException | ModelNotFoundException e) {
+                if (e instanceof ModelNotFoundException) {
+                    System.out.println("ID not found, going back to the main menu.");
+                }
                 StaffMainPage.staffMainPage(staff);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
         } else {
@@ -106,270 +102,323 @@ public class StaffMainPage {
         }
     }
 
-    /**
-     * Displays the pending requests for the staff.
-     *
-     * @throws PageBackException if the user chooses to go back to the previous page.
-     */
-    public static void viewPendingRequests() throws PageBackException {
+    private static void createCamp(User user) throws PageBackException {
         ChangePage.changePage();
         System.out.println(BoundaryStrings.separator);
-        System.out.println("View Pending Requests");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter a camp Name:");
+        String name = scanner.nextLine();
+        System.out.println("Enter a camp Date, like 20120304:");
+        String date = scanner.nextLine();
+        System.out.println("Enter a camp Registration Closing Date, like 20120304:");
+        String registrationClosingDateDate = scanner.nextLine();
+        System.out.println("Enter a camp Faculty Open To:");
+        Faculty faculty = Faculty.valueOf(scanner.nextLine());
+        System.out.println("Enter a camp Location:");
+        String location = scanner.nextLine();
+        System.out.println("Enter a camp Total Slots:");
+        int totalSlots = scanner.nextInt();
+        System.out.println("Enter a camp Description:");
+        String desc = scanner.next();
+        Camp camp =
+            CampManager.createCamp(
+                name, date, registrationClosingDateDate, faculty, location, 0, totalSlots,
+                0, desc, user.getID(), "True");
+        System.out.println("Successfully created a new camp:");
+        CampViewer.viewCamp(camp);
+        System.out.println(BoundaryStrings.separator);
         System.out.println();
-        System.out.println("Here are the pending requests:");
+        System.out.println("Press enter to go back.");
+        scanner.nextLine();
+        throw new PageBackException();
+    }
+
+    private static void editExistingCamp(User user) throws PageBackException, ModelNotFoundException {
+        ChangePage.changePage();
+        System.out.println(BoundaryStrings.separator);
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Which camp do you want to update");
+        CampViewer.viewStaffCamps((Staff) user);
+        String campID = scanner.nextLine();
+        Camp camp = CampManager.getCampByID(campID);
+        System.out.println("Which field do you want to update, press 0 to go back to upper menu");
+        System.out.println("\t0. Cancel");
+        System.out.println("\t1. Camp Name");
+        System.out.println("\t2. Camp Dates");
+        System.out.println("\t3. Camp Registration Closing Date");
+        System.out.println("\t4. Camp Faculty Open To");
+        System.out.println("\t5. Camp Location");
+        System.out.println("\t6. Camp Total Slots");
+        System.out.println("\t7. Camp Description");
+        System.out.println("\t8. Camp Staff ID In Charge");
+        System.out.println("\t9. Camp Visibility");
+        int choice = IntGetter.readInt();
+        System.out.println("The new value of the field to update");
+        switch (choice) {
+            case 0 -> throw new PageBackException();
+            case 1 -> camp.setCampName(scanner.nextLine());
+            case 2 -> camp.setDates(scanner.nextLine());
+            case 3 -> camp.setRegistrationClosingDate(scanner.nextLine());
+            case 4 -> camp.setCampType(Faculty.valueOf(scanner.nextLine()));
+            case 5 -> camp.setLocation(scanner.nextLine());
+            case 6 -> camp.setTotalSlots(scanner.nextInt());
+            case 7 -> camp.setDescription(scanner.nextLine());
+            case 8 -> camp.setStaffID(scanner.nextLine());
+            case 9 -> camp.setVisibility(String.valueOf(scanner.nextBoolean()));
+        }
+        System.out.println("Have other field to update?");
+        System.out.println("\t0. No");
+        System.out.println("\t1. Yes");
+        choice = scanner.nextInt();
+        if (choice == 1) {
+            editExistingCamp(user);
+        }
+        CampManager.updateCamp(campID, camp);
+        System.out.println("Successfully updated a new camp:");
+        CampViewer.viewCamp(camp);
+        System.out.println(BoundaryStrings.separator);
         System.out.println();
-        //ModelViewer.displayListOfDisplayable(CoordinatorManager.getPendingRequests());
+        System.out.println("Press enter to go back.");
+        scanner.nextLine();
+        throw new PageBackException();
+    }
+
+    private static void viewAndReplyPendingEnquiries(User user) throws ModelNotFoundException, PageBackException {
+        ChangePage.changePage();
+        System.out.println(BoundaryStrings.separator);
+        System.out.println("View Pending Enquiries");
         System.out.println();
+        ModelViewer.displayListOfDisplayable(
+            CampManager.getAllPendingEnquiriesByStaff((Staff) user));
+        System.out.println("Which enquiry ID do you want to reply");
+        Scanner scanner = new Scanner(System.in);
+        String enquiryID = scanner.nextLine();
+        Enquiry enquiry = (Enquiry) RequestRepository.getInstance().getByID(enquiryID);
+        System.out.println("Reply Message");
+        String message = scanner.nextLine();
+        enquiry.setMessage(message);
+        enquiry.setReplierID(user.getID());
+        enquiry.setRequestStatus(RequestStatus.REPLIED);
+        RequestRepository.getInstance().update(enquiry);
+        System.out.println("Successfully replied an enquiry:");
+        System.out.println();
+        System.out.println("Have other enquiry to reply?");
+        System.out.println("\t0. No");
+        System.out.println("\t1. Yes");
+        int choice = scanner.nextInt();
+        if (choice == 1) {
+            viewAndReplyPendingEnquiries(user);
+        }
+        ModelViewer.displaySingleDisplayable(enquiry);
+        System.out.println(BoundaryStrings.separator);
+        System.out.println("Press enter to go back.");
+        scanner.nextLine();
+        throw new PageBackException();
+    }
+
+    private static void viewAndHandlePendingSuggestions(User user) throws ModelNotFoundException, PageBackException {
+        ChangePage.changePage();
+        System.out.println(BoundaryStrings.separator);
+        System.out.println("View Pending Suggestions");
+        System.out.println();
+        ModelViewer.displayListOfDisplayable(
+            CampManager.getAllPendingSuggestionsByStaff((Staff) user));
+        System.out.println("Which Suggestion ID do you want to reply");
+        Scanner scanner = new Scanner(System.in);
+        String suggestionID = scanner.nextLine();
+        Suggestion suggestion = (Suggestion) RequestRepository.getInstance().getByID(suggestionID);
+        System.out.println("Handle Suggestion, type Approve[Y] or Reject[N]");
+        System.out.println("\t0. Go Back");
+        System.out.println("\t1. Approve");
+        System.out.println("\t2. Reject");
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 0 -> viewAndHandlePendingSuggestions(user);
+            case 1 -> suggestion.setRequestStatus(RequestStatus.APPROVED);
+            case 2 -> suggestion.setRequestStatus(RequestStatus.DENIED);
+        }
+        suggestion.setReplierID(user.getID());
+        RequestRepository.getInstance().update(suggestion);
+        System.out.println("Successfully handled a suggestion:");
+        System.out.println();
+        System.out.println("Have other suggestion to handle?");
+        System.out.println("\t0. No");
+        System.out.println("\t1. Yes");
+        choice = scanner.nextInt();
+        if (choice == 1) {
+            viewAndHandlePendingSuggestions(user);
+        }
+        System.out.println(BoundaryStrings.separator);
+        System.out.println("Press enter to go back.");
+        scanner.nextLine();
+        throw new PageBackException();
+    }
+
+    private static void generateReports(User user) throws IOException, PageBackException {
+        ChangePage.changePage();
+        System.out.println(BoundaryStrings.separator);
+        System.out.println("Generating Camps Report");
+        System.out.println("\t0. Go Back");
+        System.out.println("\t1. Camps Report");
+        System.out.println("\t2. Attendee Report");
+        System.out.println("\t3. Committee Report");
+        System.out.println("\t4. Enquires Report");
+        System.out.println("\t5. Committee Performance Report");
+        System.out.println();
+        int choice = IntGetter.readInt();
+        List<Camp> camps = CampManager.getAllCampsByStaff((Staff) user);
+        List<String> campIDs = camps.stream()
+            .map(c -> c.getID()).collect(Collectors.toList());
+        switch (choice) {
+            case 0:
+                throw new PageBackException();
+            case 1:
+                generateCampReports(camps);
+                break;
+            case 2:
+                List<Student> attendees =
+                    StudentRepository.getInstance().findByRules(
+                        s -> campIDs.contains(s.getACamps())).stream()
+                        .collect(Collectors.toList());
+                generateAttendeeReports(attendees);
+                break;
+            case 3:
+                List<Student> committees =
+                    StudentRepository.getInstance().findByRules(
+                            s -> campIDs.contains(s.getCCamps())).stream()
+                        .collect(Collectors.toList());
+                generateCommitteeReports(committees);
+                break;
+            case 4:
+                List<Enquiry> enquiries =
+                    RequestRepository.getInstance().findByRules(
+                        r -> campIDs.contains(r.getCampID()),
+                        r -> r.getRequestType() == RequestType.ENQUIRY).stream()
+                        .map(r -> (Enquiry) r)
+                        .collect(Collectors.toList());
+                generateEnquiryReports(enquiries);
+            case 5:
+                generateCommitteePerformanceReports();
+        }
+        System.out.println();
+        System.out.println("Have other suggestion to handle?");
+        System.out.println("\t0. No");
+        System.out.println("\t1. Yes");
+        choice = IntGetter.readInt();
+        if (choice == 1) {
+            generateReports(user);
+        }
         System.out.println("Press enter to go back.");
         new Scanner(System.in).nextLine();
         throw new PageBackException();
     }
-
-    /**
-     * Displays all requests for the staff.
-     *
-     * @throws PageBackException if the user chooses to go back to the previous page.
-     */
-     private static void viewAllRequests() throws PageBackException {
-         ChangePage.changePage();
-         System.out.println(BoundaryStrings.separator);
-         System.out.println("View All Requests");
-         System.out.println();
-         System.out.println("Here are all the requests:");
-         System.out.println();
-         //ModelViewer.displayListOfDisplayable(Staff.getAllRequests());
-         System.out.println();
-         System.out.println("Press enter to go back.");
-         new Scanner(System.in).nextLine();
-         throw new PageBackException();
-     }
 
     /**
      * Allows the staff to accept or reject requests.
      *
      * @throws PageBackException if the user chooses to go back to the previous page.
      */
-    private static void acceptOrRejectRequest() throws PageBackException {
-        ChangePage.changePage();
-//        System.out.println(BoundaryStrings.separator);
-        System.out.println("Accept or Reject Requests");
-        ModelViewer.displayListOfDisplayable(CoordinatorManager.getPendingRequests());
-        System.out.println("Please enter the ID of the request you want to accept or reject. (Enter 0 to go back.)");
-//        System.out.println(BoundaryStrings.separator);
-        System.out.print("Please enter your choice: ");
+//     private static void acceptOrRejectRequest() throws PageBackException {
+//         ChangePage.changePage();
+// //        System.out.println(BoundaryStrings.separator);
+//         System.out.println("Accept or Reject Requests");
+//         ModelViewer.displayListOfDisplayable(CoordinatorManager.getPendingRequests());
+//         System.out.println("Please enter the ID of the request you want to accept or reject. (Enter 0 to go back.)");
+// //        System.out.println(BoundaryStrings.separator);
+//         System.out.print("Please enter your choice: ");
 
-        String requestID = new Scanner(System.in).nextLine();
-        if (requestID.equals("0")) {
-            throw new PageBackException();
-        }
+//         String requestID = new Scanner(System.in).nextLine();
+//         if (requestID.equals("0")) {
+//             throw new PageBackException();
+//         }
 
-        Request request;
-        try {
-            request = RequestManager.getRequest(requestID);
+//         Request request;
+//         try {
+//             request = RequestManager.getRequest(requestID);
 
-            if (Objects.isNull(request)) {
-                throw new ModelNotFoundException();
-            }
+//             if (Objects.isNull(request)) {
+//                 throw new ModelNotFoundException();
+//             }
 
-            if (request.getStatus() != RequestStatus.PENDING) {
-                System.out.println("Request is not pending.");
-                System.out.println("Press enter to go back, or enter [0] to try again.");
-                String choice = new Scanner(System.in).nextLine();
-                if (choice.equals("0")) {
-                    acceptOrRejectRequest();
-                }
-                throw new PageBackException();
-            }
-        } catch (ModelNotFoundException e) {
-            System.out.println("Request not found.");
-            System.out.println("Press enter to go back, or enter [0] to try again.");
-            String choice = new Scanner(System.in).nextLine();
-            if (choice.equals("0")) {
-                acceptOrRejectRequest();
-            }
-            throw new PageBackException();
-        }
+//             if (request.getStatus() != RequestStatus.PENDING) {
+//                 System.out.println("Request is not pending.");
+//                 System.out.println("Press enter to go back, or enter [0] to try again.");
+//                 String choice = new Scanner(System.in).nextLine();
+//                 if (choice.equals("0")) {
+//                     acceptOrRejectRequest();
+//                 }
+//                 throw new PageBackException();
+//             }
+//         } catch (ModelNotFoundException e) {
+//             System.out.println("Request not found.");
+//             System.out.println("Press enter to go back, or enter [0] to try again.");
+//             String choice = new Scanner(System.in).nextLine();
+//             if (choice.equals("0")) {
+//                 acceptOrRejectRequest();
+//             }
+//             throw new PageBackException();
+//         }
 
-        if (request.getRequestType() == RequestType.STUDENT_CHANGE_TITLE) {
-            System.out.println("You do not have permission to accept or reject this request.");
-            System.out.println("Press enter to go back.");
-            new Scanner(System.in).nextLine();
-            throw new PageBackException();
-        }
+//         if (request.getRequestType() == RequestType.STUDENT_CHANGE_TITLE) {
+//             System.out.println("You do not have permission to accept or reject this request.");
+//             System.out.println("Press enter to go back.");
+//             new Scanner(System.in).nextLine();
+//             throw new PageBackException();
+//         }
 
-        ChangePage.changePage();
+//         ChangePage.changePage();
 
-        System.out.println("Accept or Reject Requests");
+//         System.out.println("Accept or Reject Requests");
 
-        ModelViewer.displaySingleDisplayable(request);
+//         ModelViewer.displaySingleDisplayable(request);
 
-        System.out.println("\t1. Approve");
-        System.out.println("\t2. Reject");
-        System.out.println("\t3. Go back");
-        System.out.println("Please enter your choice: ");
-        int choice = IntGetter.readInt();
-        switch (choice) {
-            case 1 -> {
-                try {
-                    RequestManager.approveRequest(requestID);
-                } catch (SupervisorStudentsLimitExceedException e) {
-                    System.out.println("Supervisor's students limit exceeded.");
-                    System.out.println("Press enter to go back, or enter [0] to try again.");
-                    String choice2 = new Scanner(System.in).nextLine();
-                    if (choice2.equals("0")) {
-                        acceptOrRejectRequest();
-                    }
-                    throw new PageBackException();
-                }
-            }
-            case 2 -> {
-                RequestManager.rejectRequest(requestID);
-            }
-            case 3 -> {
-                acceptOrRejectRequest();
-                throw new PageBackException();
-            }
-            default -> {
-                System.out.println("Invalid choice. Please try again.");
-                System.out.println("Press enter to go back, or enter [0] to try again.");
-                String choice2 = new Scanner(System.in).nextLine();
-                if (choice2.equals("0")) {
-                    acceptOrRejectRequest();
-                }
-                throw new PageBackException();
-            }
-        }
-        ChangePage.changePage();
-        try {
-            request = RequestManager.getRequest(requestID);
-        } catch (ModelNotFoundException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Here is the updated request:");
-        ModelViewer.displaySingleDisplayable(request);
-        System.out.println("Press enter to go back.");
-        new Scanner(System.in).nextLine();
-        throw new PageBackException();
-    }
-
-    /**
-     * This method allows the supervisor to create a project by entering the required details such as project title, project description, and project capacity.
-     *
-     * @param supervisor the supervisor.
-     * @throws PageBackException if the user wants to go back to the previous page.
-     */
-    private static void staffCreateCamp(Staff staff) throws PageBackException {
-        ChangePage.changePage();
-        System.out.println("Creating a camp....");
-        System.out.println("Please enter camp name:");
-        String campName = new Scanner(System.in).nextLine();
-        System.out.println("Please enter the camp dates:");
-        String campDates = new Scanner(System.in).nextLine();
-        System.out.println("Please enter registration closing date;");
-        String registrationClosingDate = new Scanner(System.in).nextLine();
-        System.out.println("Please enter camp location;");
-        String location = new Scanner(System.in).nextLine();
-        int filledSlots = 0;
-        System.out.println("Please enter number of attendees;");
-        int totalSlots = new Scanner(System.in).nextInt();
-        int filledCampCommSlots = 0;
-        System.out.println("Please enter number of camp committee members;");
-        int campCommlots = new Scanner(System.in).nextInt();
-        System.out.println("Please enter camp description(5 words);");
-        String description = new Scanner(System.in).nextLine();
-        
-        String staffID = staff.getID();
-        System.out.println("Please set visibility (1 for true, 2 for false):");
-        
-        String visibility = "false";
-        do {
-            System.out.println("Enter 1 for true or 2 for false:");
-            int number = new Scanner(System.in).nextInt();
-
-            switch (number) {
-                case 1:
-                    visibility = "true";
-                    System.out.println("Visibility set to true.");
-                    break;
-                case 2:
-                    visibility = "false";
-                    System.out.println("Visibility set to false.");
-                    break;
-                default:
-                    System.out.println("Invalid input. Please enter 1 for true or 2 for false.");
-            }
-        } while (!visibility.equals("true") && !visibility.equals("false"));
-        
-
-        System.out.println("Please select school that camp is open to:");
-        String userInput = new Scanner(System.in).nextLine();
-        Faculty faculty;
-
-        switch (userInput) {
-            case "ADM" -> {
-                faculty = Faculty.ADM;
-                break;
-            }
-            case "EEE" -> {
-                faculty = Faculty.EEE;
-                break;
-            }
-            case "NBS" -> {
-                faculty = Faculty.NBS;
-                break;
-            }
-            case "NTU" -> {
-                faculty = Faculty.NTU;
-                break;
-            }
-            case "SCSE" -> {
-                faculty = Faculty.SCSE;
-                break;
-            }
-            case "SSS" -> {
-                faculty = Faculty.SSS;
-                break;
-            }
-            default -> {
-                faculty = Faculty.NTU;
-                System.out.println("Invalid input. school has been set to NTU.");
-                return; // or handle the invalid input accordingly
-            }
-        }
-
-        System.out.println("Selected faculty: " + faculty);
-
-        Camp p;
-        
-        
-        try {
-            p = CampManager.createcamp(campName, campDates, registrationClosingDate, faculty, location, filledSlots, 
-            totalSlots, filledCampCommSlots, campCommlots, description, staffID, visibility);
-        } catch (ModelAlreadyExistsException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("The project details are as follows:");
-        ModelViewer.displaySingleDisplayable(p);
-        System.out.println("Are you sure you want to create this project? (Y/N)");
-        String input = new Scanner(System.in).nextLine();
-        if (!input.equalsIgnoreCase("Y")) {
-            System.out.println("Project creation cancelled!");
-            try {
-                CampRepository.getInstance().remove(p.getID());
-                //CampManager.updateCampsStatus();
-            } catch (ModelNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            System.out.println("Enter enter to continue");
-            new Scanner(System.in).nextLine();
-            throw new PageBackException();
-        }
-        System.out.println("Project created successfully!");
-        System.out.println("Enter enter to continue");
-        new Scanner(System.in).nextLine();
-        throw new PageBackException();
-    }
-
-
+//         System.out.println("\t1. Approve");
+//         System.out.println("\t2. Reject");
+//         System.out.println("\t3. Go back");
+//         System.out.println("Please enter your choice: ");
+//         int choice = IntGetter.readInt();
+//         switch (choice) {
+//             case 1 -> {
+//                 try {
+//                     RequestManager.approveRequest(requestID);
+//                 } catch (SupervisorStudentsLimitExceedException e) {
+//                     System.out.println("Supervisor's students limit exceeded.");
+//                     System.out.println("Press enter to go back, or enter [0] to try again.");
+//                     String choice2 = new Scanner(System.in).nextLine();
+//                     if (choice2.equals("0")) {
+//                         acceptOrRejectRequest();
+//                     }
+//                     throw new PageBackException();
+//                 }
+//             }
+//             case 2 -> {
+//                 RequestManager.rejectRequest(requestID);
+//             }
+//             case 3 -> {
+//                 acceptOrRejectRequest();
+//                 throw new PageBackException();
+//             }
+//             default -> {
+//                 System.out.println("Invalid choice. Please try again.");
+//                 System.out.println("Press enter to go back, or enter [0] to try again.");
+//                 String choice2 = new Scanner(System.in).nextLine();
+//                 if (choice2.equals("0")) {
+//                     acceptOrRejectRequest();
+//                 }
+//                 throw new PageBackException();
+//             }
+//         }
+//         ChangePage.changePage();
+//         try {
+//             request = RequestManager.getRequest(requestID);
+//         } catch (ModelNotFoundException e) {
+//             e.printStackTrace();
+//         }
+//         System.out.println("Here is the updated request:");
+//         ModelViewer.displaySingleDisplayable(request);
+//         System.out.println("Press enter to go back.");
+//         new Scanner(System.in).nextLine();
+//         throw new PageBackException();
+//     }
 
 }
