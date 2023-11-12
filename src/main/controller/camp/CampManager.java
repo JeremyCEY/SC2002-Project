@@ -66,7 +66,7 @@ public class CampManager {
      * @param supervisorID the ID of the supervisor
      * @throws ModelAlreadyExistsException if the camp already exists
      */
-    public static void createcamp(String campID, String campName, String dates, String registrationClosingDate,
+    public static void createCamp(String campID, String campName, String dates, String registrationClosingDate,
             Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots, int campCommSlots, String description,
             String staffID, String visibility) throws ModelAlreadyExistsException {
         Camp c1 = new Camp(campID, campName, dates, registrationClosingDate,
@@ -84,7 +84,7 @@ public class CampManager {
      *
      * @return the new camp
      */
-    public static Camp createcamp(String campName, String dates, String registrationClosingDate,
+    public static Camp createCamp(String campName, String dates, String registrationClosingDate,
             Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots, int campCommSlots, 
             String description, String staffID, String visibility) throws ModelAlreadyExistsException {
         Camp c1 = new Camp(getNewcampID(), campName, dates, registrationClosingDate,openTo, location, 
@@ -252,7 +252,7 @@ public class CampManager {
                     System.out.println("Load camp " + campName + " failed: staff " + staffName + " not found");
                 } else if (staff.size() == 1) {
 
-                    CampManager.createcamp(camp.get(0), camp.get(1), camp.get(2),
+                    CampManager.createCamp(camp.get(0), camp.get(1), camp.get(2),
                             faculty, camp.get(4), Integer.parseInt(camp.get(5)), Integer.parseInt(camp.get(6)),
                             Integer.parseInt(camp.get(7)),Integer.parseInt(camp.get(8)), camp.get(9),
                             staff.get(10).getID(), camp.get(11));

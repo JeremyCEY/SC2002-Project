@@ -32,7 +32,8 @@ import main.model.user.UserType;
 import main.repository.request.RequestRepository;
 import main.repository.user.StaffRepository;
 import main.repository.user.StudentRepository;
-
+import main.repository.camp.CampRepository;
+import main.utils.exception.ModelAlreadyExistsException;
 import main.utils.exception.ModelNotFoundException;
 import main.utils.exception.PageBackException;
 //import main.utils.exception.SupervisorStudentsLimitExceedException;
@@ -121,28 +122,47 @@ public class StaffMainPage {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter a camp Name:");
         String name = scanner.nextLine();
-        System.out.println("Enter a camp Date, like 20120304:");
+        System.out.println("Enter a camp Date, YYYY-MM-DD:");
         String date = scanner.nextLine();
-        System.out.println("Enter a camp Registration Closing Date, like 20120304:");
+        System.out.println("Enter a camp Registration Closing Date, YYYY-MM-DD:");
         String registrationClosingDateDate = scanner.nextLine();
         System.out.println("Enter a camp Faculty Open To:");
         Faculty faculty = Faculty.valueOf(scanner.nextLine());
         System.out.println("Enter a camp Location:");
         String location = scanner.nextLine();
-        System.out.println("Enter a camp Total Slots:");
+        System.out.println("Enter a camp attendee Slots:");
         int totalSlots = scanner.nextInt();
+        System.out.println("Enter a camp committee Slots:");
+        int campCommSlots = scanner.nextInt();
         System.out.println("Enter a camp Description:");
-        String desc = scanner.next();
-        Camp camp =
+        String desc = scanner.nextLine();
+        Camp camp;
+        try {
+            camp =
             CampManager.createCamp(
                 name, date, registrationClosingDateDate, faculty, location, 0, totalSlots,
-                0, desc, user.getID(), "True");
-        System.out.println("Successfully created a new camp:");
-        CampViewer.viewCamp(camp);
-        System.out.println(BoundaryStrings.separator);
-        System.out.println();
-        System.out.println("Press enter to go back.");
-        scanner.nextLine();
+                0, campCommSlots, desc, user.getID(), "True");
+        } catch (ModelAlreadyExistsException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("The camp details are as follows:");
+        ModelViewer.displaySingleDisplayable(camp);
+        System.out.println("Are you sure you want to create this camp? (Y/N)");
+        String input = new Scanner(System.in).nextLine();
+        if (!input.equalsIgnoreCase("Y")) {
+            System.out.println("Camp creation cancelled!");
+            try {
+                CampRepository.getInstance().remove(camp.getID());
+            } catch (ModelNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("Enter enter to continue");
+            new Scanner(System.in).nextLine();
+            throw new PageBackException();
+        }
+        System.out.println("Project created successfully!");
+        System.out.println("Enter enter to continue");
+        new Scanner(System.in).nextLine();
         throw new PageBackException();
     }
 
