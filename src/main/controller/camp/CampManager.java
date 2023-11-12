@@ -77,37 +77,23 @@ public class CampManager {
      * @throws ModelAlreadyExistsException if the camp already exists
      */
     public static void createCamp(String campID, String campName, String dates, String registrationClosingDate,
-            Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots, String description,
+            Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots,int campCommSlots, String description,
             String staffID, String visibility) throws ModelAlreadyExistsException {
         Camp c1 = new Camp(campID, campName, dates, registrationClosingDate,
-                openTo, location, filledSlots, totalSlots, filledCampCommSlots, description, staffID, visibility);
+                openTo, location, filledSlots, totalSlots, filledCampCommSlots, campCommSlots, description, staffID, visibility);
         CampRepository.getInstance().add(c1);
         // CampManager.updatecampsStatus();
     }
-
-    /**
-     * create a new camp
-     *
-     * @param campTitle    the title of the camp
-     * @param supervisorID the ID of the supervisor
-     * @throws ModelAlreadyExistsException if the camp already exists
-     *
-     * @return the new camp
-     */
-    public static Camp createCamp(String campName, String dates, String registrationClosingDate,
-            Faculty openTo, String location, int filledSlots, int totalSlots, int campCommSlots, String description,
-            String staffID, String visibility) {
-        Camp camp = new Camp(getNewCampID(), campName, dates, registrationClosingDate,
-                openTo, location, filledSlots, totalSlots, campCommSlots, description, staffID, visibility);
-        try {
-            CampRepository.getInstance().add(camp);
-        } catch (ModelAlreadyExistsException e) {
-            // Should not happen as we use #getNewCampID()
-        }
-        return camp;
-        // CampManager.updatecampsStatus();
-    }
     
+    public static Camp createCamp(String campName, String dates, String registrationClosingDate,
+            Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots, int campCommSlots, 
+            String description, String staffID, String visibility) throws ModelAlreadyExistsException {
+        Camp c1 = new Camp(getNewCampID(), campName, dates, registrationClosingDate,openTo, location, 
+            filledSlots, totalSlots, filledCampCommSlots, campCommSlots, description, staffID, visibility);
+        CampRepository.getInstance().add(c1);
+        return c1;
+    }
+
 
     /**
      * get the list of all camps
