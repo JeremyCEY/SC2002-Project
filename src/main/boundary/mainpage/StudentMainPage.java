@@ -280,7 +280,7 @@ public class StudentMainPage {
         }
         Camp camp;
         try {
-            camp = CampManager.getCampByID(projectID);
+            camp = CampManager.getByID(projectID);
             if (camp.getStatus() != CampStatus.AVAILABLE) {
                 System.out.println("Camp is not available.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
