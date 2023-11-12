@@ -59,27 +59,27 @@ public class StudentProfile {
             throw new PageBackException();
         }
         System.out.println("Here is the list of available projects: ");
-        ModelViewer.displayListOfDisplayable(CampManager.getAllAvailablecamp());
+        ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());
         System.out.print("Please enter the project ID: ");
         String campID = new Scanner(System.in).nextLine();
-        if (CampManager.notContainsCampByID(projectID)) {
+        if (CampManager.notContainsCampByID(campID)) {
             System.out.println("Project not found.");
             System.out.println("Press Enter to go back, or enter [r] to retry.");
             String choice = new Scanner(System.in).nextLine();
             if (choice.equals("r")) {
-                registerProject(student);
+                registerCamp(student);
             }
             throw new PageBackException();
         }
         Camp camp;
         try {
-            Camp = CampManager.getCampByID(campID);
+            camp = CampManager.getByID(campID);
             if (Camp.getStatus() != CampStatus.AVAILABLE) {
                 System.out.println("Project is not available.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
                 String choice = new Scanner(System.in).nextLine();
                 if (choice.equals("r")) {
-                    registerProject(student);
+                    registerCamp(student);
                 }
                 throw new PageBackException();
             }
@@ -107,7 +107,7 @@ public class StudentProfile {
                 if (yNChoice.equals("b")) {
                     throw new PageBackException();
                 } else {
-                    registeramp(student);
+                    registerCamp(student);
                 }
             }
         } else {
@@ -125,11 +125,11 @@ public class StudentProfile {
 	 * 
 	 * @param Student
 	 */
-	private void withdrawCamp(int Student) {
+	private void withdrawCamp(Student student) {
 		// TODO - implement StudentProfile.withdrawCamp
 		     ChangePage.changePage();
 
-        if (EmptyID.isEmptyID(student.getCampID())) {
+        if (EmptyID.isEmptyID(student.getID())) {
             System.out.println("You are not registered for any project.");
             System.out.println("Press Enter to go back.");
             new Scanner(System.in).nextLine();
@@ -139,7 +139,7 @@ public class StudentProfile {
         System.out.println("Your current project is: ");
 
         try {
-            Camp camp = CampRepository.getInstance().getByID(student.getCampID());
+            Camp camp = CampRepository.getInstance().getByID(student.getID());
             ModelViewer.displaySingleDisplayable(camp);
         } catch (ModelNotFoundException e) {
             throw new IllegalArgumentException("Project not found.");
@@ -154,7 +154,7 @@ public class StudentProfile {
             throw new PageBackException();
         }
 
-        String campID = student.getCampID();
+        String campID = student.getID();
 
         try {
             StudentManager.deregisterStudent(campID, student.getID());
