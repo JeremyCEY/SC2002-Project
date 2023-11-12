@@ -14,16 +14,22 @@ import main.boundary.modelviewer.CampViewer;
 import main.boundary.modelviewer.ModelViewer;
 
 import main.controller.request.StaffManager;
+import main.controller.camp.CampManager;
 import main.controller.request.RequestManager;
 //import main.model.request.Request;
 //import main.model.request.RequestStatus;
 //import main.model.request.RequestType;
-
-
+import main.model.camp.Camp;
+import main.model.request.Enquiry;
+import main.model.request.RequestStatus;
+import main.model.request.RequestType;
+import main.model.request.Suggestion;
+import main.model.user.Faculty;
 import main.model.user.Staff;
 import main.model.user.Student;
 import main.model.user.User;
 import main.model.user.UserType;
+import main.repository.request.RequestRepository;
 import main.repository.user.StaffRepository;
 import main.repository.user.StudentRepository;
 
@@ -57,16 +63,13 @@ public class StaffMainPage {
             System.out.println();
             System.out.println("\t1. View my profile");
             System.out.println("\t2. Change my password");
-            System.out.println("\t3. View all projects");
-            System.out.println("\t4. View pending requests");
-            System.out.println("\t5. View all requests' history and status");
-            // if (CoordinatorManager.getAllPendingRequestsCoordinatorCanManage().size() > 0) {
-            //     System.out.println("\t6. Accept or reject requests " + BoundaryStrings.NEW);
-            // } else {
-            //     System.out.println("\t6. Accept or reject requests");
-            // }
-            System.out.println("\t7. Generate project details");
-            System.out.println("\t8. Logout");
+            System.out.println("\t3. View all Camps");
+            System.out.println("\t4. Create a new Camp");
+            System.out.println("\t5. Edit an existing Camp");
+            System.out.println("\t6. Delete an existing Camp");
+            System.out.println("\t7. View and Reply enquiries");
+            System.out.println("\t8. View and Handle suggestions");
+            System.out.println("\t9. Generate Reports");
             System.out.println(BoundaryStrings.separator);
 
             System.out.println();
@@ -85,12 +88,13 @@ public class StaffMainPage {
                     case 0 -> Logout.logout();
                     case 1 -> ViewUserProfile.viewUserProfilePage(staff);
                     case 2 -> ChangeAccountPassword.changePassword(UserType.STAFF, user.getID());
-                    //case 3 -> ProjectViewer.viewAllProject();
-                    //case 4 -> viewPendingRequests();
-                    //case 5 -> viewAllRequests();
-                    //case 6 -> acceptOrRejectRequest();
-                    //case 7 -> generateProjectDetails();
-                    //case 8 -> Logout.logout();
+                    case 3 -> CampViewer.viewAllCamps();
+                    case 4 -> createCamp(user);
+                    case 5 -> editExistingCamp(user);
+                    //case 6 -> deleteExistingCamp(user);
+                    case 7 -> viewAndReplyPendingEnquiries(user);
+                    case 8 -> viewAndHandlePendingSuggestions(user);
+                    case 9 -> generateReports(user);
                     default -> {
                         System.out.println("Invalid choice. Please press <enter> to try again.");
                         new Scanner(System.in).nextLine();
