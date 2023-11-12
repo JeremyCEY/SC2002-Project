@@ -4,6 +4,7 @@ import main.controller.camp.CampManager;
 import main.model.camp.Camp;
 //import main.model.project.ProjectStatus;
 import main.model.user.Student;
+import main.model.user.Staff;
 //import main.model.user.StudentStatus;
 import main.repository.camp.CampRepository;
 import main.repository.user.StaffRepository;
@@ -13,8 +14,6 @@ import main.utils.iocontrol.IntGetter;
 import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -201,23 +200,42 @@ public class CampViewer {
         throw new PageBackException();
     }
 
+    public static void viewCamp(Camp camp) throws PageBackException {
+        ChangePage.changePage();
+        System.out.println("View Camp");
+        ModelViewer.displaySingleDisplayable(camp);
+        System.out.println("Press Enter to go back.");
+        new Scanner(System.in).nextLine();
+        throw new PageBackException();
+    }
+    
+    
+    public static void viewStaffCamps(Staff staff) throws PageBackException {
+        ChangePage.changePage();
+        System.out.println("View Camp created by " + staff.getUserName());
+        ModelViewer.displayListOfDisplayable(CampManager.getAllCampsByStaff(staff));
+        System.out.println("Press Enter to go back.");
+        new Scanner(System.in).nextLine();
+        throw new PageBackException();
+    }
+    
     /**
      * Displays the project details.
      *
      * @param student the student
      * @throws PageBackException if the user wants to go back
      */
-    public static void viewStudentProject(Student student) throws PageBackException {
-        ChangePage.changePage();
-        System.out.println("View Student Project");
-        Camp p = CampManager.getStudentCamp(student);
-        if (p == null) {
-            System.out.println("Student has no project yet.");
-        } else {
-            ModelViewer.displaySingleDisplayable(p);
-        }
-        System.out.println("Press Enter to go back.");
-        new Scanner(System.in).nextLine();
-        throw new PageBackException();
-    }
+    // public static void viewStudentProject(Student student) throws PageBackException {
+    //    ChangePage.changePage();
+    //    System.out.println("View Student Project");
+    //    Camp p = CampManager.getStudentCamp(student);
+    //    if (p == null) {
+    //        System.out.println("Student has no project yet.");
+    //   } else {
+    //        ModelViewer.displaySingleDisplayable(p);
+    //    }
+    //    System.out.println("Press Enter to go back.");
+    //    new Scanner(System.in).nextLine();
+    //    throw new PageBackException();
+    //}
 }
