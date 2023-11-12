@@ -39,6 +39,11 @@ public class CampManager {
     // CampManager.updatecampsStatus();
     // }
 
+    public static void updateCamp(String campID, Camp updatedCamp) throws ModelNotFoundException {
+        updatedCamp.setCampID(campID);
+        CampRepository.getInstance().update(updatedCamp);
+    }
+    
     /**
      * Change the supervisor of a camp
      *
@@ -53,10 +58,10 @@ public class CampManager {
      *
      * @return the list of available camps
      */
-    public static List<Camp> viewAvailableCamps() {
-    return CampRepository.getInstance().findByRules(p -> p.getVisibility() ==
-    "true");
-    }
+    // public static List<Camp> viewAvailablecamps() {
+    // return CampRepository.getInstance().findByRules(p -> p.getStatus() ==
+    // campStatus.AVAILABLE);
+    // }
 
     /**
      * create a new camp
@@ -67,10 +72,10 @@ public class CampManager {
      * @throws ModelAlreadyExistsException if the camp already exists
      */
     public static void createCamp(String campID, String campName, String dates, String registrationClosingDate,
-            Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots, int campCommSlots, String description,
+            Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots, String description,
             String staffID, String visibility) throws ModelAlreadyExistsException {
         Camp c1 = new Camp(campID, campName, dates, registrationClosingDate,
-                openTo, location, filledSlots, totalSlots, filledCampCommSlots, campCommSlots, description, staffID, visibility);
+                openTo, location, filledSlots, totalSlots, filledCampCommSlots, description, staffID, visibility);
         CampRepository.getInstance().add(c1);
         // CampManager.updatecampsStatus();
     }
@@ -85,14 +90,18 @@ public class CampManager {
      * @return the new camp
      */
     public static Camp createCamp(String campName, String dates, String registrationClosingDate,
-            Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots, int campCommSlots, 
-            String description, String staffID, String visibility) throws ModelAlreadyExistsException {
-        Camp c1 = new Camp(getNewcampID(), campName, dates, registrationClosingDate,openTo, location, 
-            filledSlots, totalSlots, filledCampCommSlots, campCommSlots, description, staffID, visibility);
-        CampRepository.getInstance().add(c1);
-        return c1;
+            Faculty openTo, String location, int filledSlots, int totalSlots, int campCommSlots, String description,
+            String staffID, String visibility) {
+        Camp camp = new Camp(getNewCampID(), campName, dates, registrationClosingDate,
+                openTo, location, filledSlots, totalSlots, campCommSlots, description, staffID, visibility);
+        try {
+            CampRepository.getInstance().add(camp);
+        } catch (ModelAlreadyExistsException e) {
+            // Should not happen as we use #getNewCampID()
+        }
+        return camp;
+        // CampManager.updatecampsStatus();
     }
-
     
 
     /**
@@ -120,7 +129,7 @@ public class CampManager {
      *
      * @return the list of all camps
      */
-    public static String getNewcampID() {
+    public static String getNewCampID() {
         int max = 0;
         for (Camp p : CampRepository.getInstance()) {
             int id = Integer.parseInt(p.getID().substring(1));
@@ -254,8 +263,8 @@ public class CampManager {
 
                     CampManager.createCamp(camp.get(0), camp.get(1), camp.get(2),
                             faculty, camp.get(4), Integer.parseInt(camp.get(5)), Integer.parseInt(camp.get(6)),
-                            Integer.parseInt(camp.get(7)),Integer.parseInt(camp.get(8)), camp.get(9),
-                            staff.get(10).getID(), camp.get(11));
+                            Integer.parseInt(camp.get(7)), camp.get(8),
+                            staff.get(0).getID(), camp.get(10));
                 } else {
                     System.out.println("Load camp " + campName + " failed: multiple staff found");
                 }
@@ -333,6 +342,44 @@ public class CampManager {
     return CampRepository.getInstance().findByRules(p -> p.getVisibility() != "true");
     }
 
+    public static List<Camp> getAllCampsByStaff(Staff staff) {
+        return CampRepository.getInstance().findByRules(c -> c.getStaffID().equals(staff.getID()));
+    }
+    
+
+    public static List<Enquiry> getAllPendingEnquiriesByStaff(Staff staff) {
+        List<String> campIDs =  CampManager.getAllCampsByStaff(staff).stream()
+            .filter(
+                c -> c.getStaffID().equals(staff.getID())
+                && c.getVisibility().equals("true"))
+            .map(Camp::getID)
+            .collect(Collectors.toList());
+        return RequestRepository.getInstance().findByRules(
+                r -> r.getRequestType() == RequestType.ENQUIRY,
+                r -> r.getRequestStatus() == RequestStatus.PENDING,
+                r -> campIDs.contains(r.getCampID()))
+            .stream()
+            .map(r -> (Enquiry) r)
+            .collect(Collectors.toList());
+    }
+    
+    public static List<Suggestion> getAllPendingSuggestionsByStaff(Staff staff) {
+        List<String> campIDs =  CampManager.getAllCampsByStaff(staff).stream()
+            .filter(
+                c -> c.getStaffID().equals(staff.getID())
+                    && c.getVisibility().equals("true"))
+            .map(Camp::getID)
+            .collect(Collectors.toList());
+        return RequestRepository.getInstance().findByRules(
+                r -> r.getRequestType() == RequestType.SUGGESTION,
+                r -> r.getRequestStatus() == RequestStatus.PENDING,
+                r -> campIDs.contains(r.getCampID()))
+            .stream()
+            .map(r -> (Suggestion) r)
+            .collect(Collectors.toList());
+    }
+    
+    
     /**
      * get camp by the camp ID
      * 
@@ -340,7 +387,7 @@ public class CampManager {
      * @return the camp
      * @throws ModelNotFoundException if the camp is not found
      */
-    public static Camp getcampByID(String campID) throws ModelNotFoundException {
+    public static Camp getCampByID(String campID) throws ModelNotFoundException {
         return CampRepository.getInstance().getByID(campID);
     }
 
