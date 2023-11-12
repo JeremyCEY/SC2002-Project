@@ -210,31 +210,31 @@ public class StudentMainPage {
     }
 
     /**
-     * This private method is called to get the project ID from the user. It prompts the user to enter the project ID and returns it as a string. If the user wants to go back, a PageBackException is thrown.
+     * This private method is called to get the camp ID from the user. It prompts the user to enter the camp ID and returns it as a string. If the user wants to go back, a PageBackException is thrown.
      *
-     * @return the project ID.
+     * @return the camp ID.
      * @throws PageBackException if the user wants to go back.
      */
-    // private static String getProjectID() throws PageBackException {
-    //     System.out.println("Please enter the project ID: ");
-    //     String projectID = new Scanner(System.in).nextLine();
-    //     if (ProjectRepository.getInstance().contains(projectID)) {
-    //         System.out.println("Project found.");
-    //         System.out.println("Here is the project information: ");
-    //         try {
-    //             Project project = ProjectRepository.getInstance().getByID(projectID);
-    //             ModelViewer.displaySingleDisplayable(project);
-    //         } catch (ModelNotFoundException e) {
-    //             e.printStackTrace();
-    //         }
-    //     } else {
-    //         System.out.println("Project not found.");
-    //         System.out.println("Press Enter to go back.");
-    //         new Scanner(System.in).nextLine();
-    //         throw new PageBackException();
-    //     }
-    //     return projectID;
-    // }
+    private static String getCampID() throws PageBackException {
+        System.out.println("Please enter the project ID: ");
+        String campID = new Scanner(System.in).nextLine();
+        if (CampRepository.getInstance().contains(campID)) {
+            System.out.println("Camp found.");
+            System.out.println("Here is the camp information: ");
+            try {
+                Camp camp = CampRepository.getInstance().getByID(campID);
+                ModelViewer.displaySingleDisplayable(camp);
+            } //catch (ModelNotFoundException e) {
+                //e.printStackTrace();
+            //}
+        } else {
+            System.out.println("Camp not found.");
+            System.out.println("Press Enter to go back.");
+            new Scanner(System.in).nextLine();
+            throw new PageBackException();
+        }
+        return campID;
+    }
 
     /**
      * This private method is called to view the history and status of the student's project. It displays the project's information.
