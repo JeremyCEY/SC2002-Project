@@ -9,7 +9,7 @@ import main.controller.account.AccountManager;
 import main.controller.camp.CampManager;
 import main.controller.request.StudentManager;
 import main.model.camp.Camp;
-//import main.model.project.ProjectStatus;
+import main.model.camp.Camp;
 import main.model.user.*;
 import main.repository.camp.CampRepository;
 import main.repository.user.StudentRepository;
@@ -108,18 +108,18 @@ public class StudentMainPage {
      * @param student the student.
      * @throws PageBackException if the user wants to go back.
      */
-    // private static void changeTitleForProject(Student student) throws PageBackException, ModelNotFoundException {
+    // private static void changeTitleForCamps(Student student) throws PageBackException, ModelNotFoundException {
     //     ChangePage.changePage();
-    //     Project project;
+    //     Camp camp;
     //     try {
     //         project = ProjectRepository.getInstance().getByID(student.getProjectID());
     //     } catch (ModelNotFoundException e) {
-    //         System.out.println("You are not registered for any project.");
+    //         System.out.println("You are not registered for any camps.");
     //         System.out.println("Press Enter to go back.");
     //         new Scanner(System.in).nextLine();
     //         throw new PageBackException();
     //     }
-    //     System.out.println("Here is your project: ");
+    //     System.out.println("Here is your camps: ");
     //     ModelViewer.displaySingleDisplayable(project);
     //     System.out.println("Are you sure you want to change the title of this project?");
     //     System.out.println("Enter [y] to confirm, or press enter to go back.");
@@ -162,52 +162,52 @@ public class StudentMainPage {
      * @param student the student.
      * @throws PageBackException if the user wants to go back.
      */
-    // private static void deregisterForProject(Student student) throws PageBackException {
-    //     ChangePage.changePage();
+    private static void deregisterCamp(Student student) throws PageBackException {
+        ChangePage.changePage();
 
-    //     if (EmptyID.isEmptyID(student.getProjectID())) {
-    //         System.out.println("You are not registered for any project.");
-    //         System.out.println("Press Enter to go back.");
-    //         new Scanner(System.in).nextLine();
-    //         throw new PageBackException();
-    //     }
+        if (EmptyID.isEmptyID(student.getCampID())) {
+            System.out.println("You are not registered for any camp.");
+            System.out.println("Press Enter to go back.");
+            new Scanner(System.in).nextLine();
+            throw new PageBackException();
+        }
 
-    //     System.out.println("Your current project is: ");
+        System.out.println("Your current project is: ");
 
-    //     try {
-    //         Project project = ProjectRepository.getInstance().getByID(student.getProjectID());
-    //         ModelViewer.displaySingleDisplayable(project);
-    //     } catch (ModelNotFoundException e) {
-    //         throw new IllegalArgumentException("Project not found.");
-    //     }
+        try {
+            Camp project = CampRepository.getInstance().getByID(student.getCampID());
+            ModelViewer.displaySingleDisplayable(project);
+        } catch (ModelNotFoundException e) {
+            throw new IllegalArgumentException("Project not found.");
+        }
 
-    //     System.out.println("Are you sure you want to deregister from this project? (y/[n])");
-    //     String choice = new Scanner(System.in).nextLine();
-    //     if (!choice.equals("y")) {
-    //         System.out.println("Deregistration cancelled.");
-    //         System.out.println("Press Enter to go back.");
-    //         new Scanner(System.in).nextLine();
-    //         throw new PageBackException();
-    //     }
+        System.out.println("Are you sure you want to deregister from this project? (y/[n])");
+        String choice = new Scanner(System.in).nextLine();
+        if (!choice.equals("y")) {
+            System.out.println("Deregistration cancelled.");
+            System.out.println("Press Enter to go back.");
+            new Scanner(System.in).nextLine();
+            throw new PageBackException();
+        }
 
-    //     String projectID = student.getProjectID();
+        String projectID = student.getProjectID();
 
-    //     try {
-    //         StudentManager.deregisterStudent(projectID, student.getID());
-    //     } catch (Exception e) {
-    //         System.out.println("Deregistration Error: " + e.getMessage());
-    //         System.out.println("Enter [b] to go back, or press enter to retry.");
-    //         String choice2 = new Scanner(System.in).nextLine();
-    //         if (!choice2.equals("b")) {
-    //             deregisterForProject(student);
-    //         }
-    //         throw new PageBackException();
-    //     }
-    //     System.out.println("Successfully sent a request to deregister");
-    //     System.out.println("Press Enter to go back.");
-    //     new Scanner(System.in).nextLine();
-    //     throw new PageBackException();
-    // }
+        try {
+            StudentManager.deregisterStudent(projectID, student.getID());
+        } catch (Exception e) {
+            System.out.println("Deregistration Error: " + e.getMessage());
+            System.out.println("Enter [b] to go back, or press enter to retry.");
+            String choice2 = new Scanner(System.in).nextLine();
+            if (!choice2.equals("b")) {
+                deregisterForProject(student);
+            }
+            throw new PageBackException();
+        }
+        System.out.println("Successfully sent a request to deregister");
+        System.out.println("Press Enter to go back.");
+        new Scanner(System.in).nextLine();
+        throw new PageBackException();
+    }
 
     /**
      * This private method is called to get the project ID from the user. It prompts the user to enter the project ID and returns it as a string. If the user wants to go back, a PageBackException is thrown.
@@ -257,75 +257,75 @@ public class StudentMainPage {
      * @param student the student.
      * @throws PageBackException if the user wants to go back.
      */
-    // private static void registerProject(Student student) throws PageBackException {
-    //     ChangePage.changePage();
-    //     if (student.getStatus() == StudentStatus.REGISTERED || student.getStatus() == StudentStatus.DEREGISTERED) {
-    //         System.out.println("You are already registered/deregistered for a project.");
-    //         System.out.println("Press Enter to go back.");
-    //         new Scanner(System.in).nextLine();
-    //         throw new PageBackException();
-    //     }
-    //     System.out.println("Here is the list of available projects: ");
-    //     ModelViewer.displayListOfDisplayable(ProjectManager.getAllAvailableProject());
-    //     System.out.print("Please enter the project ID: ");
-    //     String projectID = new Scanner(System.in).nextLine();
-    //     if (ProjectManager.notContainsProjectByID(projectID)) {
-    //         System.out.println("Project not found.");
-    //         System.out.println("Press Enter to go back, or enter [r] to retry.");
-    //         String choice = new Scanner(System.in).nextLine();
-    //         if (choice.equals("r")) {
-    //             registerProject(student);
-    //         }
-    //         throw new PageBackException();
-    //     }
-    //     Project project;
-    //     try {
-    //         project = ProjectManager.getProjectByID(projectID);
-    //         if (project.getStatus() != ProjectStatus.AVAILABLE) {
-    //             System.out.println("Project is not available.");
-    //             System.out.println("Press Enter to go back, or enter [r] to retry.");
-    //             String choice = new Scanner(System.in).nextLine();
-    //             if (choice.equals("r")) {
-    //                 registerProject(student);
-    //             }
-    //             throw new PageBackException();
-    //         }
+    private static void registerCamp(Student student) throws PageBackException {
+        ChangePage.changePage();
+        if (student.getStatus() == StudentStatus.REGISTERED || student.getStatus() == StudentStatus.DEREGISTERED) {
+            System.out.println("You are already registered/deregistered for a project.");
+            System.out.println("Press Enter to go back.");
+            new Scanner(System.in).nextLine();
+            throw new PageBackException();
+        }
+        System.out.println("Here is the list of available projects: ");
+        ModelViewer.displayListOfDisplayable(CampManager.getAllAvailablecamp());
+        System.out.print("Please enter the project ID: ");
+        String projectID = new Scanner(System.in).nextLine();
+        if (ProjectManager.notContainsProjectByID(projectID)) {
+            System.out.println("Project not found.");
+            System.out.println("Press Enter to go back, or enter [r] to retry.");
+            String choice = new Scanner(System.in).nextLine();
+            if (choice.equals("r")) {
+                registerCamp(student);
+            }
+            throw new PageBackException();
+        }
+        Camp camp;
+        try {
+            camp = CampManager.getCampByID(projectID);
+            if (camp.getStatus() != CampStatus.AVAILABLE) {
+                System.out.println("Camp is not available.");
+                System.out.println("Press Enter to go back, or enter [r] to retry.");
+                String choice = new Scanner(System.in).nextLine();
+                if (choice.equals("r")) {
+                    registerCamp(student);
+                }
+                throw new PageBackException();
+            }
 
-    //     } catch (ModelNotFoundException e) {
-    //         throw new RuntimeException(e);
-    //     }
-    //     ChangePage.changePage();
-    //     System.out.println("Here is the project information: ");
-    //     try {
-    //         Project project1 = ProjectRepository.getInstance().getByID(projectID);
-    //         ModelViewer.displaySingleDisplayable(project1);
-    //     } catch (ModelNotFoundException e) {
-    //         throw new RuntimeException(e);
-    //     }
-    //     System.out.print("Are you sure you want to register for this project? (y/[n]): ");
-    //     String choice = new Scanner(System.in).nextLine();
-    //     if (choice.equalsIgnoreCase("y")) {
-    //         try {
-    //             StudentManager.registerStudent(projectID, student.getID());
-    //             System.out.println("Request submitted!");
-    //         } catch (Exception e) {
-    //             System.out.println("Enter [b] to go back, or press enter to retry.");
-    //             String yNChoice = new Scanner(System.in).nextLine();
-    //             if (yNChoice.equals("b")) {
-    //                 throw new PageBackException();
-    //             } else {
-    //                 registerProject(student);
-    //             }
-    //         }
-    //     } else {
-    //         System.out.println("Request cancelled.");
+        } catch (ModelNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        ChangePage.changePage();
+        System.out.println("Here is the project information: ");
+        try {
+            Camp camp1 = CampRepository.getInstance().getByID(projectID);
+            ModelViewer.displaySingleDisplayable(camp1);
+        } catch (ModelNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.print("Are you sure you want to register for this project? (y/[n]): ");
+        String choice = new Scanner(System.in).nextLine();
+        if (choice.equalsIgnoreCase("y")) {
+            try {
+                StudentManager.registerStudent(projectID, student.getID());
+                System.out.println("Request submitted!");
+            } catch (Exception e) {
+                System.out.println("Enter [b] to go back, or press enter to retry.");
+                String yNChoice = new Scanner(System.in).nextLine();
+                if (yNChoice.equals("b")) {
+                    throw new PageBackException();
+                } else {
+                    registerCamp(student);
+                }
+            }
+        } else {
+            System.out.println("Request cancelled.");
 
-    //     }
+        }
 
-    //     System.out.println("Press Enter to go back.");
-    //     new Scanner(System.in).nextLine();
-    //     throw new PageBackException();
-    // }
+        System.out.println("Press Enter to go back.");
+        new Scanner(System.in).nextLine();
+        throw new PageBackException();
+    }
 
     /**
      * This private method is called to view the supervisor of the student's project. It displays the supervisor's information.
