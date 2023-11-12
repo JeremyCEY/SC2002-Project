@@ -53,10 +53,10 @@ public class CampManager {
      *
      * @return the list of available camps
      */
-    // public static List<Camp> viewAvailablecamps() {
-    // return CampRepository.getInstance().findByRules(p -> p.getStatus() ==
-    // campStatus.AVAILABLE);
-    // }
+    public static List<Camp> viewAvailableCamps() {
+    return CampRepository.getInstance().findByRules(p -> p.getVisibility() ==
+    "true");
+    }
 
     /**
      * create a new camp
@@ -67,10 +67,10 @@ public class CampManager {
      * @throws ModelAlreadyExistsException if the camp already exists
      */
     public static void createcamp(String campID, String campName, String dates, String registrationClosingDate,
-            Faculty openTo, String location, int filledSlots, int totalSlots, int campCommSlots, String description,
+            Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots, int campCommSlots, String description,
             String staffID, String visibility) throws ModelAlreadyExistsException {
         Camp c1 = new Camp(campID, campName, dates, registrationClosingDate,
-                openTo, location, filledSlots, totalSlots, campCommSlots, description, staffID, visibility);
+                openTo, location, filledSlots, totalSlots, filledCampCommSlots, campCommSlots, description, staffID, visibility);
         CampRepository.getInstance().add(c1);
         // CampManager.updatecampsStatus();
     }
@@ -84,14 +84,16 @@ public class CampManager {
      *
      * @return the new camp
      */
-    public static void createcamp(String campName, String dates, String registrationClosingDate,
-            Faculty openTo, String location, int filledSlots, int totalSlots, int campCommSlots, String description,
-            String staffID, String visibility) throws ModelAlreadyExistsException {
-        Camp c1 = new Camp(getNewcampID(), campName, dates, registrationClosingDate,
-                openTo, location, filledSlots, totalSlots, campCommSlots, description, staffID, visibility);
+    public static Camp createcamp(String campName, String dates, String registrationClosingDate,
+            Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots, int campCommSlots, 
+            String description, String staffID, String visibility) throws ModelAlreadyExistsException {
+        Camp c1 = new Camp(getNewcampID(), campName, dates, registrationClosingDate,openTo, location, 
+            filledSlots, totalSlots, filledCampCommSlots, campCommSlots, description, staffID, visibility);
         CampRepository.getInstance().add(c1);
-        // CampManager.updatecampsStatus();
+        return c1;
     }
+
+    
 
     /**
      * get the list of all camps
@@ -252,8 +254,8 @@ public class CampManager {
 
                     CampManager.createcamp(camp.get(0), camp.get(1), camp.get(2),
                             faculty, camp.get(4), Integer.parseInt(camp.get(5)), Integer.parseInt(camp.get(6)),
-                            Integer.parseInt(camp.get(7)), camp.get(8),
-                            staff.get(0).getID(), camp.get(10));
+                            Integer.parseInt(camp.get(7)),Integer.parseInt(camp.get(8)), camp.get(9),
+                            staff.get(10).getID(), camp.get(11));
                 } else {
                     System.out.println("Load camp " + campName + " failed: multiple staff found");
                 }

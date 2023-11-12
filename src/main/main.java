@@ -14,7 +14,7 @@ import main.utils.exception.PasswordIncorrectException;
 public class main {
     public static void main(String[] args) {
         // For testing the app from login
-        //UIEntry.start();
+        // UIEntry.start();
 
         // Skip to student page
         // AccountManager.loadUsers();
@@ -29,24 +29,24 @@ public class main {
         // }
 
         // Skip to staff page
-        // AccountManager.loadUsers();
-        // try {
-        //     User user = AccountManager.login(UserType.STAFF, "HUKUMAR", "password");
-        //     StaffMainPage.staffMainPage(user);
-        //     return;
-        // } catch (PasswordIncorrectException e) {
-        //     System.out.println("Password incorrect.");
-        // } catch (ModelNotFoundException e) {
-        //     System.out.println("User not found.");
-        // }
-        
-        //AccountManager.loadUsers();
-        //CampManager.loadcamps();
-        //CampManager.createcamp("SOP", "HUKUMAR");
-        System.out.println(CampManager.getAllcamps().get(0));
-        List<Camp> camps = CampManager.getAllcamps();
-        for (int i = 0; i < camps.size(); i++) {
-            System.out.println(camps.get(i).getCampName());
+        AccountManager.loadUsers();
+        try {
+            User user = AccountManager.login(UserType.STAFF, "HUKUMAR", "password");
+            StaffMainPage.staffMainPage(user);
+            return;
+        } catch (PasswordIncorrectException e) {
+            System.out.println("Password incorrect.");
+        } catch (ModelNotFoundException e) {
+            System.out.println("User not found.");
         }
+        
+        // //AccountManager.loadUsers();
+        // //CampManager.loadcamps();
+        // //CampManager.createcamp("SOP", "HUKUMAR");
+        // System.out.println(CampManager.getAllcamps().get(0));
+        // List<Camp> camps = CampManager.getAllcamps();
+        // for (int i = 0; i < camps.size(); i++) {
+        //     System.out.println(camps.get(i).getCampName());
+        // }
     }
 }
