@@ -119,29 +119,63 @@ public class StaffMainPage {
     private static void createCamp(User user) throws PageBackException {
         ChangePage.changePage();
         System.out.println(BoundaryStrings.separator);
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter a camp Name:");
-        String name = scanner.nextLine();
+        String name = new Scanner(System.in).nextLine();
         System.out.println("Enter a camp Date, YYYY-MM-DD:");
-        String date = scanner.nextLine();
+        String date = new Scanner(System.in).nextLine();
         System.out.println("Enter a camp Registration Closing Date, YYYY-MM-DD:");
-        String registrationClosingDateDate = scanner.nextLine();
-        System.out.println("Enter a camp Faculty Open To:");
-        Faculty faculty = Faculty.valueOf(scanner.nextLine());
+        String registrationClosingDateDate = new Scanner(System.in).nextLine();
+        System.out.println("Please select school that camp is open to:");
+        String userInput = new Scanner(System.in).nextLine();
+        Faculty faculty = Faculty.NTU;
+
+        switch (userInput) {
+            case "ADM" -> {
+                faculty = Faculty.ADM;
+                break;
+            }
+            case "EEE" -> {
+                faculty = Faculty.EEE;
+                break;
+            }
+            case "NBS" -> {
+                faculty = Faculty.NBS;
+                break;
+            }
+            case "NTU" -> {
+                faculty = Faculty.NTU;
+                break;
+            }
+            case "SCSE" -> {
+                faculty = Faculty.SCSE;
+                break;
+            }
+            case "SSS" -> {
+                faculty = Faculty.SSS;
+                break;
+            }
+            default -> {
+                System.out.println("Invalid input. Please enter a valid school code.");
+            }
+        }
+
+        System.out.println("Selected faculty: " + faculty);
+    
         System.out.println("Enter a camp Location:");
-        String location = scanner.nextLine();
+        String location = new Scanner(System.in).nextLine();
         System.out.println("Enter a camp attendee Slots:");
-        int totalSlots = scanner.nextInt();
+        int totalSlots = new Scanner(System.in).nextInt();
         System.out.println("Enter a camp committee Slots:");
-        int campCommSlots = scanner.nextInt();
+        int campCommSlots = new Scanner(System.in).nextInt();
+    
         System.out.println("Enter a camp Description:");
-        String desc = scanner.nextLine();
+        String description = new Scanner(System.in).nextLine();
         Camp camp;
         try {
             camp =
             CampManager.createCamp(
                 name, date, registrationClosingDateDate, faculty, location, 0, totalSlots,
-                0, campCommSlots, desc, user.getID(), "True");
+                0, campCommSlots, description, user.getID(), "True");
         } catch (ModelAlreadyExistsException e) {
             throw new RuntimeException(e);
         }
