@@ -94,7 +94,7 @@ public class StaffMainPage {
                     case 3 -> CampViewer.viewAllCamps();
                     case 4 -> createCamp(user);
                     case 5 -> editExistingCamp(user);
-                    //case 6 -> deleteExistingCamp(user);
+                    case 6 -> deleteExistingCamp(user);
                     case 7 -> viewAndReplyPendingEnquiries(user);
                     case 8 -> viewAndHandlePendingSuggestions(user);
                     case 9 -> generateReports(user);
@@ -204,10 +204,10 @@ public class StaffMainPage {
 
     private static void editExistingCamp(User user) throws PageBackException, ModelNotFoundException {
         ChangePage.changePage();
-        System.out.println(BoundaryStrings.separator);
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Which camp do you want to update");
         CampViewer.viewStaffCamps((Staff) user);
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter Camp ID of camp to edit");
+        
         String campID = scanner.nextLine();
         Camp camp = CampManager.getCampByID(campID);
         System.out.println("Which field do you want to update, press 0 to go back to upper menu");
@@ -240,6 +240,7 @@ public class StaffMainPage {
         System.out.println("\t1. Yes");
         choice = scanner.nextInt();
         if (choice == 1) {
+            CampManager.updateCamp(campID, camp);
             editExistingCamp(user);
         }
         CampManager.updateCamp(campID, camp);
@@ -248,6 +249,41 @@ public class StaffMainPage {
         System.out.println(BoundaryStrings.separator);
         System.out.println();
         System.out.println("Press enter to go back.");
+        scanner.nextLine();
+        throw new PageBackException();
+    }
+
+    private static void deleteExistingCamp(User user) throws PageBackException, ModelNotFoundException {
+        ChangePage.changePage();
+        CampViewer.viewStaffCamps((Staff) user);
+    
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter Camp ID of camp to delete");
+    
+        String campID = scanner.nextLine();
+    
+        // Check if the camp with the provided ID exists
+    
+        Camp campToDelete = CampManager.getCampByID(campID);
+        System.out.println("Are you sure you want to delete this camp? (Y/N)");
+    
+        String input = scanner.nextLine();
+        if (!input.equalsIgnoreCase("Y")) {
+            System.out.println("Camp deletion cancelled!");
+            System.out.println("Press enter to continue");
+            scanner.nextLine();
+            throw new PageBackException();
+        }
+    
+        // Try to delete the camp
+        try {
+            CampRepository.getInstance().remove(campToDelete.getID());
+        } catch (ModelNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    
+        System.out.println("Camp deleted successfully!");
+        System.out.println("Press enter to continue");
         scanner.nextLine();
         throw new PageBackException();
     }

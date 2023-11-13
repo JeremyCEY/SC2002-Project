@@ -14,6 +14,8 @@ import main.utils.iocontrol.IntGetter;
 import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -211,12 +213,15 @@ public class CampViewer {
     
     
     public static void viewStaffCamps(Staff staff) throws PageBackException {
-        ChangePage.changePage();
-        System.out.println("View Camp created by " + staff.getUserName());
-        ModelViewer.displayListOfDisplayable(CampManager.getAllCampsByStaff(staff));
-        System.out.println("Press Enter to go back.");
-        new Scanner(System.in).nextLine();
-        throw new PageBackException();
+        // ChangePage.changePage();
+        // System.out.println("View Camp created by " + staff.getUserName());
+        // ModelViewer.displayListOfDisplayable(CampManager.getAllCampsByStaff(staff));
+        // System.out.println("Press Enter to go back.");
+        // new Scanner(System.in).nextLine();
+        // throw new PageBackException();
+        List<Camp> camps = CampRepository.getInstance().findByRules(camp -> Objects.equals(camp.getStaffID(), staff.getID()));
+        System.out.println("Here are all your camps:");
+        ModelViewer.displayListOfDisplayable(camps);
     }
     
     /**
