@@ -42,7 +42,7 @@ public class LoginUI {
             User user = AccountManager.login(domain, userID, password);
             switch (domain) {
                 case STUDENT -> StudentMainPage.studentMainPage(user);
-                case STAFF -> StudentMainPage.studentMainPage(user); // to change
+                case STAFF -> StaffMainPage.staffMainPage(user); // to change
                 default -> throw new IllegalStateException("Unexpected value: " + domain);
             }
             return;
