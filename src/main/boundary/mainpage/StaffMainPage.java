@@ -170,12 +170,13 @@ public class StaffMainPage {
     
         System.out.println("Enter a camp Description:");
         String description = new Scanner(System.in).nextLine();
+        
         Camp camp;
         try {
             camp =
             CampManager.createCamp(
                 name, date, registrationClosingDateDate, faculty, location, 0, totalSlots,
-                0, campCommSlots, description, user.getID(), "True");
+                0, campCommSlots, description, user.getID(), "true");
         } catch (ModelAlreadyExistsException e) {
             throw new RuntimeException(e);
         }
@@ -218,7 +219,7 @@ public class StaffMainPage {
         System.out.println("\t6. Camp Total Slots");
         System.out.println("\t7. Camp Description");
         System.out.println("\t8. Camp Staff ID In Charge");
-        System.out.println("\t9. Camp Visibility");
+        System.out.println("\t9. Camp Visibility(true/false)");
         int choice = IntGetter.readInt();
         System.out.println("The new value of the field to update");
         switch (choice) {
@@ -359,13 +360,18 @@ public class StaffMainPage {
 
     private static void generateReports(User user) throws IOException, PageBackException {
         ChangePage.changePage();
+        CampViewer.viewStaffCamps((Staff) user);
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter Camp ID of camp to generate report");
+        String campID = scanner.nextLine();
         System.out.println(BoundaryStrings.separator);
+
         System.out.println("Generating Camps Report");
         System.out.println("\t0. Go Back");
         System.out.println("\t1. Camps Report");
-        System.out.println("\t2. Attendee Report");
-        System.out.println("\t3. Committee Report");
-        System.out.println("\t4. Enquires Report");
+        System.out.println("\t2. Attendee List");
+        System.out.println("\t3. Committee List");
+        System.out.println("\t4. Enquiries Report");
         System.out.println("\t5. Committee Performance Report");
         System.out.println();
         int choice = IntGetter.readInt();
@@ -376,35 +382,40 @@ public class StaffMainPage {
             case 0:
                 throw new PageBackException();
             case 1:
-                generateCampReports(camps);
+                System.out.println("Camp Report");
+                //generateCampReports(camps);
                 break;
             case 2:
                 List<Student> attendees =
                     StudentRepository.getInstance().findByRules(
                         s -> campIDs.contains(s.getACamps())).stream()
                         .collect(Collectors.toList());
-                generateAttendeeReports(attendees);
+                //generateAttendeeReports(attendees);
+                System.out.println("Attendee List");
                 break;
             case 3:
                 List<Student> committees =
                     StudentRepository.getInstance().findByRules(
                             s -> campIDs.contains(s.getCCamps())).stream()
                         .collect(Collectors.toList());
-                generateCommitteeReports(committees);
+                //generateCommitteeReports(committees);
+                System.out.println("Committee List");
                 break;
             case 4:
-                List<Enquiry> enquiries =
-                    RequestRepository.getInstance().findByRules(
-                        r -> campIDs.contains(r.getCampID()),
-                        r -> r.getRequestType() == RequestType.ENQUIRY).stream()
-                        .map(r -> (Enquiry) r)
-                        .collect(Collectors.toList());
-                generateEnquiryReports(enquiries);
+                // List<Enquiry> enquiries =
+                //     RequestRepository.getInstance().findByRules(
+                //         r -> campIDs.contains(r.getCampID()),
+                //         r -> r.getRequestType() == RequestType.ENQUIRY).stream()
+                //         .map(r -> (Enquiry) r)
+                //         .collect(Collectors.toList());
+                // generateEnquiryReports(enquiries);
+                System.out.println("Enquiry Report");
             case 5:
-                generateCommitteePerformanceReports();
+                //generateCommitteePerformanceReports();
+                System.out.println("Camp Committee Performance Report");
         }
         System.out.println();
-        System.out.println("Have other suggestion to handle?");
+        System.out.println("Have other reports to generate?");
         System.out.println("\t0. No");
         System.out.println("\t1. Yes");
         choice = IntGetter.readInt();

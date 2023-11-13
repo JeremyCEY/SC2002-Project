@@ -175,14 +175,12 @@ public class CampViewer {
     //  * @param student the student to display the project details for
     //  * @throws PageBackException if the user wants to go back
     //  */
-    public static void viewAvailableProjectList(Student student) throws PageBackException {
+    public static void viewVisibleCampList() throws PageBackException {
         ChangePage.changePage();
-        // if (student.getStatus() != StudentStatus.UNREGISTERED) {
-        //     System.out.println("You are not allowed to view available projects as you are registered to a project.");
-        // } else {
-        //     System.out.println("View Available Project List");
-        //     ModelViewer.displayListOfDisplayable(CampManager.viewAvailableCamps());
-        // }
+
+        System.out.println("View Available Camp List");
+        ModelViewer.displayListOfDisplayable(CampManager.viewAvailableCamps());
+        
         System.out.println("Press Enter to go back.");
         new Scanner(System.in).nextLine();
         throw new PageBackException();
@@ -230,17 +228,17 @@ public class CampViewer {
      * @param student the student
      * @throws PageBackException if the user wants to go back
      */
-    // public static void viewStudentProject(Student student) throws PageBackException {
-    //    ChangePage.changePage();
-    //    System.out.println("View Student Project");
-    //    Camp p = CampManager.getStudentCamp(student);
-    //    if (p == null) {
-    //        System.out.println("Student has no project yet.");
-    //   } else {
-    //        ModelViewer.displaySingleDisplayable(p);
-    //    }
-    //    System.out.println("Press Enter to go back.");
-    //    new Scanner(System.in).nextLine();
-    //    throw new PageBackException();
-    //}
+    public static void viewStudentCamps(Student student) throws PageBackException {
+       ChangePage.changePage();
+       System.out.println("View Student Project");
+       Camp p = CampManager.getStudentCamp(student);
+       if (p == null) {
+           System.out.println("Student has no project yet.");
+      } else {
+           ModelViewer.displaySingleDisplayable(p);
+       }
+       System.out.println("Press Enter to go back.");
+       new Scanner(System.in).nextLine();
+       throw new PageBackException();
+    }
 }

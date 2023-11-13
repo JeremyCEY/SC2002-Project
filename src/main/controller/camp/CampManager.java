@@ -63,10 +63,9 @@ public class CampManager {
      *
      * @return the list of available camps
      */
-    // public static List<Camp> viewAvailablecamps() {
-    // return CampRepository.getInstance().findByRules(p -> p.getStatus() ==
-    // campStatus.AVAILABLE);
-    // }
+    public static List<Camp> viewAvailableCamps() {
+    return CampRepository.getInstance().findByRules(camp -> camp.getVisibility().equals("true"));
+    }
 
     /**
      * create a new camp
@@ -300,18 +299,18 @@ public class CampManager {
      * @param student the student
      * @return the camp of the student
      */
-    // public static Camp getStudentcamp(Student student) {
-    // if (EmptyID.isEmptyID(student.getcampID())) {
-    // return null;
-    // } else {
-    // try {
-    // return CampRepository.getInstance().getByID(student.getcampID());
-    // } catch (ModelNotFoundException e) {
-    // throw new IllegalStateException("camp " + student.getcampID() + " not
-    // found");
-    // }
-    // }
-    // }
+    public static Camp getStudentcamp(Student student) {
+    if (EmptyID.isEmptyID(student.getCampID())) {
+    return null;
+    } else {
+    try {
+    return CampRepository.getInstance().getByID(student.getCampID());
+    } catch (ModelNotFoundException e) {
+    throw new IllegalStateException("camp " + student.getcampID() + " not
+found");
+    }
+    }
+    }
 
     /**
      * get the camp of a supervisor
