@@ -43,7 +43,7 @@ public class StudentMainPage {
             System.out.println("\t3. View all camps");
             System.out.println("\t4. View registered camps");
             System.out.println("\t5. Register for a camp as attendee");
-            System.out.println("\t6. Deregister for a camp as attendee");
+            System.out.println("\t6. Withdraw for a camp as attendee");
             System.out.println("\t7. Register for a camp as committee");
             System.out.println("\t8. Handle enquiry");
             System.out.println("\t9. Handle suggesstion");
@@ -68,11 +68,12 @@ public class StudentMainPage {
                     case 3 -> CampViewer.viewVisibleCampList();
                     //case 4 -> CampViewer.viewStudentCamps(student);
                     case 5 -> registerCampAttendee(student);
-                    case 6 -> Logout.logout();
+                    case 6 -> withdrawCampAttendee(student);
                     case 7 -> Logout.logout();
                     case 8 -> Logout.logout();
                     case 9 -> Logout.logout();
                     case 10 -> Logout.logout();
+                    case 11 -> student.getACamps();
                     default -> {
                         System.out.println("Invalid choice. Please press enter to try again.");
                         new Scanner(System.in).nextLine();
@@ -239,44 +240,45 @@ public class StudentMainPage {
      * @param student the student.
      * @throws PageBackException if the user wants to go back.
      */
-    private static void deregisterCampAttendee(Student student) throws PageBackException {
+    private static void withdrawCampAttendee(Student student) throws PageBackException {
         ChangePage.changePage();
 
-        if (EmptyID.isEmptyID(student.getID())) {
+        if (EmptyID.isEmptyID(student.getACamps())) {
             System.out.println("You are not registered for any camp.");
             System.out.println("Press Enter to go back.");
             new Scanner(System.in).nextLine();
             throw new PageBackException();
         }
 
-        System.out.println("Your current project is: ");
-
-        try {
-            Camp project = CampRepository.getInstance().getByID(student.getID());
-            ModelViewer.displaySingleDisplayable(project);
-        } catch (ModelNotFoundException e) {
-            throw new IllegalArgumentException("Camp not found.");
-        }
+        System.out.println("Your registered camps as attendee are: ");
+        System.out.print("Please enter the camp ID: ");
+        String campID = new Scanner(System.in).nextLine();
+        // try {
+        //     Camp project = CampRepository.getInstance().getByID(student.getID());
+        //     ModelViewer.displaySingleDisplayable(project);
+        // } catch (ModelNotFoundException e) {
+        //     throw new IllegalArgumentException("Camp not found.");
+        // }
 
         System.out.println("Are you sure you want to deregister from this camp? (y/[n])");
         String choice = new Scanner(System.in).nextLine();
-        if (!choice.equals("y")) {
+        if (!choice.equalsIgnoreCase("y")) {
             System.out.println("Deregistration cancelled.");
             System.out.println("Press Enter to go back.");
             new Scanner(System.in).nextLine();
             throw new PageBackException();
         }
 
-        String CampID = student.getID();
+        
 
         try {
-            StudentManager.deregisterStudent(CampID, student.getID());
+            CampManager.withdrawCampAttendee(campID, student.getID());
         } catch (Exception e) {
             System.out.println("Deregistration Error: " + e.getMessage());
             System.out.println("Enter [b] to go back, or press enter to retry.");
             String choice2 = new Scanner(System.in).nextLine();
             if (!choice2.equals("b")) {
-                deregisterForCamp(student);
+                withdrawCampAttendee(student);
             }
             throw new PageBackException();
         }
