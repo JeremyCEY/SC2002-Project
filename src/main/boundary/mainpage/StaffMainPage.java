@@ -38,7 +38,9 @@ import main.utils.exception.ModelNotFoundException;
 import main.utils.exception.PageBackException;
 //import main.utils.exception.SupervisorStudentsLimitExceedException;
 //import main.utils.iocontrol.CSVWritter;
+import main.utils.config.Location;
 import main.utils.iocontrol.IntGetter;
+import main.utils.iocontrol.CSVWritter;
 import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
 
@@ -170,7 +172,6 @@ public class StaffMainPage {
     
         System.out.println("Enter a camp Description:");
         String description = new Scanner(System.in).nextLine();
-        
         Camp camp;
         try {
             camp =
@@ -180,6 +181,7 @@ public class StaffMainPage {
         } catch (ModelAlreadyExistsException e) {
             throw new RuntimeException(e);
         }
+        
         System.out.println("The camp details are as follows:");
         ModelViewer.displaySingleDisplayable(camp);
         System.out.println("Are you sure you want to create this camp? (Y/N)");
@@ -414,6 +416,7 @@ public class StaffMainPage {
                 //generateCommitteePerformanceReports();
                 System.out.println("Camp Committee Performance Report");
         }
+        
         System.out.println();
         System.out.println("Have other reports to generate?");
         System.out.println("\t0. No");
