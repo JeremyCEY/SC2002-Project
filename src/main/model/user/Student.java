@@ -243,4 +243,44 @@ public class Student implements User {
 	public Faculty getFaculty() {
 		return this.faculty;
 	}
+
+    public void addACamp(String campID) {
+        // Check if the campId is not already present in aCamps
+        if (!this.aCamps.contains(campID)) {
+            // Concatenate the campId to the existing list of campIds
+            if (!this.aCamps.isEmpty()) {
+                this.aCamps += ",";
+            }
+            this.aCamps += campID;
+        }
+    }
+	
+	public void removeACamp(String campId) {
+		// Check if the campId is present in aCamps
+		int index = this.aCamps.indexOf(campId);
+	
+		// If the campId is found, remove it
+		if (index != -1) {
+			// Calculate the end index for the substring to be removed
+			int endIndex = index + campId.length();
+	
+			// Remove the campId from aCamps
+			this.aCamps = this.aCamps.substring(0, index) + this.aCamps.substring(endIndex);
+	
+			// Remove any leading or trailing commas if they exist
+			this.aCamps = this.aCamps.replaceAll("^,|,$|,,", "");
+		}
+	}
+	
+    public void addCCamp(String campID) {
+        // Check if the campId is not already present in aCamps
+        if (!this.cCamps.contains(campID)) {
+            // Concatenate the campId to the existing list of campIds
+            if (!this.cCamps.isEmpty()) {
+                this.cCamps += ",";
+            }
+            this.cCamps += campID;
+        }
+    }
+
 }

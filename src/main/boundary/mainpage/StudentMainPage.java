@@ -67,7 +67,7 @@ public class StudentMainPage {
                     case 2 -> ChangeAccountPassword.changePassword(UserType.STUDENT, student.getID());
                     case 3 -> CampViewer.viewVisibleCampList();
                     //case 4 -> CampViewer.viewStudentCamps(student);
-                    case 5 -> registerCamp(student);
+                    case 5 -> registerCampAttendee(student);
                     case 6 -> Logout.logout();
                     case 7 -> Logout.logout();
                     case 8 -> Logout.logout();
@@ -162,36 +162,36 @@ public class StudentMainPage {
      * @param student the student.
      * @throws PageBackException if the user wants to go back.
      */
-    private static void registerCamp(Student student) throws PageBackException {
+    private static void registerCampAttendee(Student student) throws PageBackException {
         ChangePage.changePage();
-        if (student.getStatus() == StudentStatus.REGISTERED || student.getStatus() == StudentStatus.DEREGISTERED) {
-            System.out.println("You are already registered/deregistered for a project.");
-            System.out.println("Press Enter to go back.");
-            new Scanner(System.in).nextLine();
-            throw new PageBackException();
-        }
+        // if (student.getStatus() == StudentStatus.REGISTERED || student.getStatus() == StudentStatus.DEREGISTERED) {
+        //     System.out.println("You are already registered/deregistered for a project.");
+        //     System.out.println("Press Enter to go back.");
+        //     new Scanner(System.in).nextLine();
+        //     throw new PageBackException();
+        // }
         System.out.println("Here is the list of available projects: ");
-        ModelViewer.displayListOfDisplayable(CampManager.getAllAvailablecamp());
-        System.out.print("Please enter the project ID: ");
-        String projectID = new Scanner(System.in).nextLine();
+        ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());
+        System.out.print("Please enter the camp ID: ");
+        String campID = new Scanner(System.in).nextLine();
         if (CampManager.notContainsCampByID(campID)) {
             System.out.println("Camp not found.");
             System.out.println("Press Enter to go back, or enter [r] to retry.");
             String choice = new Scanner(System.in).nextLine();
             if (choice.equals("r")) {
-                registerCamp(student);
+                registerCampAttendee(student);
             }
             throw new PageBackException();
         }
         Camp camp;
         try {
             camp = CampManager.getByID(campID);
-            if (camp.getStatus() != CampStatus.AVAILABLE) {
-                System.out.println("Camp is not available.");
+            if (camp.getFilledSlots() >= camp.getTotalSlots()) {
+                System.out.println("Attendee Slots maxed.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
                 String choice = new Scanner(System.in).nextLine();
                 if (choice.equals("r")) {
-                    registerCamp(student);
+                    registerCampAttendee(student);
                 }
                 throw new PageBackException();
             }
@@ -199,31 +199,32 @@ public class StudentMainPage {
         } catch (ModelNotFoundException e) {
             throw new RuntimeException(e);
         }
-        ChangePage.changePage();
-        System.out.println("Here is the project information: ");
-        try {
-            Camp camp1 = CampRepository.getInstance().getByID(projectID);
-            ModelViewer.displaySingleDisplayable(camp1);
-        } catch (ModelNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        // ChangePage.changePage();
+        // System.out.println("Here is the project information: ");
+        // try {
+        //     Camp camp1 = CampRepository.getInstance().getByID(projectID);
+        //     ModelViewer.displaySingleDisplayable(camp1);
+        // } catch (ModelNotFoundException e) {
+        //     throw new RuntimeException(e);
+        // }
         System.out.print("Are you sure you want to register for this project? (y/[n]): ");
         String choice = new Scanner(System.in).nextLine();
         if (choice.equalsIgnoreCase("y")) {
             try {
-                StudentManager.registerStudent(campID, student.getID());
-                System.out.println("Request submitted!");
+                // StudentManager.registerStudent(campID, student.getID());
+                CampManager.registerCampAttendee(campID, student.getID());
+                System.out.println("Registered for Camp!");
             } catch (Exception e) {
                 System.out.println("Enter [b] to go back, or press enter to retry.");
                 String yNChoice = new Scanner(System.in).nextLine();
                 if (yNChoice.equals("b")) {
                     throw new PageBackException();
                 } else {
-                    registerCamp(student);
+                    registerCampAttendee(student);
                 }
             }
         } else {
-            System.out.println("Request cancelled.");
+            System.out.println("Registration cancelled.");
 
         }
 
@@ -238,7 +239,7 @@ public class StudentMainPage {
      * @param student the student.
      * @throws PageBackException if the user wants to go back.
      */
-    private static void deregisterCamp(Student student) throws PageBackException {
+    private static void deregisterCampAttendee(Student student) throws PageBackException {
         ChangePage.changePage();
 
         if (EmptyID.isEmptyID(student.getID())) {

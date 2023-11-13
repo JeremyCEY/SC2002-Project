@@ -23,6 +23,7 @@ import main.utils.parameters.EmptyID;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A class manages the camp
@@ -158,72 +159,67 @@ public class CampManager {
     // }
 
     /**
-     * deallocate a camp
+     * withdraw from a camp
      *
      * @param campID the ID of the camp
      * @throws ModelNotFoundException if the camp is not found
      */
-    // public static void deallocatecamp(String campID) throws
-    // ModelNotFoundException {
-    // Camp p1 = CampRepository.getInstance().getByID(campID);
-    // if (p1.getStatus() != campStatus.ALLOCATED) {
-    // throw new IllegalStateException("The camp status is not ALLOCATED");
-    // }
-    // Student student;
-    // try {
-    // student = StudentRepository.getInstance().getByID(p1.getStudentID());
-    // } catch (ModelNotFoundException e) {
-    // throw new IllegalStateException("Student not found");
-    // }
-    // String supervisorID = p1.getSupervisorID();
-    // Supervisor supervisor =
-    // FacultyRepository.getInstance().getByID(supervisorID);
-    // student.setcampID(EmptyID.EMPTY_ID);
-    // student.setSupervisorID(EmptyID.EMPTY_ID);
-    // student.setStatus(StudentStatus.DEREGISTERED);
-    // p1.setStudentID(EmptyID.EMPTY_ID);
-    // p1.setStatus(campStatus.AVAILABLE);
-    // CampRepository.getInstance().update(p1);
-    // StudentRepository.getInstance().update(student);
-    // FacultyRepository.getInstance().update(supervisor);
-    // campManager.updatecampsStatus();
-    // }
+    public static void withdrawCamp(String campID) throws
+    ModelNotFoundException {
+    Camp p1 = CampRepository.getInstance().getByID(campID);
+    if (p1.getStatus() != campStatus.ALLOCATED) {
+    throw new IllegalStateException("The camp status is not ALLOCATED");
+    }
+    Student student;
+    try {
+    student = StudentRepository.getInstance().getByID(p1.getStudentID());
+    } catch (ModelNotFoundException e) {
+    throw new IllegalStateException("Student not found");
+    }
+    String supervisorID = p1.getSupervisorID();
+    Supervisor supervisor =
+    FacultyRepository.getInstance().getByID(supervisorID);
+    student.setcampID(EmptyID.EMPTY_ID);
+    student.setSupervisorID(EmptyID.EMPTY_ID);
+    student.setStatus(StudentStatus.DEREGISTERED);
+    p1.setStudentID(EmptyID.EMPTY_ID);
+    p1.setStatus(campStatus.AVAILABLE);
+    CampRepository.getInstance().update(p1);
+    StudentRepository.getInstance().update(student);
+    FacultyRepository.getInstance().update(supervisor);
+    campManager.updatecampsStatus();
+    }
 
     /**
-     * allocate a camp
+     * student register a camp
      *
      * @param campID    the ID of the camp
      * @param studentID the ID of the student
      * @throws ModelNotFoundException if the camp is not found
      */
-    // public static void allocatecamp(String campID, String studentID) throws
-    // ModelNotFoundException {
-    // Camp p1 = CampRepository.getInstance().getByID(campID);
-    // Student student;
-    // try {
-    // student = StudentRepository.getInstance().getByID(studentID);
-    // } catch (ModelNotFoundException e) {
-    // throw new IllegalStateException("Student not found");
+    public static void registerCampAttendee(String campID, String studentID) throws
+    ModelNotFoundException {
+    Camp camp = CampRepository.getInstance().getByID(campID);
+    Student student;
+    try {
+    student = StudentRepository.getInstance().getByID(studentID);
+    } catch (ModelNotFoundException e) {
+    throw new IllegalStateException("Student not found");
+    }
+    // if (camp.getFilledSlots() >= camp.getTotalSlots()) {
+    // throw new IllegalStateException("Attendee slots maxed");
     // }
-    // if (p1.getStatus() == campStatus.ALLOCATED) {
-    // throw new IllegalStateException("camp is already allocated");
-    // }
-    // if (student.getStatus() == StudentStatus.REGISTERED) {
-    // throw new IllegalStateException("Student is already registered");
-    // }
-    // p1.setStatus(campStatus.ALLOCATED);
-    // p1.setStudentID(studentID);
-    // student.setcampID(campID);
-    // student.setSupervisorID(p1.getSupervisorID());
-    // student.setStatus(StudentStatus.REGISTERED);
-    // String supervisorID = p1.getSupervisorID();
-    // Supervisor supervisor =
-    // FacultyRepository.getInstance().getByID(supervisorID);
-    // CampRepository.getInstance().update(p1);
-    // StudentRepository.getInstance().update(student);
-    // FacultyRepository.getInstance().update(supervisor);
-    // campManager.updatecampsStatus();
-    // }
+    
+    
+ 
+
+    student.addACamp(campID);
+    camp.setFilledSlots(camp.getFilledSlots() + 1);
+
+    CampRepository.getInstance().update(camp);
+    StudentRepository.getInstance().update(student);
+    //CampManager.updatecampsStatus();
+    }
 
     /**
      * load camps from csv resource file
@@ -279,7 +275,7 @@ public class CampManager {
      * @param campID the ID of the camp
      * @return true if the camp is not in the repository
      */
-    public static boolean notContainscampByID(String campID) {
+    public static boolean notContainsCampByID(String campID) {
         return !CampRepository.getInstance().contains(campID);
     }
 
