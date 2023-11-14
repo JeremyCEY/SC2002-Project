@@ -148,6 +148,7 @@ public class AccountManager {
             else if (facultyString == "SSS")
                 faculty = Faculty.SSS;
 
+
             try {
                 register(UserType.STUDENT, userID, name, email, faculty);
             } catch (ModelAlreadyExistsException e) {
@@ -193,8 +194,8 @@ public class AccountManager {
      * Loads all users from the CSV resource file
      */
     public static void loadUsers() {
-        //loadStudents();
-        loadStaffs();
+        loadStudents();
+        //loadStaffs();
     }
 
     /**

@@ -19,8 +19,11 @@ import main.utils.iocontrol.IntGetter;
 import main.utils.parameters.EmptyID;
 import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
-
+import main.model.request.Enquiry; 
+import main.model.request.RequestFactory; 
+import main.model.request.RequestType; 
 import java.util.Scanner;
+import main.model.request.RequestManager; 
 
 /**
  * This is a Java class that represents the main page of a student in a system or application. It contains several methods for displaying different functionalities of the student main page, such as viewing the user profile, changing the password, viewing project lists, registering/deregistering for projects, changing project title, viewing project history and status, and logging out.
@@ -45,9 +48,11 @@ public class StudentMainPage {
             System.out.println("\t5. Register for a camp as attendee");
             System.out.println("\t6. Withdraw for a camp as attendee");
             System.out.println("\t7. Register for a camp as committee");
-            System.out.println("\t8. Handle enquiry");
-            System.out.println("\t9. Handle suggesstion");
-            System.out.println("\t10. Logout");
+            System.out.println("\t8. Submit enquiry");
+            System.out.println("\t9. View enquiry");
+            System.out.println("\t10. Edit enquiry");
+            System.out.println("\t11. Delete suggesstion");
+            System.out.println("\t12. Logout");
             System.out.println(BoundaryStrings.separator);
 
             System.out.println();
@@ -70,7 +75,7 @@ public class StudentMainPage {
                     case 5 -> registerCampAttendee(student);
                     case 6 -> withdrawCampAttendee(student);
                     case 7 -> Logout.logout();
-                    case 8 -> Logout.logout();
+                    case 8 -> submitEnquiry(student, student.getID());
                     case 9 -> Logout.logout();
                     case 10 -> Logout.logout();
                     case 11 -> student.getACamps();
@@ -354,4 +359,23 @@ public class StudentMainPage {
     //     new Scanner(System.in).nextLine();
     //     throw new PageBackException();
     // }
+    public static void submitEnquiry(Student student, String studentIDString){
+        ChangePage.changePage(); 
+        System.out.println("Our staff are always devoted themselves to resolve the enquiry from students!"); 
+        System.out.println("First of all, would you mind telling us the CampID that you want to submit this enquiry to: "); 
+        Scanner sc=new Scanner(System.in); 
+        String campid=sc.nextLine(); 
+        System.out.printf("Please input the enquiry that you have regarding camp %s: \n", campid);
+        String message=sc.nextLine();  
+        String replierID=null; 
+        String requestID=RequestManager.getNewRequestID(); 
+        RequestManager.loadEnquiry(requestID,campid, studentIDString, message, replierID); 
+        Enquiry enquiry=new Enquiry(requestID, campid, studentIDString, message, replierID); 
+
+        System.out.printf("Your requestID is: %d. \nWe value your enquiry so much and we will respond to your enquiry as soon as we can!", requestID); 
+
+
+
+
+    }
 }

@@ -7,7 +7,7 @@ public class Enquiry implements Request{
 
 
 	private final RequestType requestType = RequestType.ENQUIRY;
-	private String requestID;
+	private String requestID; 
 	private RequestStatus requestStatus = RequestStatus.PENDING; 
 	private String campID;
 	private String senderID;
@@ -100,5 +100,9 @@ public class Enquiry implements Request{
 
 	public String getDisplayableString(){
 		return "";//to edit
+	}
+
+	public static int getEnquiryID(){
+		for (int i=0; i<)
 	}
 }
