@@ -33,8 +33,6 @@ public class EnquiryRepository extends Repository<Enquiry>{
     }
     
     
-    
-    
     public void setAll(List<Map<String, String>> listOfMappableObjects) {
         for (Map<String, String> map : listOfMappableObjects) {
             getAll().add(new Enquiry(map));

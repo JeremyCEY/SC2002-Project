@@ -26,9 +26,13 @@ public class SuggestionRepository extends Repository<Suggestion>{
     public String getFilePath() {
         return RESOURCE_LOCATION + FILE_PATH;
     }
+
+
     public static SuggestionRepository getInstance() {
         return new SuggestionRepository();
     }
+
+    
     public void setAll(List<Map<String, String>> listOfMappableObjects) {
         for (Map<String, String> map : listOfMappableObjects) {
             getAll().add(new Suggestion(map));

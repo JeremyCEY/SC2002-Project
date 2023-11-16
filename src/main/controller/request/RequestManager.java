@@ -73,6 +73,11 @@ public class RequestManager {
         return SuggestionRepository.getInstance().getList();
     }
 
+    public static List<Suggestion> viewSuggestionBySender(String studentID) {
+        return SuggestionRepository.getInstance().findByRules(e -> e.getSenderID().equals(studentID));
+        }
+
+
     public static String getNewEnquiryID() {
         int max = 0;
         for (Enquiry p :EnquiryRepository.getInstance()) {
@@ -84,20 +89,58 @@ public class RequestManager {
         return "E" + (max + 1);
     }
 
-	//getnewsuggestionid
+    public static String getNewSuggestionID() {
+        int max = 0;
+        for (Suggestion p :SuggestionRepository.getInstance()) {
+            int id = Integer.parseInt(p.getID().substring(1));
+            if (id > max) {
+                max = id;
+            }
+        }
+        return "S" + (max + 1);
+    }
 
 	public static void createEnquiry(String requestID, String campID, String studentID, 
 			String message) throws ModelAlreadyExistsException{
         
-        Enquiry e1 = new Enquiry(requestID, campID, studentID, message);
-        EnquiryRepository.getInstance().add(e1);
+        Enquiry e = new Enquiry(requestID, campID, studentID, message);
+        EnquiryRepository.getInstance().add(e);
         
     }
 
     public static Enquiry createEnquiry(String campID, String studentID, 
 			String message) throws ModelAlreadyExistsException{
-		Enquiry e1 = new Enquiry(getNewEnquiryID(), campID, studentID, message);
-		EnquiryRepository.getInstance().add(e1);
-		return e1;
+		Enquiry e = new Enquiry(getNewEnquiryID(), campID, studentID, message);
+		EnquiryRepository.getInstance().add(e);
+		return e;
     }
+
+    public static void updateEnquiry(String enquiryID, Enquiry updatedEnquiry) throws ModelNotFoundException {
+        updatedEnquiry.setID(enquiryID);
+        EnquiryRepository.getInstance().update(updatedEnquiry);
+    }
+
+
+
+	public static void createSuggestion(String requestID, String campID, String studentID) 
+            throws ModelAlreadyExistsException{
+        
+        Suggestion s = new Suggestion(requestID, campID, studentID);
+        SuggestionRepository.getInstance().add(s);
+        
+    }
+
+    public static Suggestion createSuggestion(String campID, String studentID) 
+            throws ModelAlreadyExistsException{
+
+		Suggestion s = new Suggestion(getNewSuggestionID(), campID, studentID);
+		SuggestionRepository.getInstance().add(s);
+		return s;
+    }
+
+    public static void updateSuggestion(String suggestionID, Suggestion updatedSuggestion) throws ModelNotFoundException {
+        updatedSuggestion.setID(suggestionID);
+        SuggestionRepository.getInstance().update(updatedSuggestion);
+    }
+
 }

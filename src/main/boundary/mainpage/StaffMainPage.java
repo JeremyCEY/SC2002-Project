@@ -218,10 +218,11 @@ public class StaffMainPage {
         System.out.println("\t3. Camp Registration Closing Date");
         System.out.println("\t4. Camp Faculty Open To");
         System.out.println("\t5. Camp Location");
-        System.out.println("\t6. Camp Total Slots");
-        System.out.println("\t7. Camp Description");
-        System.out.println("\t8. Camp Staff ID In Charge");
-        System.out.println("\t9. Camp Visibility(true/false)");
+        System.out.println("\t6. Camp Attendee Total Slots");
+        System.out.println("\t7. Camp Committee Total Slots");
+        System.out.println("\t8. Camp Description");
+        System.out.println("\t9. Camp Staff ID In Charge");
+        System.out.println("\t10. Camp Visibility(true/false)");
         int choice = IntGetter.readInt();
         System.out.println("The new value of the field to update");
         switch (choice) {
@@ -232,9 +233,10 @@ public class StaffMainPage {
             case 4 -> camp.setCampType(Faculty.valueOf(scanner.nextLine()));
             case 5 -> camp.setLocation(scanner.nextLine());
             case 6 -> camp.setTotalSlots(scanner.nextInt());
-            case 7 -> camp.setDescription(scanner.nextLine());
-            case 8 -> camp.setStaffID(scanner.nextLine());
-            case 9 -> camp.setVisibility(String.valueOf(scanner.nextBoolean()));
+            case 7 -> camp.setCampCommSlots(scanner.nextInt());
+            case 8 -> camp.setDescription(scanner.nextLine());
+            case 9 -> camp.setStaffID(scanner.nextLine());
+            case 10 -> camp.setVisibility(String.valueOf(scanner.nextBoolean()));
         }
         System.out.println("Have other field to update?");
         System.out.println("\t0. No");

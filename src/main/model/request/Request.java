@@ -9,7 +9,7 @@ public interface Request extends Model, Displayable {
 	String getCampID();
 	String getSenderID();
 	String getReplierID();
-	String getMessage();
+	// String getMessage();
 	RequestStatus getRequestStatus();
 	RequestType getRequestType();
 
@@ -18,7 +18,7 @@ public interface Request extends Model, Displayable {
 	void setCampID(String campID);
 	void setSenderID(String senderID);
 	void setReplierID(String replyID);
-	void setMessage(String message);
+	// void setMessage(String message);
 	void setRequestStatus(RequestStatus status);
 
 

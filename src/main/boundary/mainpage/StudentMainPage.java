@@ -9,7 +9,8 @@ import main.controller.account.AccountManager;
 import main.controller.camp.CampManager;
 import main.controller.request.StudentManager;
 import main.model.camp.Camp;
-import main.model.camp.Camp;
+
+
 import main.model.user.*;
 import main.repository.camp.CampRepository;
 import main.repository.user.StudentRepository;
@@ -21,6 +22,7 @@ import main.utils.parameters.EmptyID;
 import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
 import main.model.request.Enquiry; 
+import main.model.request.Suggestion;
 import main.model.request.RequestFactory; 
 import main.model.request.RequestType; 
 import java.util.Scanner;
@@ -37,8 +39,9 @@ public class StudentMainPage {
      * This method displays the main page of a student. It takes a User object as a parameter and displays a menu of options for the student to choose from. The user's choice is then processed using a switch statement, which calls different methods based on the choice.
      *
      * @param user The user object of the student.
+     * @throws ModelNotFoundException
      */
-    public static void studentMainPage(User user) {
+    public static void studentMainPage(User user) throws ModelNotFoundException {
         if (user instanceof Student student) {
             ChangePage.changePage();
             System.out.println(BoundaryStrings.separator);
@@ -53,9 +56,9 @@ public class StudentMainPage {
             System.out.println("\t6. Withdraw from Camp");
             System.out.println("\t7. Camp Committee Registration");
             System.out.println("\t8. Submit Enquiry");
-            System.out.println("\t9. View Enquiry");//edit and delete option inside
+            System.out.println("\t9. View Enquiry(EDIT/DELETE)");//edit and delete option inside
             System.out.println("\t10. Submit Suggestion");
-            System.out.println("\t11. View Suggestion");//edit and delete option inside
+            System.out.println("\t11. View Suggestion(EDIT/DELETE)");//edit and delete option inside
             System.out.println("\t12. Logout");
             System.out.println(BoundaryStrings.separator);
 
@@ -81,8 +84,8 @@ public class StudentMainPage {
                     //case 7 -> registerCampCommittee(student);
                     case 8 -> submitEnquiry(student);
                     case 9 -> viewEnquiry(student);
-                    //case 10 -> Logout.logout();
-                    //case 11 -> viewSuggestion(Student);
+                    case 10 -> submitSuggestion(student);
+                    case 11 -> viewSuggestion(student);
                     case 12 -> Logout.logout();
                     default -> {
                         System.out.println("Invalid choice. Please press enter to try again.");
@@ -390,10 +393,96 @@ public class StudentMainPage {
 
     public static void viewEnquiry(Student student) throws PageBackException{
         ChangePage.changePage();
-        System.out.println("Here is the list of Enquiries");
-        ModelViewer.displayListOfDisplayable((RequestManager.viewAllEnquiry()));//change to by user
+        System.out.println("Here is the list of Enquiries you made");
+        ModelViewer.displayListOfDisplayable((RequestManager.viewEnquiryBySender(student.getID())));//change to by user
+
+        //add option to edit delete
+
+        System.out.println("Press Enter to go back.");
+        new Scanner(System.in).nextLine();
+        throw new PageBackException();
+    }
+
+    public static void submitSuggestion(Student student) throws PageBackException, ModelNotFoundException{
+        
+        System.out.println("Here is the list of available camps: ");
+        ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());//based on camp committee
+    
+        System.out.println("Enter Camp ID to create Suggestion");
+        String studentID = student.getID();
+        String campID = new Scanner(System.in).nextLine();
+    
+        // Validate campID here if needed
+        
+        Suggestion s;
+
+        try{
+            s = RequestManager.createSuggestion(campID, studentID);
+        } catch(ModelAlreadyExistsException e){
+            throw new RuntimeException(e);
+        }
+        
+
+        editSuggestion(s, student);
+
+        // View suggestion if needed
+    
+        ChangePage.changePage();
+        System.out.println("Suggestion updated");
+        System.out.println("Press Enter to go back.");
+        new Scanner(System.in).nextLine();
+        throw new PageBackException();
+    }
+
+    public static void editSuggestion(Suggestion s, Student student) throws PageBackException, ModelNotFoundException{
+        Scanner scanner = new Scanner(System.in);
+        ChangePage.changePage();
+
+        System.out.println("Which field do you want to suggest changes, press 0 to go back to upper menu");
+        System.out.println("\t0. Cancel");
+        System.out.println("\t1. Camp Name");
+        System.out.println("\t2. Camp Dates");
+        System.out.println("\t3. Camp Registration Closing Date");
+        System.out.println("\t4. Camp Faculty Open To");
+        System.out.println("\t5. Camp Location");
+        System.out.println("\t6. Camp Attendee Total Slots");
+        System.out.println("\t7. Camp Committee Total Slots");
+        System.out.println("\t8. Camp Description");
+        System.out.println("\t9. Camp Staff ID In Charge");
+    
+        int choice = IntGetter.readInt();
+        System.out.println("The new value of the field to update");
+        switch (choice) {
+            case 0 -> throw new PageBackException();
+            case 1 -> s.setCampName(scanner.nextLine());
+            case 2 -> s.setDates(scanner.nextLine());
+            case 3 -> s.setRegistrationClosingDate(scanner.nextLine());
+            case 4 -> s.setCampType(Faculty.valueOf(scanner.nextLine()));
+            case 5 -> s.setLocation(scanner.nextLine());
+            case 6 -> s.setTotalSlots(scanner.nextInt());
+            case 7 -> s.setCampCommSlots(scanner.nextInt());
+            case 8 -> s.setDescription(scanner.nextLine());
+            case 9 -> s.setCampStaff(scanner.nextLine());
+        }
+        System.out.println("Have other field to update?");
+        System.out.println("\t0. No");
+        System.out.println("\t1. Yes");
+        choice = scanner.nextInt();
+        if (choice == 1) {
+            RequestManager.updateSuggestion(s.getID(),s);
+            editSuggestion(s, student);
+        }
+        RequestManager.updateSuggestion(s.getID(),s);
+        
+    }
 
 
+    public static void viewSuggestion(Student student) throws PageBackException{
+        ChangePage.changePage();
+        System.out.println("Here is the list of Suggestion you made");
+        ModelViewer.displayListOfDisplayable((RequestManager.viewSuggestionBySender(student.getID())));
+
+        //add option to edit delete
 
         System.out.println("Press Enter to go back.");
         new Scanner(System.in).nextLine();
