@@ -2,6 +2,11 @@ package main.model.request;
 
 import java.util.Map;
 
+import main.model.request.Request;
+import main.model.request.RequestStatus;
+import main.model.request.RequestType;
+import main.utils.parameters.EmptyID;
+
 public class Suggestion implements Request{
 
 	private final RequestType requestType = RequestType.SUGGESTION;
@@ -13,11 +18,11 @@ public class Suggestion implements Request{
 	private String message;
 
 	//Constructor
-	public Suggestion(String requestID, String campID, String studentID, String staffID, String message) {
+	public Suggestion(String requestID, String campID, String studentID, String message) {
 		this.requestID = requestID;
 		this.campID = campID;
 		this.studentID = studentID;
-		this.staffID = staffID;
+		this.staffID = EmptyID.EMPTY_ID;
 		this.message = message;
 	}
 

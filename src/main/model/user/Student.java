@@ -54,8 +54,8 @@ public class Student implements User {
 		this.studentID = studentID;
 		this.studentName = studentName;
 		this.email = email;
-		this.aCamps = EmptyID.EMPTY_ID;
-		this.cCamps = EmptyID.EMPTY_ID;
+		this.aCamps = "";
+		this.cCamps = "";
 		this.faculty = faculty;
 		// this.status = StudentStatus.UNREGISTERED;
 		// supervisorID = EmptyID.EMPTY_ID;

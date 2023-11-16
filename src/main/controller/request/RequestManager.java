@@ -1,48 +1,103 @@
-package main.controller.request;
+package main.controller.request; 
 
+import main.model.request.RequestType;
+import main.model.request.RequestAdder;
+import main.model.request.RequestFactory;
+import main.model.camp.Camp;
+import main.model.request.Request;
+
+import java.util.List;
+import java.util.Map;
+
+import main.controller.account.password.PasswordManager;
+import main.controller.account.user.UserAdder;
+import main.controller.account.user.UserFinder;
+import main.controller.account.user.UserUpdater;
+import main.model.user.*;
+import main.repository.camp.CampRepository;
+import main.repository.request.EnquiryRepository;
+import main.model.request.Suggestion;
+import main.repository.user.StaffRepository;
+import main.repository.user.StudentRepository;
+import main.repository.request.EnquiryRepository;
+import main.repository.request.SuggestionRepository;
+import main.model.request.Enquiry;
+import main.utils.config.Location;
+import main.utils.exception.PasswordIncorrectException;
+import main.utils.exception.ModelAlreadyExistsException;
+import main.utils.exception.ModelNotFoundException;
 public class RequestManager {
+    // public static void loadUsers(RequestType request_type, String requestID,String campid, String studentID, String message, String replierID) {
+    //     loadEnquiry(requestID,campid, studentID, message, replierID);
+    //     //loadSuggestion();
+    // }
 
-	public int Visibility;
 
-	/**
-	 * 
-	 * @param visibility
-	 */
-	public void grantAccessToView(int visibility) {
-		// TODO - implement RequestManager.grantAccessToView
-		throw new UnsupportedOperationException();
-	}
+   
+    // public static Request register(RequestType request_type, String requestID,String campid, String studentID, String message)
+    //     throws ModelAlreadyExistsException {
+    //         Request request = RequestFactory.createRequest(request_type, requestID, campid, studentID, message);
+    //         RequestAdder.addRequest(request);
+    //         return request; 
+    // }
 
-	/**
-	 * 
-	 * @param String
-	 */
-	public Request getRequest(int String) {
-		// TODO - implement RequestManager.getRequest
-		throw new UnsupportedOperationException();
-	}
+    // public static void loadEnquiry(String requestID,String campid, String studentID, String message) {
 
-	public String getNewRequestID() {
-		// TODO - implement RequestManager.getNewRequestID
-		throw new UnsupportedOperationException();
-	}
+    //     try {
+    //         register(RequestType.ENQUIRY, requestID, campid, studentID, message); 
+    //     } catch (ModelAlreadyExistsException e) {
+    //         e.printStackTrace();
+    //     }
 
-	/**
-	 * 
-	 * @param Request
-	 */
-	public void approveRequest(int Request) {
-		// TODO - implement RequestManager.approveRequest
-		throw new UnsupportedOperationException();
-	}
+    // }
 
-	/**
-	 * 
-	 * @param String
-	 */
-	public void rejectRequest(int String) {
-		// TODO - implement RequestManager.rejectRequest
-		throw new UnsupportedOperationException();
-	}
+    // public static void loadSuggestion(String requestID,String campid, String studentID, String message, String replierID) {
+    //     try {
+    //         register(RequestType.ENQUIRY, requestID, campid, studentID, message, replierID); 
+    //     } catch (ModelAlreadyExistsException e) {
+    //         e.printStackTrace();
+    //     }
 
+
+    // }
+
+    public static List<Enquiry> viewAllEnquiry() {
+        return EnquiryRepository.getInstance().getList();
+    }
+
+    public static List<Enquiry> viewEnquiryBySender(String studentID) {
+        return EnquiryRepository.getInstance().findByRules(e -> e.getSenderID().equals(studentID));
+        }
+
+    public static List<Suggestion> viewAllSuggestion() {
+        return SuggestionRepository.getInstance().getList();
+    }
+
+    public static String getNewEnquiryID() {
+        int max = 0;
+        for (Enquiry p :EnquiryRepository.getInstance()) {
+            int id = Integer.parseInt(p.getID().substring(1));
+            if (id > max) {
+                max = id;
+            }
+        }
+        return "E" + (max + 1);
+    }
+
+	//getnewsuggestionid
+
+	public static void createEnquiry(String requestID, String campID, String studentID, 
+			String message) throws ModelAlreadyExistsException{
+        
+        Enquiry e1 = new Enquiry(requestID, campID, studentID, message);
+        EnquiryRepository.getInstance().add(e1);
+        
+    }
+
+    public static Enquiry createEnquiry(String campID, String studentID, 
+			String message) throws ModelAlreadyExistsException{
+		Enquiry e1 = new Enquiry(getNewEnquiryID(), campID, studentID, message);
+		EnquiryRepository.getInstance().add(e1);
+		return e1;
+    }
 }

@@ -6,14 +6,14 @@ import main.model.camp.Camp;
 import main.model.request.Enquiry;
 import main.model.request.RequestStatus;
 import main.model.request.RequestType;
-import main.model.request.Suggestion;
 import main.model.user.Student;
 import main.model.user.Faculty;
 import main.model.user.Staff;
 import main.repository.camp.CampRepository;
 import main.repository.user.StaffRepository;
 import main.repository.user.StudentRepository;
-import main.repository.request.RequestRepository;
+// import main.repository.request.RequestRepository;
+import main.model.request.Suggestion;
 import main.utils.config.Location;
 import main.utils.exception.ModelAlreadyExistsException;
 import main.utils.exception.ModelNotFoundException;
@@ -82,7 +82,7 @@ public class CampManager {
         Camp c1 = new Camp(campID, campName, dates, registrationClosingDate,
                 openTo, location, filledSlots, totalSlots, filledCampCommSlots, campCommSlots, description, staffID, visibility);
         CampRepository.getInstance().add(c1);
-        // CampManager.updatecampsStatus();
+        //CampManager.updatecampsStatus();
     }
     
     public static Camp createCamp(String campName, String dates, String registrationClosingDate,

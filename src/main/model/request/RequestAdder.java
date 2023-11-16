@@ -2,6 +2,8 @@ package main.model.request;
 import main.model.user.Staff;
 import main.model.user.Student;
 import main.model.user.User;
+import main.repository.request.Suggestion;
+import main.repository.request.SuggestionRepository;
 import main.repository.user.StaffRepository;
 import main.repository.user.StudentRepository;
 import main.utils.exception.ModelAlreadyExistsException;

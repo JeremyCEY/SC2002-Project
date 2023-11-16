@@ -13,6 +13,7 @@ import main.model.camp.Camp;
 import main.model.user.*;
 import main.repository.camp.CampRepository;
 import main.repository.user.StudentRepository;
+import main.utils.exception.ModelAlreadyExistsException;
 import main.utils.exception.ModelNotFoundException;
 import main.utils.exception.PageBackException;
 import main.utils.iocontrol.IntGetter;
@@ -23,7 +24,10 @@ import main.model.request.Enquiry;
 import main.model.request.RequestFactory; 
 import main.model.request.RequestType; 
 import java.util.Scanner;
-import main.model.request.RequestManager; 
+
+import javax.management.RuntimeErrorException;
+
+import main.controller.request.RequestManager; 
 
 /**
  * This is a Java class that represents the main page of a student in a system or application. It contains several methods for displaying different functionalities of the student main page, such as viewing the user profile, changing the password, viewing project lists, registering/deregistering for projects, changing project title, viewing project history and status, and logging out.
@@ -41,17 +45,17 @@ public class StudentMainPage {
             System.out.println("Welcome to Student Main Page");
             System.out.println("Hello, " + student.getUserName() + "!");
             System.out.println();
-            System.out.println("\t1. View my profile (Feature Complete)");
-            System.out.println("\t2. Change my password (Feature Complete)");
-            System.out.println("\t3. View all camps");
-            System.out.println("\t4. View registered camps");
-            System.out.println("\t5. Register for a camp as attendee");
-            System.out.println("\t6. Withdraw for a camp as attendee");
-            System.out.println("\t7. Register for a camp as committee");
-            System.out.println("\t8. Submit enquiry");
-            System.out.println("\t9. View enquiry");
-            System.out.println("\t10. Edit enquiry");
-            System.out.println("\t11. Delete suggesstion");
+            System.out.println("\t1. View my profile");
+            System.out.println("\t2. Change my password");
+            System.out.println("\t3. View all Camps");
+            System.out.println("\t4. View Registered Camps");
+            System.out.println("\t5. Camp Attendee Registration");
+            System.out.println("\t6. Withdraw from Camp");
+            System.out.println("\t7. Camp Committee Registration");
+            System.out.println("\t8. Submit Enquiry");
+            System.out.println("\t9. View Enquiry");//edit and delete option inside
+            System.out.println("\t10. Submit Suggestion");
+            System.out.println("\t11. View Suggestion");//edit and delete option inside
             System.out.println("\t12. Logout");
             System.out.println(BoundaryStrings.separator);
 
@@ -71,14 +75,15 @@ public class StudentMainPage {
                     case 1 -> ViewUserProfile.viewUserProfilePage(student);
                     case 2 -> ChangeAccountPassword.changePassword(UserType.STUDENT, student.getID());
                     case 3 -> CampViewer.viewVisibleCampList();
-                    //case 4 -> CampViewer.viewStudentCamps(student);
+                    case 4 -> student.getACamps();//view camps student registered
                     case 5 -> registerCampAttendee(student);
                     case 6 -> withdrawCampAttendee(student);
-                    case 7 -> Logout.logout();
-                    case 8 -> submitEnquiry(student, student.getID());
-                    case 9 -> Logout.logout();
-                    case 10 -> Logout.logout();
-                    case 11 -> student.getACamps();
+                    //case 7 -> registerCampCommittee(student);
+                    case 8 -> submitEnquiry(student);
+                    case 9 -> viewEnquiry(student);
+                    //case 10 -> Logout.logout();
+                    //case 11 -> viewSuggestion(Student);
+                    case 12 -> Logout.logout();
                     default -> {
                         System.out.println("Invalid choice. Please press enter to try again.");
                         new Scanner(System.in).nextLine();
@@ -176,7 +181,7 @@ public class StudentMainPage {
         //     new Scanner(System.in).nextLine();
         //     throw new PageBackException();
         // }
-        System.out.println("Here is the list of available projects: ");
+        System.out.println("Here is the list of available camps: ");
         ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());
         System.out.print("Please enter the camp ID: ");
         String campID = new Scanner(System.in).nextLine();
@@ -213,7 +218,7 @@ public class StudentMainPage {
         // } catch (ModelNotFoundException e) {
         //     throw new RuntimeException(e);
         // }
-        System.out.print("Are you sure you want to register for this project? (y/[n]): ");
+        System.out.print("Are you sure you want to register for this camp? (y/[n]): ");
         String choice = new Scanner(System.in).nextLine();
         if (choice.equalsIgnoreCase("y")) {
             try {
@@ -359,23 +364,40 @@ public class StudentMainPage {
     //     new Scanner(System.in).nextLine();
     //     throw new PageBackException();
     // }
-    public static void submitEnquiry(Student student, String studentIDString){
+    public static void submitEnquiry(Student student) throws PageBackException{
         ChangePage.changePage(); 
+        System.out.println("Here is the list of available camps: ");
+        ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());
         System.out.println("Our staff are always devoted themselves to resolve the enquiry from students!"); 
         System.out.println("First of all, would you mind telling us the CampID that you want to submit this enquiry to: "); 
-        Scanner sc=new Scanner(System.in); 
-        String campid=sc.nextLine(); 
-        System.out.printf("Please input the enquiry that you have regarding camp %s: \n", campid);
-        String message=sc.nextLine();  
-        String replierID=null; 
-        String requestID=RequestManager.getNewRequestID(); 
-        RequestManager.loadEnquiry(requestID,campid, studentIDString, message, replierID); 
-        Enquiry enquiry=new Enquiry(requestID, campid, studentIDString, message, replierID); 
+        String studentID = student.getID();
+        String campID = new Scanner(System.in).nextLine();
+        System.out.printf("Please input the enquiry that you have regarding camp %s: \n", campID);
+        String message=new Scanner(System.in).nextLine(); 
+        try{
+            RequestManager.createEnquiry(campID, studentID, message); 
+        } catch(ModelAlreadyExistsException e){
+            throw new RuntimeException(e);
+        }
+        
+        ChangePage.changePage();
 
-        System.out.printf("Your requestID is: %d. \nWe value your enquiry so much and we will respond to your enquiry as soon as we can!", requestID); 
-
-
-
-
+        System.out.println("Enquiry Submitted");
+        System.out.println("Press Enter to go back.");
+        new Scanner(System.in).nextLine();
+        throw new PageBackException();
     }
+
+    public static void viewEnquiry(Student student) throws PageBackException{
+        ChangePage.changePage();
+        System.out.println("Here is the list of Enquiries");
+        ModelViewer.displayListOfDisplayable((RequestManager.viewAllEnquiry()));//change to by user
+
+
+
+        System.out.println("Press Enter to go back.");
+        new Scanner(System.in).nextLine();
+        throw new PageBackException();
+    }
+
 }

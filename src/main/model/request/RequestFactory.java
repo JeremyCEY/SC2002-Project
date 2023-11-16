@@ -2,6 +2,8 @@ package main.model.request;
 
 import java.util.Map;
 
+import main.model.request.Suggestion;;
+
 public class RequestFactory {
     public static Request createRequest(Map<String, String> map){
         return switch(RequestType.valueOf(map.get("requestType"))){
@@ -9,10 +11,10 @@ public class RequestFactory {
             case SUGGESTION -> new Suggestion(map);
         };
     }
-    public static Request createRequest(RequestType type, String requestID, String campid, String studentID, String message, String replierID){
+    public static Request createRequest(RequestType type, String requestID, String campid, String studentID, String message){
         return switch(type){
-            case ENQUIRY -> new Enquiry(requestID, campid, studentID, message, replierID);
-            case SUGGESTION -> new Suggestion(requestID, campid, studentID, replierID, message);
+            case ENQUIRY -> new Enquiry(requestID, campid, studentID, message);
+            case SUGGESTION -> new Suggestion(requestID, campid, studentID, message);
         };
     }
 

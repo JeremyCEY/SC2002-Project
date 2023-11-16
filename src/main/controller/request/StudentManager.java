@@ -17,7 +17,7 @@ import main.model.request.Request;
 import main.model.user.Student;
 //import main.model.user.StudentStatus;
 import main.repository.camp.CampRepository;
-import main.repository.request.RequestRepository;
+import main.repository.request.EnquiryRepository;
 import main.repository.user.StudentRepository;
 //import main.utils.exception.StudentStatusException;
 import main.utils.exception.ModelAlreadyExistsException;
@@ -56,7 +56,7 @@ public class StudentManager {
         String supervisorID = project.getSupervisorID();
 //        System.err.println("supervisorID = " + supervisorID);
         Request request = new StudentDeregistrationRequest(requestID, studentID, supervisorID, projectID);
-        RequestRepository.getInstance().add(request);
+        EnquiryRepository.getInstance().add(request);
         return requestID;
     }
 
@@ -91,7 +91,7 @@ public class StudentManager {
         ProjectRepository.getInstance().update(project);
         student.setStatus(StudentStatus.PENDING);
         StudentRepository.getInstance().update(student);
-        RequestRepository.getInstance().add(request);
+        EnquiryRepository.getInstance().add(request);
         ProjectManager.updateProjectsStatus();
         return requestID;
     }
@@ -110,7 +110,7 @@ public class StudentManager {
         String requestID = RequestManager.getNewRequestID();
         String supervisorID = ProjectRepository.getInstance().getByID(projectID).getSupervisorID();
         Request request = new StudentChangeTitleRequest(requestID, studentID, supervisorID, projectID, newTitle);
-        RequestRepository.getInstance().add(request);
+        EnquiryRepository.getInstance().add(request);
         return requestID;
     }
 
@@ -121,7 +121,7 @@ public class StudentManager {
      */
     public static List<Request> getStudentRequestHistory(String studentID) {
 //        System.err.println("StudentRequestManager.getStudentRequestHistory studentID = " + studentID);
-        return RequestRepository.getInstance().findByRules(request -> request.getStudentID().equals(studentID));
+        return EnquiryRepository.getInstance().findByRules(request -> request.getStudentID().equals(studentID));
     }
 
     /**
