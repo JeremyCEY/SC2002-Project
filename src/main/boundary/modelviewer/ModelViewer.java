@@ -1,10 +1,9 @@
 package main.boundary.modelviewer;
 
 import main.model.Displayable;
+import main.model.camp.Camp;
 
-import java.util.List;
-import java.util.Objects;
-
+import java.util.*;
 /**
  The ModelViewer class is responsible for displaying single or lists of objects that implement the Displayable interface.
  */
@@ -33,5 +32,20 @@ public class ModelViewer {
             System.out.print(displayable.getDisplayableString());
             System.out.println(displayable.getSplitter());
         }
+    }
+
+    public static void displayListOfCampsWithType(Map<Camp,String> campList) {
+        if (Objects.isNull(campList) || campList.isEmpty()) {
+            System.out.println("Nothing found");
+            return;
+        }
+
+        System.out.println("================================================================");// this part is hardcoded in the meantime
+        
+        for (Camp camp : campList.keySet()) {
+            String type = campList.get(camp);
+            System.out.print(camp.getDisplayableStringWithType(type));
+            System.out.println(camp.getSplitter());
+    }
     }
 }

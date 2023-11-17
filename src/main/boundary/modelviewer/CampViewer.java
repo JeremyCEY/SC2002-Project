@@ -15,8 +15,11 @@ import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Displays the project details.
@@ -230,12 +233,12 @@ public class CampViewer {
      */
     public static void viewStudentCamps(Student student) throws PageBackException {
        ChangePage.changePage();
-       System.out.println("View Student Project");
-       Camp p = CampManager.getStudentCamp(student);
-       if (p == null) {
-           System.out.println("Student has no project yet.");
+       System.out.println("View Registered Camps");
+       Map<Camp,String> camps = CampManager.getStudentcamps(student);
+       if (camps == null) {
+           System.out.println("Student has not registered into any camps yet.");
       } else {
-           ModelViewer.displaySingleDisplayable(p);
+           ModelViewer.displayListOfCampsWithType(camps);
        }
        System.out.println("Press Enter to go back.");
        new Scanner(System.in).nextLine();

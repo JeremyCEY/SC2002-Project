@@ -78,7 +78,7 @@ public class StudentMainPage {
                     case 1 -> ViewUserProfile.viewUserProfilePage(student);
                     case 2 -> ChangeAccountPassword.changePassword(UserType.STUDENT, student.getID());
                     case 3 -> CampViewer.viewVisibleCampList();
-                    case 4 -> student.getACamps();//view camps student registered
+                    case 4 -> CampViewer.viewStudentCamps(student);
                     case 5 -> registerCampAttendee(student);
                     case 6 -> withdrawCampAttendee(student);
                     //case 7 -> registerCampCommittee(student);
@@ -316,9 +316,9 @@ public class StudentMainPage {
             try {
                 Camp camp = CampRepository.getInstance().getByID(campID);
                 ModelViewer.displaySingleDisplayable(camp);
-            } //catch (ModelNotFoundException e) {
+            } catch (ModelNotFoundException e) {
                 //e.printStackTrace();
-            //}
+            }
         } else {
             System.out.println("Camp not found.");
             System.out.println("Press Enter to go back.");
@@ -327,6 +327,7 @@ public class StudentMainPage {
         }
         return campID;
     }
+    
 
     /**
      * This private method is called to view the history and status of the student's project. It displays the project's information.

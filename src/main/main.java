@@ -17,7 +17,7 @@ public class main {
         // UIEntry.start();
 
         // Skip to student page
-        AccountManager.loadUsers();
+        //AccountManager.loadUsers();
         try {
             User user = AccountManager.login(UserType.STUDENT, "YCHERN", "password");
             StudentMainPage.studentMainPage(user);

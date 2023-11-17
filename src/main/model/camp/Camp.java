@@ -11,6 +11,7 @@ import main.utils.parameters.EmptyID;
 import main.model.user.Faculty;
 
 import java.util.Map;
+import java.util.List;
 
 public class Camp implements Model, Displayable {
 
@@ -217,6 +218,63 @@ public class Camp implements Model, Displayable {
 		//return "EXAMPLE";
     }
 
+	private String getSingleCampStringWithType(String type) {
+        String campName = getCampName();
+        int maxTitleLength = 60;
+        String titleLine1;
+        String titleLine2;
+
+        if (campName.length() <= maxTitleLength) {
+            int leftPadding = (maxTitleLength - campName.length()) / 2;
+            int rightPadding = maxTitleLength - campName.length() - leftPadding;
+            titleLine1 = String.format("| %-" + leftPadding + "s%-" + campName.length() + "s%-" + rightPadding + "s |\n", "", campName, "");
+            titleLine2 = "";
+        } else {
+            String[] words = campName.split("\\s+");
+            String firstLine = "";
+            String secondLine = "";
+            int remainingLength = maxTitleLength;
+            int i = 0;
+            while (i < words.length) {
+                if (firstLine.length() + words[i].length() + 1 <= maxTitleLength) {
+                    firstLine += words[i] + " ";
+                    remainingLength = maxTitleLength - firstLine.length();
+                    i++;
+                } else {
+                    break;
+                }
+            }
+            for (; i < words.length; i++) {
+                if (secondLine.length() + words[i].length() + 1 <= maxTitleLength) {
+                    secondLine += words[i] + " ";
+                } else {
+                    break;
+                }
+            }
+            int leftPadding1 = (maxTitleLength - firstLine.length()) / 2;
+            int leftPadding2 = (maxTitleLength - secondLine.length()) / 2;
+            int rightPadding1 = maxTitleLength - firstLine.length() - leftPadding1;
+            int rightPadding2 = maxTitleLength - secondLine.length() - leftPadding2;
+            titleLine1 = String.format("| %-" + leftPadding1 + "s%-" + firstLine.length() + "s%-" + rightPadding1 + "s |\n", "", firstLine.trim(), "");
+            titleLine2 = String.format("| %-" + leftPadding2 + "s%-" + secondLine.length() + "s%-" + rightPadding2 + "s |\n", "", secondLine.trim(), "");
+        }
+
+        return titleLine1 + titleLine2 +
+                "|--------------------------------------------------------------|\n" +
+                String.format("| Camp ID                     | %-30s |\n", getID()) +
+                String.format("| Staff ID                    | %-30s |\n", getStaffID()) +
+                String.format("| Dates                       | %-30s |\n", getDates()) +
+				String.format("| Attendee Slots              | %s/%-28s|\n", getFilledSlots(), getTotalSlots())+
+				String.format("| Committee Slots             | %s/%-29s|\n", getFilledCampCommSlots(), getCampCommSlots())+
+				String.format("| Registration Closing        | %-30s |\n", getRegistrationClosingDate()) +
+				String.format("| Description                 | %-30s |\n", getDescription())+
+				String.format("| Attending as a              | %-30s |\n", type);
+				//getProjectStudentInformationString() +  //getStudentList?
+		//return "EXAMPLE";
+    }
+
+
+
 	@Override
     public String getDisplayableString() {
         return getSingleCampString();
@@ -226,5 +284,9 @@ public class Camp implements Model, Displayable {
     public String getSplitter() {
         return "================================================================";
     }
+
+	public String getDisplayableStringWithType(String type) {
+		return getSingleCampStringWithType(type);
+	}
 
 }
