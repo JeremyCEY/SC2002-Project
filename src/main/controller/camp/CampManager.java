@@ -221,6 +221,29 @@ public class CampManager {
         // CampManager.updatecampsStatus();
     }
 
+    public static void registerCampCommittee(String campID, String studentID) throws ModelNotFoundException {
+        Camp camp = CampRepository.getInstance().getByID(campID);
+        Student student;
+        try {
+            student = StudentRepository.getInstance().getByID(studentID);
+        } catch (ModelNotFoundException e) {
+            throw new IllegalStateException("Student not found");
+        }
+        // if (camp.getFilledSlots() >= camp.getTotalSlots()) {
+        // throw new IllegalStateException("Attendee slots maxed");
+        // }
+
+        // check whether student has register before
+
+        student.addCCamp(campID);
+        camp.setFilledCampCommSlots(camp.getFilledCampCommSlots() + 1);
+
+        CampRepository.getInstance().update(camp);
+        StudentRepository.getInstance().update(student);
+        // CampManager.updatecampsStatus();
+    }
+
+
     /**
      * load camps from csv resource file
      */

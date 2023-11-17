@@ -281,14 +281,11 @@ public class Student implements User {
 		}
 	}
 	
-    public void addCCamp(String campID) {
+   public void addCCamp(String campID) {
         // Check if the campId is not already present in aCamps
         if (!this.cCamps.contains(campID)) {
-            // Concatenate the campId to the existing list of campIds
-            if (!this.cCamps.isEmpty()) {
-                this.cCamps += ",";
-            }
-            this.cCamps += campID;
+                this.cCamps = campID;
+				return;
         }
     }
 
