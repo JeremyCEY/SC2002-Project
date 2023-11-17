@@ -146,13 +146,14 @@ public class Enquiry implements Request{
             titleLine2 = String.format("| %-" + leftPadding2 + "s%-" + secondLine.length() + "s%-" + rightPadding2 + "s |\n", "", secondLine.trim(), "");
         }
 
-        return titleLine1 + titleLine2 +
-                "|--------------------------------------------------------------|\n" +
-                String.format("| Enquiry ID                    | %-30s |\n", getID()) +
-                String.format("| Student ID                    | %-30s |\n", getSenderID()) +
-                String.format("| Camp ID                       | %-30s |\n", getCampID()) +
-				String.format("| Message                       | %-30s |\n", getMessage()) +
-				String.format("| Replier ID                    | %-30s |\n", getReplierID());
+        return String.format("|                       %-24s    |\n", status)+
+		// titleLine1 + titleLine2 +
+                "|---------------------------------------------------|\n" +
+                String.format("| Enquiry ID             | %-24s |\n", getID()) +
+                String.format("| Student ID             | %-24s |\n", getSenderID()) +
+                String.format("| Camp ID                | %-24s |\n", getCampID()) +
+				String.format("| Message                | %-24s |\n", getMessage()) +
+				String.format("| Replier ID             | %-24s |\n", getReplierID());
 	}
 
 }

@@ -241,22 +241,23 @@ public class Suggestion implements Request{
             titleLine2 = String.format("| %-" + leftPadding2 + "s%-" + secondLine.length() + "s%-" + rightPadding2 + "s |\n", "", secondLine.trim(), "");
         }
 
-        return titleLine1 + titleLine2 +
-                "|--------------------------------------------------------------|\n" +
-                String.format("| Enquiry ID                    | %-30s |\n", getID()) +
-                String.format("| Student ID                    | %-30s |\n", getSenderID()) +
-                String.format("| Camp ID                       | %-30s |\n", getCampID()) +
-                String.format("|                        Suggested Edits                      |\n") +
+		return String.format("|                       %-24s    |\n", status)+
+		// titleLine1 + titleLine2 +
+                "|---------------------------------------------------|\n" +
+                String.format("| Enquiry ID                | %-21s |\n", getID()) +
+                String.format("| Student ID                | %-21s |\n", getSenderID()) +
+                String.format("| Camp ID                   | %-21s |\n", getCampID()) +
+                String.format("|                 Suggested Edits                   |\n") +
 
-				String.format("| Camp Name                     | %-30s |\n", getCampName())+
-				String.format("| Camp Dates                    | %-30s |\n", getDates())+
-				String.format("| Registration Closing Date     | %-30s |\n", getRegistrationClosingDate())+
-				String.format("| Camp Type                     | %-30s |\n", getCampTypeString(this.faculty))+
-				String.format("| Location                      | %-30s |\n", getLocation())+
-				String.format("| Attendee Slots                | %-30s |\n", getTotalSlots())+
-				String.format("| Committee Slots               | %-30s |\n", getCampCommSlots())+
-				String.format("| Description                   | %-30s |\n", getDescription())+
-				String.format("| Staff in Charge               | %-30s |\n", getCampStaff());
+				String.format("| Camp Name                 | %-21s |\n", getCampName())+
+				String.format("| Camp Dates                | %-21s |\n", getDates())+
+				String.format("| Registration Closing Date | %-21s |\n", getRegistrationClosingDate())+
+				String.format("| Camp Type                 | %-21s |\n", getCampTypeString(this.faculty))+
+				String.format("| Location                  | %-21s |\n", getLocation())+
+				String.format("| Attendee Slots            | %-21s |\n", getTotalSlots())+
+				String.format("| Committee Slots           | %-21s |\n", getCampCommSlots())+
+				String.format("| Description               | %-21s |\n", getDescription())+
+				String.format("| Staff in Charge           | %-21s |\n", getCampStaff());
 
 
 				
