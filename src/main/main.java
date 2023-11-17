@@ -18,15 +18,16 @@ public class main {
 
         // Skip to student page
         // AccountManager.loadUsers();
-        try {
-            User user = AccountManager.login(UserType.STUDENT, "YCHERN", "password");
-            StudentMainPage.studentMainPage(user);
-            return;
-        } catch (PasswordIncorrectException e) {
-            System.out.println("Password incorrect.");
-        } catch (ModelNotFoundException e) {
-            System.out.println("User not found.");
-        }
+        //CampManager.loadcamps();
+        // try {
+        //     User user = AccountManager.login(UserType.STUDENT, "YCHERN", "password");
+        //     StudentMainPage.studentMainPage(user);
+        //     return;
+        // } catch (PasswordIncorrectException e) {
+        //     System.out.println("Password incorrect.");
+        // } catch (ModelNotFoundException e) {
+        //     System.out.println("User not found.");
+        // }
 
         // Skip to staff page
         // AccountManager.loadUsers();
@@ -40,9 +41,9 @@ public class main {
         //     System.out.println("User not found.");
         // }
         
-        // //AccountManager.loadUsers();
-        // //CampManager.loadcamps();
-        // //CampManager.createcamp("SOP", "HUKUMAR");
+        //AccountManager.loadUsers();
+        CampManager.loadcamps();
+        //CampManager.createcamp("SOP", "HUKUMAR");
         // System.out.println(CampManager.getAllcamps().get(0));
         // List<Camp> camps = CampManager.getAllcamps();
         // for (int i = 0; i < camps.size(); i++) {

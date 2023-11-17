@@ -80,16 +80,19 @@ public class CampManager {
      * @param supervisorID the ID of the supervisor
      * @throws ModelAlreadyExistsException if the camp already exists
      */
-    public static void createCamp(String campID, String campName, String dates, String registrationClosingDate,
-            Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots,
-            int campCommSlots, String description,
-            String staffID, String visibility) throws ModelAlreadyExistsException {
-        Camp c1 = new Camp(campID, campName, dates, registrationClosingDate,
-                openTo, location, filledSlots, totalSlots, filledCampCommSlots, campCommSlots, description, staffID,
-                visibility);
-        CampRepository.getInstance().add(c1);
-        // CampManager.updatecampsStatus();
-    }
+    // public static void createCamp(String campID, String campName, String dates,
+    // String registrationClosingDate,
+    // Faculty openTo, String location, int filledSlots, int totalSlots, int
+    // filledCampCommSlots,
+    // int campCommSlots, String description,
+    // String staffID, String visibility) throws ModelAlreadyExistsException {
+    // Camp c1 = new Camp(campID, campName, dates, registrationClosingDate,
+    // openTo, location, filledSlots, totalSlots, filledCampCommSlots,
+    // campCommSlots, description, staffID,
+    // visibility);
+    // CampRepository.getInstance().add(c1);
+    // // CampManager.updatecampsStatus();
+    // }
 
     public static Camp createCamp(String campName, String dates, String registrationClosingDate,
             Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots,
@@ -225,8 +228,8 @@ public class CampManager {
         List<List<String>> camps = CSVReader.read(Location.RESOURCE_LOCATION + "/resources/CampList.csv", true);
         for (List<String> camp : camps) {
             try {
-                String staffName = camp.get(9);
-                String campName = camp.get(1);
+                String staffName = camp.get(10);
+                String campName = camp.get(0);
                 List<Staff> staff = StaffRepository.getInstance().findByRules(s -> s.checkUsername(staffName));
 
                 Faculty faculty = Faculty.NTU;
@@ -243,11 +246,9 @@ public class CampManager {
                 if (staff.size() == 0) {
                     System.out.println("Load camp " + campName + " failed: staff " + staffName + " not found");
                 } else if (staff.size() == 1) {
-
-                    CampManager.createCamp(camp.get(0), camp.get(1), camp.get(2),
-                            faculty, camp.get(4), Integer.parseInt(camp.get(5)), Integer.parseInt(camp.get(6)),
-                            Integer.parseInt(camp.get(7)), Integer.parseInt(camp.get(8)), camp.get(9),
-                            staff.get(10).getID(), camp.get(11));
+                    CampManager.createCamp(
+                            camp.get(0), camp.get(1), camp.get(2), faculty, camp.get(4), Integer.parseInt(camp.get(5)), Integer.parseInt(camp.get(6)),
+                            Integer.parseInt(camp.get(7)), Integer.parseInt(camp.get(8)), camp.get(9), staff.get(0).getID(), camp.get(11));
                 } else {
                     System.out.println("Load camp " + campName + " failed: multiple staff found");
                 }
@@ -292,37 +293,33 @@ public class CampManager {
      * @param student the student
      * @return the camp of the student
      */
-    public static Map<Camp,String> getStudentcamps(Student student) {
-        if (EmptyID.isEmptyID(student.getCCamps()) && EmptyID.isEmptyID(student.getACamps()) ) {
+    public static Map<Camp, String> getStudentcamps(Student student) {
+        if (EmptyID.isEmptyID(student.getCCamps()) && EmptyID.isEmptyID(student.getACamps())) {
             return null;
-        } 
-        else {
+        } else {
             try {
-                Map<Camp,String> camps = new HashMap<>();
-                
+                Map<Camp, String> camps = new HashMap<>();
+
                 String cCamp;
                 String aCamps;
 
-                if(!EmptyID.isEmptyID(student.getCCamps())){
+                if (!EmptyID.isEmptyID(student.getCCamps())) {
                     cCamp = student.getCCamps();
                     Camp camp = CampRepository.getInstance().getByID(cCamp);
                     camps.put(camp, "Committee"); // Replace "Associated String" with the actual associated string
                 }
 
-                if(!EmptyID.isEmptyID(student.getACamps())){
+                if (!EmptyID.isEmptyID(student.getACamps())) {
                     aCamps = student.getACamps();
                     String[] aCampsArray = aCamps.split(",");
-                    for (String campId : aCampsArray) {                    
-                    Camp camp = CampRepository.getInstance().getByID(campId);
-                    camps.put(camp, "Attendee"); // Replace "Associated String" with the actual associated string
+                    for (String campId : aCampsArray) {
+                        Camp camp = CampRepository.getInstance().getByID(campId);
+                        camps.put(camp, "Attendee"); // Replace "Associated String" with the actual associated string
                     }
                 }
 
-                
-
                 return camps;
-            }
-            catch (ModelNotFoundException e) {
+            } catch (ModelNotFoundException e) {
                 throw new IllegalStateException("camp " + student.getACamps() + " notfound");
             }
         }
