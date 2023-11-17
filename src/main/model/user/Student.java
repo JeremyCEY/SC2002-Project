@@ -248,10 +248,16 @@ public class Student implements User {
         // Check if the campId is not already present in aCamps
         if (!this.aCamps.contains(campID)) {
             // Concatenate the campId to the existing list of campIds
-            if (!this.aCamps.isEmpty()) {
-                this.aCamps += ",";
+            if(this.aCamps.equals("null"))
+			{
+                this.aCamps = campID;
+				return;
             }
-            this.aCamps += campID;
+			// else
+			// {
+			// 	this.aCamps += ",";
+			// }
+            this.aCamps += "," + campID;
         }
     }
 	
@@ -269,6 +275,9 @@ public class Student implements User {
 	
 			// Remove any leading or trailing commas if they exist
 			this.aCamps = this.aCamps.replaceAll("^,|,$|,,", "");
+		}
+		if(this.aCamps.equals("")){
+			this.aCamps = "null";
 		}
 	}
 	
