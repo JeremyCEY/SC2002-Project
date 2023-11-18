@@ -40,7 +40,11 @@ public class Student implements User {
 
 	private String cCamps;
 
+	private String pCamps;
+
 	private Faculty faculty;
+
+	private int points;
 
 	/**
 	 * Constructs a new Student object with the specified student ID and default
@@ -57,6 +61,8 @@ public class Student implements User {
 		this.aCamps = EmptyID.EMPTY_ID;
 		this.cCamps = EmptyID.EMPTY_ID;
 		this.faculty = faculty;
+		this.pCamps = EmptyID.EMPTY_ID;
+		this.points = 0;
 		// this.status = StudentStatus.UNREGISTERED;
 		// supervisorID = EmptyID.EMPTY_ID;
 		// projectID = EmptyID.EMPTY_ID;
@@ -78,6 +84,8 @@ public class Student implements User {
 		this.aCamps = EmptyID.EMPTY_ID;
 		this.cCamps = EmptyID.EMPTY_ID;
 		this.faculty = faculty;
+		this.pCamps = EmptyID.EMPTY_ID;
+		this.points = 0;
 		// this.status = StudentStatus.UNREGISTERED;
 		// supervisorID = EmptyID.EMPTY_ID;
 		// projectID = EmptyID.EMPTY_ID;
@@ -104,6 +112,8 @@ public class Student implements User {
 		this.aCamps = EmptyID.EMPTY_ID;
 		this.cCamps = EmptyID.EMPTY_ID;
 		this.faculty = Faculty.NA;
+		this.pCamps = EmptyID.EMPTY_ID;
+		this.points = 0;
 		// this.status = StudentStatus.UNREGISTERED;
 	}
 
@@ -153,60 +163,6 @@ public class Student implements User {
 	}
 
 	/**
-	 * Gets the status of the student
-	 *
-	 * @return the status of the student
-	 */
-	// public StudentStatus getStatus() {
-	// return this.status;
-	// }
-
-	/**
-	 * Sets the status of the student
-	 *
-	 * @param status the new status of the student
-	 */
-	// public void setStatus(StudentStatus status) {
-	// this.status = status;
-	// }
-
-	/**
-	 * Gets the ID of the supervisor
-	 *
-	 * @return the ID of the supervisor
-	 */
-	// public String getSupervisorID() {
-	// return supervisorID;
-	// }
-
-	/**
-	 * Sets the ID of the supervisor
-	 *
-	 * @param supervisorID the ID of the supervisor
-	 */
-	// public void setSupervisorID(String supervisorID) {
-	// this.supervisorID = supervisorID;
-	// }
-
-	/**
-	 * Gets the ID of the project
-	 *
-	 * @return the ID of the project
-	 */
-	// public String getProjectID() {
-	// return projectID;
-	// }
-
-	/**
-	 * Sets the ID of the project
-	 *
-	 * @param projectID the ID of the project
-	 */
-	// public void setProjectID(String projectID) {
-	// this.projectID = projectID;
-	// }
-
-	/**
 	 * getter for the password
 	 *
 	 * @return hashedPassword
@@ -242,6 +198,29 @@ public class Student implements User {
 
 	public Faculty getFaculty() {
 		return this.faculty;
+	}
+
+	public String getPCamps() {
+		return this.pCamps;
+	}
+
+	public void addPCamp(String campID) {
+        if (!this.pCamps.contains(campID)) {
+            if(this.pCamps.equals("null"))
+			{
+                this.pCamps = campID;
+				return;
+            }
+            this.pCamps += "," + campID;
+        }
+    }
+
+	public int getPoints(){
+		return this.points;
+	}
+
+	public void addPoint(){
+		this.points++;
 	}
 
     public void addACamp(String campID) {

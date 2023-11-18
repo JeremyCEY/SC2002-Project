@@ -86,7 +86,8 @@ public class AccountManager {
      * @return the user that is registered
      * @throws ModelAlreadyExistsException if the user already exists
      */
-    public static User register(UserType userType, String userID, String password, String name, String email, Faculty faculty)
+    public static User register(UserType userType, String userID, String password, String name, String email,
+            Faculty faculty)
             throws ModelAlreadyExistsException {
         User user = UserFactory.create(userType, userID, password, name, email, faculty);
         UserAdder.addUser(user);
@@ -105,12 +106,12 @@ public class AccountManager {
      */
     public static User register(UserType userType, String userID, String name, String email, Faculty faculty)
             throws ModelAlreadyExistsException {
-        if (userType == UserType.STAFF) {
-            System.err.println("Registering coordinator...");
-            System.err.println("Coordinator ID: " + userID);
-            System.err.println("Coordinator name: " + name);
-            System.err.println("Coordinator email: " + email);
-        }
+        // if (userType == UserType.STAFF) {
+        //     System.err.println("Registering coordinator...");
+        //     System.err.println("Coordinator ID: " + userID);
+        //     System.err.println("Coordinator name: " + name);
+        //     System.err.println("Coordinator email: " + email);
+        // }
         return register(userType, userID, "password", name, email, faculty);
     }
 
@@ -135,19 +136,15 @@ public class AccountManager {
             String email = row.get(1);
             String userID = getID(email);
             String facultyString = row.get(2);
-            Faculty faculty = Faculty.NA;
+            Faculty faculty = Faculty.NTU;
 
-            if (facultyString == "ADM")
-                faculty = Faculty.ADM;
-            else if (facultyString == "EEE")
-                faculty = Faculty.EEE;
-            else if (facultyString == "NBS")
-                faculty = Faculty.NBS;
-            else if (facultyString == "SCSE")
-                faculty = Faculty.SCSE;
-            else if (facultyString == "SSS")
-                faculty = Faculty.SSS;
-
+            switch (facultyString) {
+                case "ADM" -> faculty = Faculty.ADM;
+                case "EEE" -> faculty = Faculty.EEE;
+                case "NBS" -> faculty = Faculty.NBS;
+                case "SCSE" -> faculty = Faculty.SCSE;
+                case "SSS" -> faculty = Faculty.SSS;
+            }
 
             try {
                 register(UserType.STUDENT, userID, name, email, faculty);
@@ -161,33 +158,29 @@ public class AccountManager {
      * Loads the coordinators from the CSV resource file
      */
     private static void loadStaffs() {
-    List<List<String>> staffList =
-    CSVReader.read(Location.RESOURCE_LOCATION + "/resources/StaffList.csv",
-    true);
-    for (List<String> row : staffList) {
-    String name = row.get(0);
-    String email = row.get(1);
-    String userID = getID(email);
-    String facultyString = row.get(2);
-            Faculty faculty = Faculty.NA;
+        List<List<String>> staffList = CSVReader.read(Location.RESOURCE_LOCATION + "/resources/StaffList.csv",
+                true);
+        for (List<String> row : staffList) {
+            String name = row.get(0);
+            String email = row.get(1);
+            String userID = getID(email);
+            String facultyString = row.get(2);
+            Faculty faculty = Faculty.NTU;
 
-            if (facultyString == "ADM")
-                faculty = Faculty.ADM;
-            else if (facultyString == "EEE")
-                faculty = Faculty.EEE;
-            else if (facultyString == "NBS")
-                faculty = Faculty.NBS;
-            else if (facultyString == "SCSE")
-                faculty = Faculty.SCSE;
-            else if (facultyString == "SSS")
-                faculty = Faculty.SSS;
+            switch (facultyString) {
+                case "ADM" -> faculty = Faculty.ADM;
+                case "EEE" -> faculty = Faculty.EEE;
+                case "NBS" -> faculty = Faculty.NBS;
+                case "SCSE" -> faculty = Faculty.SCSE;
+                case "SSS" -> faculty = Faculty.SSS;
+            }
 
-    try {
-    register(UserType.STAFF, userID, name, email, faculty);
-    } catch (ModelAlreadyExistsException e) {
-    e.printStackTrace();
-    }
-    }
+            try {
+                register(UserType.STAFF, userID, name, email, faculty);
+            } catch (ModelAlreadyExistsException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
