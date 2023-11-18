@@ -210,10 +210,11 @@ public class Camp implements Model, Displayable {
                 String.format("| Camp ID                     | %-30s |\n", getID()) +
                 String.format("| Staff ID                    | %-30s |\n", getStaffID()) +
                 String.format("| Dates                       | %-30s |\n", getDates()) +
-				String.format("| Attendee Slots              | %s/%-28s|\n", getFilledSlots(), getTotalSlots())+
+				String.format("| Attendee Slots              | %s/%-29s|\n", getFilledSlots(), getTotalSlots())+
 				String.format("| Committee Slots             | %s/%-29s|\n", getFilledCampCommSlots(), getCampCommSlots())+
 				String.format("| Registration Closing        | %-30s |\n", getRegistrationClosingDate()) +
-				String.format("| Description                 | %-30s |\n", getDescription());
+				String.format("| Description                 | %-30s |\n", getDescription())+
+				String.format("| Location                    | %-30s |\n", getLocation());
 				//getProjectStudentInformationString() +  //getStudentList?
 		//return "EXAMPLE";
     }
@@ -264,10 +265,11 @@ public class Camp implements Model, Displayable {
                 String.format("| Camp ID                     | %-30s |\n", getID()) +
                 String.format("| Staff ID                    | %-30s |\n", getStaffID()) +
                 String.format("| Dates                       | %-30s |\n", getDates()) +
-				String.format("| Attendee Slots              | %s/%-28s|\n", getFilledSlots(), getTotalSlots())+
+				String.format("| Attendee Slots              | %s/%-29s|\n", getFilledSlots(), getTotalSlots())+
 				String.format("| Committee Slots             | %s/%-29s|\n", getFilledCampCommSlots(), getCampCommSlots())+
 				String.format("| Registration Closing        | %-30s |\n", getRegistrationClosingDate()) +
 				String.format("| Description                 | %-30s |\n", getDescription())+
+				String.format("| Location                    | %-30s |\n", getLocation())+
 				String.format("| Attending as a              | %-30s |\n", type);
 				//getProjectStudentInformationString() +  //getStudentList?
 		//return "EXAMPLE";

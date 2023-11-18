@@ -368,6 +368,15 @@ public class CampManager {
         return CampRepository.getInstance().findByRules(p -> p.getVisibility() != "true");
     }
 
+    public static List<Camp> getCampsForStudent(Student student) {
+        String studentFaculty = student.getFaculty().toString();
+
+        return CampRepository.getInstance().findByRules(camp ->
+                camp.getVisibility().equals("true") &&
+                (camp.getOpenTo().toString().equals("NTU") || camp.getOpenTo().toString().equals(studentFaculty))
+        );
+    }
+
     public static List<Camp> getAllCampsByStaff(Staff staff) {
         return CampRepository.getInstance().findByRules(c -> c.getStaffID().equals(staff.getID()));
     }

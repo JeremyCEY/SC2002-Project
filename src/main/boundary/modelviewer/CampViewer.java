@@ -21,6 +21,9 @@ import java.util.Scanner;
 import java.util.Map;
 import java.util.HashMap;
 
+import java.util.Collections;
+import java.util.Comparator;
+
 /**
  * Displays the project details.
  */
@@ -188,6 +191,103 @@ public class CampViewer {
         new Scanner(System.in).nextLine();
         throw new PageBackException();
     }
+
+    public static void viewVisibleFacultyCampList(Student student) throws PageBackException {
+        ChangePage.changePage();
+        List<Camp> camps = CampManager.getCampsForStudent(student);
+
+        // Sort camps alphabetically by default
+        Collections.sort(camps, Comparator.comparing(Camp::getCampName));
+
+        System.out.println("List of Available Camps (Alphabetical Order):");
+        ModelViewer.displayListOfDisplayable(camps);
+
+        System.out.println("Choose an option:");
+        System.out.println("\t1. Sort camps");
+        System.out.println("\t2. Go Back");
+
+        System.out.print("Enter your choice: ");
+        int choice = IntGetter.readInt();
+
+        switch (choice) {
+            case 1:
+                // Prompt the user to choose a sorting option
+                sortCampsByOption(camps, student);
+                break;
+            case 2:
+                throw new PageBackException();
+            default:
+                System.out.println("Invalid choice. Try again.");
+                new Scanner(System.in).nextLine();
+                viewVisibleFacultyCampList(student);
+        }
+    }
+
+    private static void sortCampsByOption(List<Camp> camps, Student student) throws PageBackException {
+        ChangePage.changePage();
+        System.out.println("Sort camps by:");
+        System.out.println("\t1. Camp ID");
+        System.out.println("\t2. Camp Name");
+        System.out.println("\t3. Camp Date");
+        System.out.println("\t4. Camp Closing Date");
+        System.out.println("\t5. Camp Location");
+        System.out.println("\t6. Go Back");
+
+        System.out.print("Enter your choice: ");
+        int sortChoice = IntGetter.readInt();
+
+        if (sortChoice == 6) {
+            viewVisibleFacultyCampList(student);
+        }
+
+        String sortTitle = "List of Available Camps";
+
+        Comparator<Camp> campComparator = null;
+
+        switch (sortChoice) {
+            case 1:
+                sortTitle = "List of Available Camps (ID order):";
+                campComparator = Comparator.comparing(Camp::getID);
+                break;
+            case 2:
+                sortTitle = "List of Available Camps (Alphabetical order):";
+                campComparator = Comparator.comparing(Camp::getCampName);
+                break;
+            case 3:
+                sortTitle = "List of Available Camps (Date order):";
+                campComparator = (camp1, camp2) -> {
+                String date1 = camp1.getDates().substring(0, 8);
+                String date2 = camp2.getDates().substring(0, 8);
+                return date1.compareTo(date2);
+            };
+            
+                break;
+            case 4:
+                sortTitle = "List of Available Camps (Closing Date order):";
+                campComparator = Comparator.comparing(Camp::getRegistrationClosingDate);
+                break;
+            case 5:
+                sortTitle = "List of Available Camps (Location order):";
+                campComparator = Comparator.comparing(Camp::getLocation);
+                break;
+            default:
+                System.out.println("Invalid choice. Try again.");
+                new Scanner(System.in).nextLine();
+                viewVisibleFacultyCampList(student);
+        }
+
+        // Sort the list based on the selected comparator
+        Collections.sort(camps, campComparator);
+
+        ChangePage.changePage();
+        System.out.println(sortTitle);
+        ModelViewer.displayListOfDisplayable(camps);
+
+        System.out.println("Press Enter to go back.");
+        new Scanner(System.in).nextLine();
+        throw new PageBackException();
+    }
+
 
     /**
      * Displays the project details.
