@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import javax.management.RuntimeErrorException;
@@ -351,25 +352,44 @@ public class StudentMainPage {
      * @param student the student.
      * @throws PageBackException if the user wants to go back.
      */
-    private static void withdrawCampAttendee(Student student) throws PageBackException {
+ private static void withdrawCampAttendee(Student student) throws PageBackException {
         ChangePage.changePage();
 
-        if (EmptyID.isEmptyID(student.getACamps())) {
+        System.out.println(
+                "Important notification: Students who is a member of the commitee of a camp cannot withdraw from that camp. ");
+
+        if (EmptyID.isEmptyID(student.getACamps()) && EmptyID.isEmptyID(student.getCCamps())) {
             System.out.println("You are not registered for any camp.");
             System.out.println("Press Enter to go back.");
             new Scanner(System.in).nextLine();
             throw new PageBackException();
         }
 
-        System.out.println("Your registered camps as attendee are: ");
+        Map<Camp, String> camps = CampManager.getStudentcamps(student);
+        if (camps == null) {
+            System.out.println("Student has not registered into any camps yet.");
+        } else {
+            ModelViewer.displayListOfCampsWithType(camps);
+        }
         System.out.print("Please enter the camp ID: ");
         String campID = new Scanner(System.in).nextLine();
         // try {
-        //     Camp project = CampRepository.getInstance().getByID(student.getID());
-        //     ModelViewer.displaySingleDisplayable(project);
+        // Camp project = CampRepository.getInstance().getByID(student.getID());
+        // ModelViewer.displaySingleDisplayable(project);
         // } catch (ModelNotFoundException e) {
-        //     throw new IllegalArgumentException("Camp not found.");
+        // throw new IllegalArgumentException("Camp not found.");
         // }
+
+        if (!student.getCCamps().equals("null")) {
+            String CCamps = student.getCCamps();
+            if (CCamps.contains(campID)) {
+                System.out.printf("You are a commitee of camp %s, you are not allow to withdraw from this camp!",
+                        campID);
+                System.out.println("Press Enter to go back.");
+                new Scanner(System.in).nextLine();
+                throw new PageBackException();
+            }
+        }
 
         System.out.println("Are you sure you want to deregister from this camp? (y/[n])");
         String choice = new Scanner(System.in).nextLine();
@@ -379,8 +399,6 @@ public class StudentMainPage {
             new Scanner(System.in).nextLine();
             throw new PageBackException();
         }
-
-        
 
         try {
             CampManager.withdrawCampAttendee(campID, student.getID());
