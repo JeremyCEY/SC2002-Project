@@ -143,4 +143,12 @@ public class RequestManager {
         SuggestionRepository.getInstance().update(updatedSuggestion);
     }
 
+    public static Enquiry getEnquiryByID(String enquiryID) throws ModelNotFoundException{
+        return EnquiryRepository.getInstance().getByID(enquiryID);
+    }
+
+    public static Suggestion getSuggestionByID(String suggestionID) throws ModelNotFoundException{
+        return SuggestionRepository.getInstance().getByID(suggestionID);
+    }
+
 }

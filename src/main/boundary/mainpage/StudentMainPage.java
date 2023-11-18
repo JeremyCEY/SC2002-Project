@@ -14,6 +14,7 @@ import main.utils.config.CurrentDate;
 
 import main.model.user.*;
 import main.repository.camp.CampRepository;
+import main.repository.request.EnquiryRepository;
 import main.repository.user.StudentRepository;
 import main.utils.exception.ModelAlreadyExistsException;
 import main.utils.exception.ModelNotFoundException;
@@ -592,17 +593,86 @@ public class StudentMainPage {
         throw new PageBackException();
     }
 
-    public static void viewEnquiry(Student student) throws PageBackException{
+    public static void viewEnquiry(Student student) throws PageBackException, ModelNotFoundException{
         ChangePage.changePage();
         System.out.println("Here is the list of Enquiries you made");
         ModelViewer.displayListOfDisplayable((RequestManager.viewEnquiryBySender(student.getID())));//change to by user
+        System.out.println();
+        System.out.println("1. Edit Enquiry");
+        System.out.println("2. Delete Enquiry");
+        int choice = new Scanner(System.in).nextInt();
+        if(choice == 1){
+            editEnquiry(student);
+        }
+        else if (choice == 2) {
+            deleteEnquiry(student);
+        }
 
-        //add option to edit delete
-
-        System.out.println("Press Enter to go back.");
-        new Scanner(System.in).nextLine();
-        throw new PageBackException();
+        else{
+            System.out.println("Press Enter to go back.");
+            new Scanner(System.in).nextLine();
+            throw new PageBackException();
+        }
     }
+
+    public static void editEnquiry(Student student) throws PageBackException, ModelNotFoundException{
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter ID of Enquiry to edit");
+        String enquiryID = sc.nextLine();
+        //check if enquiry exists;
+
+        Enquiry enquiryToEdit = RequestManager.getEnquiryByID(enquiryID);
+
+        System.out.println("Enter new message:");
+        String newMessage = sc.nextLine();
+        enquiryToEdit.setMessage(newMessage);
+        RequestManager.updateEnquiry(enquiryID, enquiryToEdit);
+        System.out.println("Successfully updated enquiry!");
+        System.out.println(BoundaryStrings.separator);
+        System.out.println();
+        System.out.println("Press enter to go back.");
+        sc.nextLine();
+        throw new PageBackException();
+
+    }
+
+
+    public static void deleteEnquiry(Student student) throws PageBackException, ModelNotFoundException{
+        //ChangePage.changePage();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter ID of Enquiry to delete");
+        String enquiryID = sc.nextLine();
+        //check if enquiry exists;
+
+        Enquiry enquiryToDelete = RequestManager.getEnquiryByID(enquiryID);
+
+        System.out.println("Are you sure you want to delete this Enquiry? (Y/N)");
+    
+        String input = sc.nextLine();
+        if (!input.equalsIgnoreCase("Y")) {
+            System.out.println("Enquiry deletion cancelled!");
+            System.out.println("Press enter to continue");
+            sc.nextLine();
+            throw new PageBackException();
+        }
+
+        try{
+            EnquiryRepository.getInstance().remove(enquiryToDelete.getID());
+        } catch (ModelNotFoundException e){
+            throw new RuntimeException(e);
+        }
+        System.out.println("Enquiry deleted successfully!");
+        System.out.println("Press enter to continue");
+        sc.nextLine();
+        throw new PageBackException();
+
+
+    }
+
+
+
+
+
 
     public static void submitSuggestion(Student student) throws PageBackException, ModelNotFoundException{
         
