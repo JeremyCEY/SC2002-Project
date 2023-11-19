@@ -16,6 +16,8 @@ import main.model.user.Staff;
 import main.model.user.Student;
 import main.model.user.User;
 import main.model.user.UserType;
+import main.model.request.Enquiry;
+import main.model.request.Suggestion;
 import main.repository.request.EnquiryRepository;
 import main.repository.request.SuggestionRepository;
 import main.repository.user.StaffRepository;
@@ -84,8 +86,8 @@ public class StaffMainPage {
                     case 4 -> createCamp(user);
                     case 5 -> editExistingCamp(user);
                     case 6 -> deleteExistingCamp(user);
-                    //case 7 -> viewAndReplyPendingEnquiries(user);//to implement
-                    //case 8 -> viewAndHandlePendingSuggestions(user);//to implement
+                    case 7 -> viewAndReplyPendingEnquiries(user);
+                    //case 8 -> viewPendingSuggestions(user);//to implement
                     case 9 -> generateReports(user);//to implement
                     case 10 -> Logout.logout();
                     default -> {
@@ -282,38 +284,39 @@ public class StaffMainPage {
         throw new PageBackException();
     }
 
-    // private static void viewAndReplyPendingEnquiries(User user) throws ModelNotFoundException, PageBackException {
-    //     ChangePage.changePage();
-    //     System.out.println(BoundaryStrings.separator);
-    //     System.out.println("View Pending Enquiries");
-    //     System.out.println();
-    //     ModelViewer.displayListOfDisplayable(
-    //         CampManager.getAllPendingEnquiriesByStaff((Staff) user));
-    //     System.out.println("Which enquiry ID do you want to reply");
-    //     Scanner scanner = new Scanner(System.in);
-    //     String enquiryID = scanner.nextLine();
-    //     Enquiry enquiry = (Enquiry) EnquiryRepository.getInstance().getByID(enquiryID);
-    //     System.out.println("Reply Message");
-    //     String message = scanner.nextLine();
-    //     enquiry.setMessage(message);
-    //     enquiry.setReplierID(user.getID());
-    //     enquiry.setRequestStatus(RequestStatus.REPLIED);
-    //     EnquiryRepository.getInstance().update(enquiry);
-    //     System.out.println("Successfully replied an enquiry:");
-    //     System.out.println();
-    //     System.out.println("Have other enquiry to reply?");
-    //     System.out.println("\t0. No");
-    //     System.out.println("\t1. Yes");
-    //     int choice = scanner.nextInt();
-    //     if (choice == 1) {
-    //         viewAndReplyPendingEnquiries(user);
-    //     }
-    //     ModelViewer.displaySingleDisplayable(enquiry);
-    //     System.out.println(BoundaryStrings.separator);
-    //     System.out.println("Press enter to go back.");
-    //     scanner.nextLine();
-    //     throw new PageBackException();
-    // }
+    private static void viewAndReplyPendingEnquiries(User user) throws ModelNotFoundException, PageBackException {
+        ChangePage.changePage();
+        System.out.println(BoundaryStrings.separator);
+        System.out.println("View Pending Enquiries");
+        System.out.println();
+        ModelViewer.displayListOfDisplayable(
+            RequestManager.getAllPendingEnquiriesByStaff((Staff) user));
+        System.out.println("Which enquiry ID do you want to reply");
+        Scanner scanner = new Scanner(System.in);
+        String enquiryID = scanner.nextLine();
+        Enquiry enquiry = (Enquiry) EnquiryRepository.getInstance().getByID(enquiryID);
+        System.out.println("Reply Message");
+        String message = scanner.nextLine();
+        enquiry.setMessage(message);
+        enquiry.setReplierID(user.getID());
+        enquiry.setRequestStatus(RequestStatus.REPLIED);
+        EnquiryRepository.getInstance().update(enquiry);
+        System.out.println("Successfully replied an enquiry:");
+        System.out.println();
+        ChangePage.changePage();
+        System.out.println("Have other enquiry to reply?");
+        System.out.println("\t0. No");
+        System.out.println("\t1. Yes");
+        int choice = scanner.nextInt();
+        if (choice == 1) {
+            viewAndReplyPendingEnquiries(user);
+        }
+        ModelViewer.displaySingleDisplayable(enquiry);
+        System.out.println(BoundaryStrings.separator);
+        System.out.println("Press enter to go back.");
+        scanner.nextLine();
+        throw new PageBackException();
+    }
 
     // private static void viewAndHandlePendingSuggestions(User user) throws ModelNotFoundException, PageBackException {
     //     ChangePage.changePage();

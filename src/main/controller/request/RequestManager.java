@@ -1,16 +1,17 @@
 package main.controller.request; 
 
+import main.controller.camp.CampManager;
 import main.model.user.*;
-import main.repository.camp.CampRepository;
 import main.model.camp.Camp;
 import main.model.request.Request;
-import main.repository.request.EnquiryRepository;
+import main.model.request.Enquiry;
 import main.model.request.Suggestion;
+import main.repository.camp.CampRepository;
 import main.repository.user.StaffRepository;
 import main.repository.user.StudentRepository;
 import main.repository.request.EnquiryRepository;
 import main.repository.request.SuggestionRepository;
-import main.model.request.Enquiry;
+import main.model.request.RequestStatus;
 import main.utils.config.Location;
 import main.utils.exception.PasswordIncorrectException;
 import main.utils.exception.ModelAlreadyExistsException;
@@ -18,6 +19,7 @@ import main.utils.exception.ModelNotFoundException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RequestManager {
 
@@ -110,6 +112,21 @@ public class RequestManager {
 
     public static Suggestion getSuggestionByID(String suggestionID) throws ModelNotFoundException{
         return SuggestionRepository.getInstance().getByID(suggestionID);
+    }
+
+    public static List<Enquiry> getAllPendingEnquiriesByStaff(Staff staff) {
+    List<String> campIDs = CampManager.getAllCampsByStaff(staff).stream()
+    .filter(
+    c -> c.getStaffID().equals(staff.getID())
+    && c.getVisibility().equals("true"))
+    .map(Camp::getID)
+    .collect(Collectors.toList());
+    return EnquiryRepository.getInstance().findByRules(
+    e -> e.getRequestStatus() == RequestStatus.PENDING,
+    e -> campIDs.contains(e.getCampID()))
+    .stream()
+    .map(r -> (Enquiry) r)
+    .collect(Collectors.toList());
     }
 
 }

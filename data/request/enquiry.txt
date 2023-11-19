@@ -1,2 +1,2 @@
-senderIDYCHERNcampIDC1requestIDE1messageCan i wear slippersreplynullrequestStatusPENDINGreplierIDnull
-senderIDYCHERNcampIDC54requestIDE2messagehihireplynullrequestStatusPENDINGreplierIDnull
+senderIDYCHERNcampIDC1requestIDE1messageokiereplynullrequestStatusREPLIEDreplierIDHUKUMAR
+senderIDYCHERNcampIDC54requestIDE2messageokiereplynullrequestStatusREPLIEDreplierIDHUKUMAR

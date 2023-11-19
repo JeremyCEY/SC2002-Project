@@ -107,17 +107,6 @@ public class CampManager {
     }
 
     /**
-     * get the list of all camps by status
-     *
-     * @param campStatus the status of the camp
-     * @return the list of all camps
-     */
-    // public static List<Camp> getAllcampByStatus(CampStatus campStatus) {
-    // return CampRepository.getInstance().findByRules(camp ->
-    // camp.getStatus().equals(campStatus));
-    // }
-
-    /**
      * get the list of all camps by supervisor
      *
      * @return the list of all camps
@@ -417,37 +406,5 @@ public class CampManager {
         return CampRepository.getInstance().getByID(campID);
     }
 
-    /**
-     * get all camps by supervisor
-     *
-     * @param supervisorID the ID of the supervisor
-     * @return all camps by supervisor
-     */
-    // public static List<Camp> getAllcampsBySupervisor(String supervisorID) {
-    // return CampRepository.getInstance().findByRules(p ->
-    // p.getSupervisorID().equalsIgnoreCase(supervisorID));
-    // }
 
-    /**
-     * update the status of all camps
-     */
-    // public static void updatecampsStatus() {
-    // List<Staff> staffs = StaffManager.getAllUnavailableStaff();
-    // Set<String> supervisorIDs = new HashSet<>();
-    // for (Supervisor supervisor : supervisors) {
-    // supervisorIDs.add(supervisor.getID());
-    // }
-    // List<camp> camps = CampRepository.getInstance().getList();
-    // for (camp camp : camps) {
-    // if (supervisorIDs.contains(camp.getSupervisorID()) && camp.getStatus() ==
-    // campStatus.AVAILABLE) {
-    // camp.setStatus(campStatus.UNAVAILABLE);
-    // }
-    // if (!supervisorIDs.contains(camp.getSupervisorID()) && camp.getStatus() ==
-    // campStatus.UNAVAILABLE) {
-    // camp.setStatus(campStatus.AVAILABLE);
-    // }
-    // }
-    // CampRepository.getInstance().updateAll(camps);
-    // }
 }
