@@ -193,14 +193,14 @@ public class Suggestion implements Request{
 		else
 			status = "ERROR";
 
-
-		return String.format("|                       %-24s    |\n", status)+
+		return String.format("|                     %-26s    |\n", status)+
                 "|---------------------------------------------------|\n" +
                 String.format("| Enquiry ID                | %-21s |\n", getID()) +
                 String.format("| Student ID                | %-21s |\n", getSenderID()) +
                 String.format("| Camp ID                   | %-21s |\n", getCampID()) +
+				"|---------------------------------------------------|\n" +
                 String.format("|                 Suggested Edits                   |\n") +
-
+				"|---------------------------------------------------|\n" +
 				String.format("| Camp Name                 | %-21s |\n", getCampName())+
 				String.format("| Camp Dates                | %-21s |\n", getDates())+
 				String.format("| Registration Closing Date | %-21s |\n", getRegistrationClosingDate())+
@@ -223,14 +223,14 @@ public class Suggestion implements Request{
 		else
 			status = "ERROR";
 
-
-		return String.format("|                       %-24s    |\n", status)+
+		return String.format("|                     %-26s    |\n", status)+
                 "|---------------------------------------------------|\n" +
                 String.format("| Enquiry ID                | %-21s |\n", getID()) +
                 String.format("| Student ID                | %-21s |\n", getSenderID()) +
                 String.format("| Camp ID                   | %-21s |\n", getCampID()) +
+				"|---------------------------------------------------|\n" +
                 String.format("|                 Suggested Edits                   |\n") +
-
+				"|---------------------------------------------------|\n" +
 				String.format("| Camp Name                 | %-21s |\n", getCampName())+
 				String.format("| Camp Dates                | %-21s |\n", getDates())+
 				String.format("| Registration Closing Date | %-21s |\n", getRegistrationClosingDate())+

@@ -1,24 +1,15 @@
 package main.boundary.mainpage;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
 import main.boundary.account.ChangeAccountPassword;
 import main.boundary.account.Logout;
 import main.boundary.account.ViewUserProfile;
 import main.boundary.modelviewer.CampViewer;
 import main.boundary.modelviewer.ModelViewer;
-
 import main.controller.request.StaffManager;
 import main.controller.camp.CampManager;
 import main.controller.request.RequestManager;
 import main.model.camp.Camp;
-import main.model.request.Request;
-import main.model.request.Enquiry;
+import main.model.request.Suggestion;
 import main.model.request.RequestStatus;
 import main.model.user.Faculty;
 import main.model.user.Staff;
@@ -33,15 +24,15 @@ import main.repository.camp.CampRepository;
 import main.utils.exception.ModelAlreadyExistsException;
 import main.utils.exception.ModelNotFoundException;
 import main.utils.exception.PageBackException;
-//import main.utils.exception.SupervisorStudentsLimitExceedException;
-//import main.utils.iocontrol.CSVWritter;
+import main.utils.iocontrol.CSVWritter;
 import main.utils.config.Location;
 import main.utils.iocontrol.IntGetter;
-import main.utils.iocontrol.CSVWritter;
 import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
 
-import java.util.Objects;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Scanner;
 
 /**
@@ -64,11 +55,11 @@ public class StaffMainPage {
             System.out.println("\t1. View my profile");
             System.out.println("\t2. Change my password");
             System.out.println("\t3. View all Camps");
-            System.out.println("\t4. Create a new Camp");
-            System.out.println("\t5. Edit an existing Camp");
-            System.out.println("\t6. Delete an existing Camp");
-            System.out.println("\t7. View and Reply enquiries");
-            System.out.println("\t8. View and Handle suggestions");
+            System.out.println("\t4. Create Camp");
+            System.out.println("\t5. View and edit my Camps");
+            System.out.println("\t6. Delete Camp");
+            System.out.println("\t7. View and Reply Enquiries");
+            System.out.println("\t8. View and Handle Suggestions");
             System.out.println("\t9. Generate Reports");
             System.out.println("\t10. Logout");
             System.out.println(BoundaryStrings.separator);
@@ -93,9 +84,9 @@ public class StaffMainPage {
                     case 4 -> createCamp(user);
                     case 5 -> editExistingCamp(user);
                     case 6 -> deleteExistingCamp(user);
-                    case 7 -> viewAndReplyPendingEnquiries(user);
-                    case 8 -> viewAndHandlePendingSuggestions(user);
-                    case 9 -> generateReports(user);
+                    //case 7 -> viewAndReplyPendingEnquiries(user);//to implement
+                    //case 8 -> viewAndHandlePendingSuggestions(user);//to implement
+                    case 9 -> generateReports(user);//to implement
                     case 10 -> Logout.logout();
                     default -> {
                         System.out.println("Invalid choice. Please press <enter> to try again.");
@@ -122,11 +113,12 @@ public class StaffMainPage {
         System.out.println(BoundaryStrings.separator);
         System.out.println("Enter a camp Name:");
         String name = new Scanner(System.in).nextLine();
-        System.out.println("Enter a camp Date, YYYY-MM-DD:");
+        System.out.println("Enter a camp Date, YYYYMMDD-YYYMMDD:");
         String date = new Scanner(System.in).nextLine();
-        System.out.println("Enter a camp Registration Closing Date, YYYY-MM-DD:");
+        System.out.println("Enter a camp Registration Closing Date, YYYMMDD:");
         String registrationClosingDateDate = new Scanner(System.in).nextLine();
         System.out.println("Please select school that camp is open to:");
+        System.out.println("NTU,ADM,EEE,NBS,SCSE,SSS");
         String userInput = new Scanner(System.in).nextLine();
         Faculty faculty = Faculty.NTU;
 
@@ -290,76 +282,76 @@ public class StaffMainPage {
         throw new PageBackException();
     }
 
-    private static void viewAndReplyPendingEnquiries(User user) throws ModelNotFoundException, PageBackException {
-        ChangePage.changePage();
-        System.out.println(BoundaryStrings.separator);
-        System.out.println("View Pending Enquiries");
-        System.out.println();
-        ModelViewer.displayListOfDisplayable(
-            CampManager.getAllPendingEnquiriesByStaff((Staff) user));
-        System.out.println("Which enquiry ID do you want to reply");
-        Scanner scanner = new Scanner(System.in);
-        String enquiryID = scanner.nextLine();
-        Enquiry enquiry = (Enquiry) EnquiryRepository.getInstance().getByID(enquiryID);
-        System.out.println("Reply Message");
-        String message = scanner.nextLine();
-        enquiry.setMessage(message);
-        enquiry.setReplierID(user.getID());
-        enquiry.setRequestStatus(RequestStatus.REPLIED);
-        EnquiryRepository.getInstance().update(enquiry);
-        System.out.println("Successfully replied an enquiry:");
-        System.out.println();
-        System.out.println("Have other enquiry to reply?");
-        System.out.println("\t0. No");
-        System.out.println("\t1. Yes");
-        int choice = scanner.nextInt();
-        if (choice == 1) {
-            viewAndReplyPendingEnquiries(user);
-        }
-        ModelViewer.displaySingleDisplayable(enquiry);
-        System.out.println(BoundaryStrings.separator);
-        System.out.println("Press enter to go back.");
-        scanner.nextLine();
-        throw new PageBackException();
-    }
+    // private static void viewAndReplyPendingEnquiries(User user) throws ModelNotFoundException, PageBackException {
+    //     ChangePage.changePage();
+    //     System.out.println(BoundaryStrings.separator);
+    //     System.out.println("View Pending Enquiries");
+    //     System.out.println();
+    //     ModelViewer.displayListOfDisplayable(
+    //         CampManager.getAllPendingEnquiriesByStaff((Staff) user));
+    //     System.out.println("Which enquiry ID do you want to reply");
+    //     Scanner scanner = new Scanner(System.in);
+    //     String enquiryID = scanner.nextLine();
+    //     Enquiry enquiry = (Enquiry) EnquiryRepository.getInstance().getByID(enquiryID);
+    //     System.out.println("Reply Message");
+    //     String message = scanner.nextLine();
+    //     enquiry.setMessage(message);
+    //     enquiry.setReplierID(user.getID());
+    //     enquiry.setRequestStatus(RequestStatus.REPLIED);
+    //     EnquiryRepository.getInstance().update(enquiry);
+    //     System.out.println("Successfully replied an enquiry:");
+    //     System.out.println();
+    //     System.out.println("Have other enquiry to reply?");
+    //     System.out.println("\t0. No");
+    //     System.out.println("\t1. Yes");
+    //     int choice = scanner.nextInt();
+    //     if (choice == 1) {
+    //         viewAndReplyPendingEnquiries(user);
+    //     }
+    //     ModelViewer.displaySingleDisplayable(enquiry);
+    //     System.out.println(BoundaryStrings.separator);
+    //     System.out.println("Press enter to go back.");
+    //     scanner.nextLine();
+    //     throw new PageBackException();
+    // }
 
-    private static void viewAndHandlePendingSuggestions(User user) throws ModelNotFoundException, PageBackException {
-        ChangePage.changePage();
-        System.out.println(BoundaryStrings.separator);
-        System.out.println("View Pending Suggestions");
-        System.out.println();
-        ModelViewer.displayListOfDisplayable(
-            CampManager.getAllPendingSuggestionsByStaff((Staff) user));
-        System.out.println("Which Suggestion ID do you want to reply");
-        Scanner scanner = new Scanner(System.in);
-        String suggestionID = scanner.nextLine();
-        Suggestion suggestion = (Suggestion) EnquiryRepository.getInstance().getByID(suggestionID);
-        System.out.println("Handle Suggestion, type Approve[Y] or Reject[N]");
-        System.out.println("\t0. Go Back");
-        System.out.println("\t1. Approve");
-        System.out.println("\t2. Reject");
-        int choice = scanner.nextInt();
-        switch (choice) {
-            case 0 -> viewAndHandlePendingSuggestions(user);
-            case 1 -> suggestion.setRequestStatus(RequestStatus.APPROVED);
-            case 2 -> suggestion.setRequestStatus(RequestStatus.DENIED);
-        }
-        suggestion.setReplierID(user.getID());
-        EnquiryRepository.getInstance().update(suggestion);
-        System.out.println("Successfully handled a suggestion:");
-        System.out.println();
-        System.out.println("Have other suggestion to handle?");
-        System.out.println("\t0. No");
-        System.out.println("\t1. Yes");
-        choice = scanner.nextInt();
-        if (choice == 1) {
-            viewAndHandlePendingSuggestions(user);
-        }
-        System.out.println(BoundaryStrings.separator);
-        System.out.println("Press enter to go back.");
-        scanner.nextLine();
-        throw new PageBackException();
-    }
+    // private static void viewAndHandlePendingSuggestions(User user) throws ModelNotFoundException, PageBackException {
+    //     ChangePage.changePage();
+    //     System.out.println(BoundaryStrings.separator);
+    //     System.out.println("View Pending Suggestions");
+    //     System.out.println();
+    //     ModelViewer.displayListOfDisplayable(
+    //         CampManager.getAllPendingSuggestionsByStaff((Staff) user));
+    //     System.out.println("Which Suggestion ID do you want to reply");
+    //     Scanner scanner = new Scanner(System.in);
+    //     String suggestionID = scanner.nextLine();
+    //     Suggestion suggestion = (Suggestion) EnquiryRepository.getInstance().getByID(suggestionID);
+    //     System.out.println("Handle Suggestion, type Approve[Y] or Reject[N]");
+    //     System.out.println("\t0. Go Back");
+    //     System.out.println("\t1. Approve");
+    //     System.out.println("\t2. Reject");
+    //     int choice = scanner.nextInt();
+    //     switch (choice) {
+    //         case 0 -> viewAndHandlePendingSuggestions(user);
+    //         case 1 -> suggestion.setRequestStatus(RequestStatus.APPROVED);
+    //         case 2 -> suggestion.setRequestStatus(RequestStatus.DENIED);
+    //     }
+    //     suggestion.setReplierID(user.getID());
+    //     EnquiryRepository.getInstance().update(suggestion);
+    //     System.out.println("Successfully handled a suggestion:");
+    //     System.out.println();
+    //     System.out.println("Have other suggestion to handle?");
+    //     System.out.println("\t0. No");
+    //     System.out.println("\t1. Yes");
+    //     choice = scanner.nextInt();
+    //     if (choice == 1) {
+    //         viewAndHandlePendingSuggestions(user);
+    //     }
+    //     System.out.println(BoundaryStrings.separator);
+    //     System.out.println("Press enter to go back.");
+    //     scanner.nextLine();
+    //     throw new PageBackException();
+    // }
 
     private static void generateReports(User user) throws IOException, PageBackException {
         ChangePage.changePage();

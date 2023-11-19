@@ -2,10 +2,8 @@ package main.boundary.modelviewer;
 
 import main.controller.camp.CampManager;
 import main.model.camp.Camp;
-//import main.model.project.ProjectStatus;
 import main.model.user.Student;
 import main.model.user.Staff;
-//import main.model.user.StudentStatus;
 import main.repository.camp.CampRepository;
 import main.repository.user.StaffRepository;
 import main.utils.exception.ModelNotFoundException;

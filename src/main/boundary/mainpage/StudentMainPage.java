@@ -6,13 +6,13 @@ import main.boundary.account.ViewUserProfile;
 import main.boundary.modelviewer.ModelViewer;
 import main.boundary.modelviewer.CampViewer;
 import main.controller.account.AccountManager;
-import main.controller.camp.CampManager;
 import main.controller.request.StudentManager;
-import main.model.camp.Camp;
-import main.utils.config.CurrentDate;
-
-
+import main.controller.camp.CampManager;
+import main.controller.request.RequestManager; 
 import main.model.user.*;
+import main.model.camp.Camp;
+import main.model.request.Enquiry; 
+import main.model.request.Suggestion;
 import main.repository.camp.CampRepository;
 import main.repository.request.EnquiryRepository;
 import main.repository.request.SuggestionRepository;
@@ -24,10 +24,7 @@ import main.utils.iocontrol.IntGetter;
 import main.utils.parameters.EmptyID;
 import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
-import main.model.request.Enquiry; 
-import main.model.request.Suggestion;
-import main.model.request.RequestFactory; 
-import main.model.request.RequestType;
+import main.utils.config.CurrentDate;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,10 +34,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
-import javax.management.RuntimeErrorException;
-
-import main.controller.request.RequestManager; 
 
 /**
  * This is a Java class that represents the main page of a student in a system or application. It contains several methods for displaying different functionalities of the student main page, such as viewing the user profile, changing the password, viewing project lists, registering/deregistering for projects, changing project title, viewing project history and status, and logging out.

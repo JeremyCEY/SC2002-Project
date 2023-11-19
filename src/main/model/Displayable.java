@@ -1,6 +1,5 @@
 package main.model;
 
-import java.util.List;
 
 public interface Displayable {
     //returns formatted string representation of the object

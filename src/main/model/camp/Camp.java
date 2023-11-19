@@ -2,16 +2,9 @@ package main.model.camp;
 
 import main.model.Displayable;
 import main.model.Model;
-import main.model.user.Student;
-import main.model.user.Staff;
-import main.repository.user.StudentRepository;
-import main.repository.user.StaffRepository;
-import main.utils.exception.ModelNotFoundException;
-import main.utils.parameters.EmptyID;
 import main.model.user.Faculty;
 
 import java.util.Map;
-import java.util.List;
 
 public class Camp implements Model, Displayable {
 
@@ -49,11 +42,6 @@ public class Camp implements Model, Displayable {
 	public Camp(Map<String, String> map){
 		fromMap(map);
 	}
-
-	/*private void displayStudentList{
-		
-	}*/
-
 
 	public String getID() {
 		return this.campID;
@@ -161,7 +149,7 @@ public class Camp implements Model, Displayable {
 		this.visibility = visibility;
 	}
 
-	 /** TO DO TO DO TO DO
+	 /** TO DO 
      * Display the complete information of the camp.
      */
     private String getSingleCampString() {
@@ -215,8 +203,6 @@ public class Camp implements Model, Displayable {
 				String.format("| Registration Closing        | %-30s |\n", getRegistrationClosingDate()) +
 				String.format("| Description                 | %-30s |\n", getDescription())+
 				String.format("| Location                    | %-30s |\n", getLocation());
-				//getProjectStudentInformationString() +  //getStudentList?
-		//return "EXAMPLE";
     }
 
 	private String getSingleCampStringWithType(String type) {
@@ -271,10 +257,7 @@ public class Camp implements Model, Displayable {
 				String.format("| Description                 | %-30s |\n", getDescription())+
 				String.format("| Location                    | %-30s |\n", getLocation())+
 				String.format("| Attending as a              | %-30s |\n", type);
-				//getProjectStudentInformationString() +  //getStudentList?
-		//return "EXAMPLE";
     }
-
 
 
 	@Override

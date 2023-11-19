@@ -1,20 +1,9 @@
 package main.controller.request; 
 
-import main.model.request.RequestType;
-import main.model.request.RequestAdder;
-import main.model.request.RequestFactory;
-import main.model.camp.Camp;
-import main.model.request.Request;
-
-import java.util.List;
-import java.util.Map;
-
-import main.controller.account.password.PasswordManager;
-import main.controller.account.user.UserAdder;
-import main.controller.account.user.UserFinder;
-import main.controller.account.user.UserUpdater;
 import main.model.user.*;
 import main.repository.camp.CampRepository;
+import main.model.camp.Camp;
+import main.model.request.Request;
 import main.repository.request.EnquiryRepository;
 import main.model.request.Suggestion;
 import main.repository.user.StaffRepository;
@@ -26,40 +15,12 @@ import main.utils.config.Location;
 import main.utils.exception.PasswordIncorrectException;
 import main.utils.exception.ModelAlreadyExistsException;
 import main.utils.exception.ModelNotFoundException;
+
+import java.util.List;
+import java.util.Map;
+
 public class RequestManager {
-    // public static void loadUsers(RequestType request_type, String requestID,String campid, String studentID, String message, String replierID) {
-    //     loadEnquiry(requestID,campid, studentID, message, replierID);
-    //     //loadSuggestion();
-    // }
 
-
-   
-    // public static Request register(RequestType request_type, String requestID,String campid, String studentID, String message)
-    //     throws ModelAlreadyExistsException {
-    //         Request request = RequestFactory.createRequest(request_type, requestID, campid, studentID, message);
-    //         RequestAdder.addRequest(request);
-    //         return request; 
-    // }
-
-    // public static void loadEnquiry(String requestID,String campid, String studentID, String message) {
-
-    //     try {
-    //         register(RequestType.ENQUIRY, requestID, campid, studentID, message); 
-    //     } catch (ModelAlreadyExistsException e) {
-    //         e.printStackTrace();
-    //     }
-
-    // }
-
-    // public static void loadSuggestion(String requestID,String campid, String studentID, String message, String replierID) {
-    //     try {
-    //         register(RequestType.ENQUIRY, requestID, campid, studentID, message, replierID); 
-    //     } catch (ModelAlreadyExistsException e) {
-    //         e.printStackTrace();
-    //     }
-
-
-    // }
 
     public static List<Enquiry> viewAllEnquiry() {
         return EnquiryRepository.getInstance().getList();
