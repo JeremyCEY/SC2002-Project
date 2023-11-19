@@ -4,9 +4,6 @@ import java.util.Map;
 import main.utils.parameters.EmptyID;
 
 public class Enquiry implements Request{
-
-
-	//private final RequestType requestType = RequestType.ENQUIRY;
 	private String requestID; 
 	private RequestStatus requestStatus = RequestStatus.PENDING; 
 	private String campID;
@@ -60,12 +57,6 @@ public class Enquiry implements Request{
 		return this.requestStatus;
 	}
 
-	// public RequestType getRequestType(){
-	// 	return this.requestType;
-	// }
-
-
-
 	public void setID(String requestID) {
 		this.requestID = requestID;
 	}
@@ -107,47 +98,29 @@ public class Enquiry implements Request{
 		else
 			status = "ERROR";
 		
-        int maxTitleLength = 10;
-        String titleLine1;
-        String titleLine2;
 
-        if (status.length() <= maxTitleLength) {
-            int leftPadding = (maxTitleLength - status.length()) / 2;
-            int rightPadding = maxTitleLength - status.length() - leftPadding;
-            titleLine1 = String.format("| %-" + leftPadding + "s%-" + status.length() + "s%-" + rightPadding + "s |\n", "", status, "");
-            titleLine2 = "";
-        } else {
-            String[] words = status.split("\\s+");
-            String firstLine = "";
-            String secondLine = "";
-            int remainingLength = maxTitleLength;
-            int i = 0;
-            while (i < words.length) {
-                if (firstLine.length() + words[i].length() + 1 <= maxTitleLength) {
-                    firstLine += words[i] + " ";
-                    remainingLength = maxTitleLength - firstLine.length();
-                    i++;
-                } else {
-                    break;
-                }
-            }
-            for (; i < words.length; i++) {
-                if (secondLine.length() + words[i].length() + 1 <= maxTitleLength) {
-                    secondLine += words[i] + " ";
-                } else {
-                    break;
-                }
-            }
-            int leftPadding1 = (maxTitleLength - firstLine.length()) / 2;
-            int leftPadding2 = (maxTitleLength - secondLine.length()) / 2;
-            int rightPadding1 = maxTitleLength - firstLine.length() - leftPadding1;
-            int rightPadding2 = maxTitleLength - secondLine.length() - leftPadding2;
-            titleLine1 = String.format("| %-" + leftPadding1 + "s%-" + firstLine.length() + "s%-" + rightPadding1 + "s |\n", "", firstLine.trim(), "");
-            titleLine2 = String.format("| %-" + leftPadding2 + "s%-" + secondLine.length() + "s%-" + rightPadding2 + "s |\n", "", secondLine.trim(), "");
-        }
+        return String.format("|                     %-26s    |\n", status)+
+                "|---------------------------------------------------|\n" +
+                String.format("| Enquiry ID             | %-24s |\n", getID()) +
+                String.format("| Student ID             | %-24s |\n", getSenderID()) +
+                String.format("| Camp ID                | %-24s |\n", getCampID()) +
+				String.format("| Message                | %-24s |\n", getMessage()) +
+				String.format("| Replier ID             | %-24s |\n", getReplierID());
+	}
+
+
+	//method for show
+	public String getDisplayableStringWithType(String type){
+        String status = null;
+		if (getRequestStatus()==RequestStatus.PENDING)
+			status = "PENDING";
+		else if (getRequestStatus()==RequestStatus.REPLIED)
+			status = "REPLIED";
+		else
+			status = "ERROR";
+		
 
         return String.format("|                       %-24s    |\n", status)+
-		// titleLine1 + titleLine2 +
                 "|---------------------------------------------------|\n" +
                 String.format("| Enquiry ID             | %-24s |\n", getID()) +
                 String.format("| Student ID             | %-24s |\n", getSenderID()) +

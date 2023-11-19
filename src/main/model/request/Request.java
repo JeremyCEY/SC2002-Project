@@ -9,16 +9,13 @@ public interface Request extends Model, Displayable {
 	String getCampID();
 	String getSenderID();
 	String getReplierID();
-	// String getMessage();
 	RequestStatus getRequestStatus();
-	RequestType getRequestType();
 
 
 	void setID(String id);
 	void setCampID(String campID);
 	void setSenderID(String senderID);
 	void setReplierID(String replyID);
-	// void setMessage(String message);
 	void setRequestStatus(RequestStatus status);
 
 

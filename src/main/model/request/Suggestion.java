@@ -1,16 +1,11 @@
 package main.model.request;
 
-import java.util.Map;
-
-import main.model.request.Request;
-import main.model.request.RequestStatus;
-import main.model.request.RequestType;
-import main.utils.parameters.EmptyID;
 import main.model.user.Faculty;
+import java.util.Map;
+import main.utils.parameters.EmptyID;
 
 public class Suggestion implements Request{
 
-	private final RequestType requestType = RequestType.SUGGESTION;
 	private String requestID;
 	private RequestStatus requestStatus = RequestStatus.PENDING;
 	private String campID;
@@ -74,10 +69,6 @@ public class Suggestion implements Request{
 
 	public RequestStatus getRequestStatus(){
 		return this.requestStatus;
-	}
-
-	public RequestType getRequestType(){
-		return this.requestType;
 	}
 
 
@@ -201,48 +192,9 @@ public class Suggestion implements Request{
 			status = "DENIED";
 		else
 			status = "ERROR";
-		
-        int maxTitleLength = 10;
-        String titleLine1;
-        String titleLine2;
 
-        if (status.length() <= maxTitleLength) {
-            int leftPadding = (maxTitleLength - status.length()) / 2;
-            int rightPadding = maxTitleLength - status.length() - leftPadding;
-            titleLine1 = String.format("| %-" + leftPadding + "s%-" + status.length() + "s%-" + rightPadding + "s |\n", "", status, "");
-            titleLine2 = "";
-        } else {
-            String[] words = status.split("\\s+");
-            String firstLine = "";
-            String secondLine = "";
-            int remainingLength = maxTitleLength;
-            int i = 0;
-            while (i < words.length) {
-                if (firstLine.length() + words[i].length() + 1 <= maxTitleLength) {
-                    firstLine += words[i] + " ";
-                    remainingLength = maxTitleLength - firstLine.length();
-                    i++;
-                } else {
-                    break;
-                }
-            }
-            for (; i < words.length; i++) {
-                if (secondLine.length() + words[i].length() + 1 <= maxTitleLength) {
-                    secondLine += words[i] + " ";
-                } else {
-                    break;
-                }
-            }
-            int leftPadding1 = (maxTitleLength - firstLine.length()) / 2;
-            int leftPadding2 = (maxTitleLength - secondLine.length()) / 2;
-            int rightPadding1 = maxTitleLength - firstLine.length() - leftPadding1;
-            int rightPadding2 = maxTitleLength - secondLine.length() - leftPadding2;
-            titleLine1 = String.format("| %-" + leftPadding1 + "s%-" + firstLine.length() + "s%-" + rightPadding1 + "s |\n", "", firstLine.trim(), "");
-            titleLine2 = String.format("| %-" + leftPadding2 + "s%-" + secondLine.length() + "s%-" + rightPadding2 + "s |\n", "", secondLine.trim(), "");
-        }
 
 		return String.format("|                       %-24s    |\n", status)+
-		// titleLine1 + titleLine2 +
                 "|---------------------------------------------------|\n" +
                 String.format("| Enquiry ID                | %-21s |\n", getID()) +
                 String.format("| Student ID                | %-21s |\n", getSenderID()) +
@@ -258,9 +210,36 @@ public class Suggestion implements Request{
 				String.format("| Committee Slots           | %-21s |\n", getCampCommSlots())+
 				String.format("| Description               | %-21s |\n", getDescription())+
 				String.format("| Staff in Charge           | %-21s |\n", getCampStaff());
+	}
+
+		public String getDisplayableStringWithType(String type){
+        String status = null;
+		if (getRequestStatus()==RequestStatus.PENDING)
+			status = "PENDING"; //add colours to statuses
+		else if (getRequestStatus()==RequestStatus.APPROVED)
+			status = "APPROVED";
+		else if (getRequestStatus()==RequestStatus.DENIED)
+			status = "DENIED";
+		else
+			status = "ERROR";
 
 
-				
+		return String.format("|                       %-24s    |\n", status)+
+                "|---------------------------------------------------|\n" +
+                String.format("| Enquiry ID                | %-21s |\n", getID()) +
+                String.format("| Student ID                | %-21s |\n", getSenderID()) +
+                String.format("| Camp ID                   | %-21s |\n", getCampID()) +
+                String.format("|                 Suggested Edits                   |\n") +
+
+				String.format("| Camp Name                 | %-21s |\n", getCampName())+
+				String.format("| Camp Dates                | %-21s |\n", getDates())+
+				String.format("| Registration Closing Date | %-21s |\n", getRegistrationClosingDate())+
+				String.format("| Camp Type                 | %-21s |\n", getCampTypeString(this.faculty))+
+				String.format("| Location                  | %-21s |\n", getLocation())+
+				String.format("| Attendee Slots            | %-21s |\n", getTotalSlots())+
+				String.format("| Committee Slots           | %-21s |\n", getCampCommSlots())+
+				String.format("| Description               | %-21s |\n", getDescription())+
+				String.format("| Staff in Charge           | %-21s |\n", getCampStaff());
 	}
 
 }

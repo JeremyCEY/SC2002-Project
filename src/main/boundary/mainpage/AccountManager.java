@@ -17,9 +17,9 @@ import main.model.user.Staff;
 import main.model.user.Student;
 import main.model.user.User;
 import main.model.user.UserType;
+import main.repository.Repository;
 import main.repository.user.StaffRepository;
 import main.repository.user.StudentRepository;
-import main.repository.Repository;
 import main.utils.exception.ModelNotFoundException;
 import main.utils.exception.PageBackException;
 import main.utils.exception.PasswordIncorrectException;
@@ -68,10 +68,10 @@ public class AccountManager {
             switch (domain) {
                 case STUDENT -> StudentMainPage.studentMainPage(user);
                 case STAFF -> StaffMainPage.staffMainPage(user);
-                case CAMPCOM -> campComMainPage.campComMainPage(user);
+                // case CAMPCOM -> campComMainPage.campComMainPage(user);
                 default -> throw new IllegalStateException("Unexpected value: " + domain);
             }
-            return;
+            
         } catch (PasswordIncorrectException e) {
             System.out.println("Password incorrect.");
         } catch (ModelNotFoundException e) {

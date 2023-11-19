@@ -1,5 +1,7 @@
 package main;
+
 import java.util.*;
+
 import main.boundary.UIEntry;
 import main.boundary.mainpage.StaffMainPage;
 import main.boundary.mainpage.StudentMainPage;
@@ -17,8 +19,8 @@ public class main {
         // UIEntry.start();
 
         // Skip to student page
-        // AccountManager.loadUsers();
-        //CampManager.loadcamps();
+        AccountManager.loadUsers();
+        CampManager.loadcamps();
         try {
             User user = AccountManager.login(UserType.STUDENT, "YCHERN", "password");
             StudentMainPage.studentMainPage(user);

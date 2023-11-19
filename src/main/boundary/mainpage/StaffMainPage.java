@@ -16,20 +16,17 @@ import main.boundary.modelviewer.ModelViewer;
 import main.controller.request.StaffManager;
 import main.controller.camp.CampManager;
 import main.controller.request.RequestManager;
-//import main.model.request.Request;
-//import main.model.request.RequestStatus;
-//import main.model.request.RequestType;
 import main.model.camp.Camp;
+import main.model.request.Request;
 import main.model.request.Enquiry;
 import main.model.request.RequestStatus;
-import main.model.request.RequestType;
 import main.model.user.Faculty;
 import main.model.user.Staff;
 import main.model.user.Student;
 import main.model.user.User;
 import main.model.user.UserType;
 import main.repository.request.EnquiryRepository;
-import main.repository.request.Suggestion;
+import main.repository.request.SuggestionRepository;
 import main.repository.user.StaffRepository;
 import main.repository.user.StudentRepository;
 import main.repository.camp.CampRepository;
@@ -73,6 +70,7 @@ public class StaffMainPage {
             System.out.println("\t7. View and Reply enquiries");
             System.out.println("\t8. View and Handle suggestions");
             System.out.println("\t9. Generate Reports");
+            System.out.println("\t10. Logout");
             System.out.println(BoundaryStrings.separator);
 
             System.out.println();
@@ -98,6 +96,7 @@ public class StaffMainPage {
                     case 7 -> viewAndReplyPendingEnquiries(user);
                     case 8 -> viewAndHandlePendingSuggestions(user);
                     case 9 -> generateReports(user);
+                    case 10 -> Logout.logout();
                     default -> {
                         System.out.println("Invalid choice. Please press <enter> to try again.");
                         new Scanner(System.in).nextLine();
