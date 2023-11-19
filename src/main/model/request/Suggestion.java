@@ -117,7 +117,7 @@ public class Suggestion implements Request{
 		return this.description;
 	}
 	
-	private String getCampStaff(){
+	public String getCampStaff(){
 		return this.campStaff;
 	}
 

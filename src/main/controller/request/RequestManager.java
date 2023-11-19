@@ -129,4 +129,64 @@ public class RequestManager {
     .collect(Collectors.toList());
     }
 
+    public static List<Suggestion> getAllPendingSuggestionsByStaff(Staff staff) {
+    List<String> campIDs = CampManager.getAllCampsByStaff(staff).stream()
+    .filter(
+    c -> c.getStaffID().equals(staff.getID())
+    && c.getVisibility().equals("true"))
+    .map(Camp::getID)
+    .collect(Collectors.toList());
+    return SuggestionRepository.getInstance().findByRules(
+    s -> s.getRequestStatus() == RequestStatus.PENDING,
+    s -> campIDs.contains(s.getCampID()))
+    .stream()
+    .map(r -> (Suggestion) r)
+    .collect(Collectors.toList());
+    }
+
+    public static void approveSuggestion(Suggestion s) throws ModelNotFoundException {
+        //update Camp details
+        String campID = s.getCampID();
+        Camp c = CampManager.getCampByID(campID);
+    
+        if (s.getCampName() != "") {
+            c.setCampName(s.getCampName());
+        }
+    
+        if (s.getDates() != "") {
+            c.setDates(s.getDates());
+        }
+    
+        if (s.getRegistrationClosingDate() != "") {
+            c.setRegistrationClosingDate(s.getRegistrationClosingDate());
+        }
+    
+        if (s.getCampType() != Faculty.NA) {
+            c.setCampType(s.getCampType());
+        }
+    
+        if (s.getLocation() != "") {
+            c.setLocation(s.getLocation());
+        }
+    
+        if (s.getTotalSlots() != -1) {
+            c.setTotalSlots(s.getTotalSlots());
+        }
+    
+        if (s.getCampCommSlots() != -1) {
+            c.setCampCommSlots(s.getCampCommSlots());
+        }
+    
+        if (s.getDescription() != "") {
+            c.setDescription(s.getDescription());
+        }
+    
+        if (s.getCampStaff() != "") {
+            c.setStaffID(s.getCampStaff());
+        }
+    
+        CampManager.updateCamp(campID, c);
+        s.setRequestStatus(RequestStatus.APPROVED);
+    }
+
 }

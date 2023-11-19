@@ -87,6 +87,10 @@ public class Camp implements Model, Displayable {
 		return this.description;
 	}
 
+	public Faculty getCampType(){
+		return this.openTo;
+	}
+
 	public String getStaffID() {
 		return this.staffID;
 	}

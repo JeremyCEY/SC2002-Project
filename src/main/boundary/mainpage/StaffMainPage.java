@@ -60,8 +60,8 @@ public class StaffMainPage {
             System.out.println("\t4. Create Camp");
             System.out.println("\t5. View and edit my Camps");
             System.out.println("\t6. Delete Camp");
-            System.out.println("\t7. View and Reply Enquiries");
-            System.out.println("\t8. View and Handle Suggestions");
+            System.out.println("\t7. View and Reply Pending Enquiries");
+            System.out.println("\t8. View and Handle Pending Suggestions");
             System.out.println("\t9. Generate Reports");
             System.out.println("\t10. Logout");
             System.out.println(BoundaryStrings.separator);
@@ -87,7 +87,7 @@ public class StaffMainPage {
                     case 5 -> editExistingCamp(user);
                     case 6 -> deleteExistingCamp(user);
                     case 7 -> viewAndReplyPendingEnquiries(user);
-                    //case 8 -> viewPendingSuggestions(user);//to implement
+                    case 8 -> viewAndHandlePendingSuggestions(user);//to implement
                     case 9 -> generateReports(user);//to implement
                     case 10 -> Logout.logout();
                     default -> {
@@ -318,43 +318,44 @@ public class StaffMainPage {
         throw new PageBackException();
     }
 
-    // private static void viewAndHandlePendingSuggestions(User user) throws ModelNotFoundException, PageBackException {
-    //     ChangePage.changePage();
-    //     System.out.println(BoundaryStrings.separator);
-    //     System.out.println("View Pending Suggestions");
-    //     System.out.println();
-    //     ModelViewer.displayListOfDisplayable(
-    //         CampManager.getAllPendingSuggestionsByStaff((Staff) user));
-    //     System.out.println("Which Suggestion ID do you want to reply");
-    //     Scanner scanner = new Scanner(System.in);
-    //     String suggestionID = scanner.nextLine();
-    //     Suggestion suggestion = (Suggestion) EnquiryRepository.getInstance().getByID(suggestionID);
-    //     System.out.println("Handle Suggestion, type Approve[Y] or Reject[N]");
-    //     System.out.println("\t0. Go Back");
-    //     System.out.println("\t1. Approve");
-    //     System.out.println("\t2. Reject");
-    //     int choice = scanner.nextInt();
-    //     switch (choice) {
-    //         case 0 -> viewAndHandlePendingSuggestions(user);
-    //         case 1 -> suggestion.setRequestStatus(RequestStatus.APPROVED);
-    //         case 2 -> suggestion.setRequestStatus(RequestStatus.DENIED);
-    //     }
-    //     suggestion.setReplierID(user.getID());
-    //     EnquiryRepository.getInstance().update(suggestion);
-    //     System.out.println("Successfully handled a suggestion:");
-    //     System.out.println();
-    //     System.out.println("Have other suggestion to handle?");
-    //     System.out.println("\t0. No");
-    //     System.out.println("\t1. Yes");
-    //     choice = scanner.nextInt();
-    //     if (choice == 1) {
-    //         viewAndHandlePendingSuggestions(user);
-    //     }
-    //     System.out.println(BoundaryStrings.separator);
-    //     System.out.println("Press enter to go back.");
-    //     scanner.nextLine();
-    //     throw new PageBackException();
-    // }
+    private static void viewAndHandlePendingSuggestions(User user) throws ModelNotFoundException, PageBackException {
+        ChangePage.changePage();
+        System.out.println(BoundaryStrings.separator);
+        System.out.println("View Pending Suggestions");
+        System.out.println();
+        ModelViewer.displayListOfDisplayable(
+            RequestManager.getAllPendingSuggestionsByStaff((Staff) user));
+        System.out.println("Which Suggestion ID do you want to handle?:");
+        Scanner scanner = new Scanner(System.in);
+        String suggestionID = scanner.nextLine();
+        Suggestion suggestion = (Suggestion) SuggestionRepository.getInstance().getByID(suggestionID);
+        System.out.println("Handle Suggestion, type Approve[Y] or Reject[N]");
+        System.out.println("\t0. Go Back");
+        System.out.println("\t1. Approve");
+        System.out.println("\t2. Reject");
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 0 -> viewAndHandlePendingSuggestions(user);
+            case 1 -> RequestManager.approveSuggestion(suggestion);
+            case 2 -> suggestion.setRequestStatus(RequestStatus.DENIED);
+        }
+        suggestion.setReplierID(user.getID());
+        SuggestionRepository.getInstance().update(suggestion);
+        ChangePage.changePage();
+        System.out.println("Successfully handled a suggestion:");
+        System.out.println();
+        System.out.println("Have other suggestion to handle?");
+        System.out.println("\t0. No");
+        System.out.println("\t1. Yes");
+        choice = scanner.nextInt();
+        if (choice == 1) {
+            viewAndHandlePendingSuggestions(user);
+        }
+        System.out.println(BoundaryStrings.separator);
+        System.out.println("Press enter to go back.");
+        scanner.nextLine();
+        throw new PageBackException();
+    }
 
     private static void generateReports(User user) throws IOException, PageBackException {
         ChangePage.changePage();

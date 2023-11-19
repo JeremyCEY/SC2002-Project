@@ -363,38 +363,6 @@ public class CampManager {
         return CampRepository.getInstance().findByRules(c -> c.getStaffID().equals(staff.getID()));
     }
 
-    // public static List<Enquiry> getAllPendingEnquiriesByStaff(Staff staff) {
-    // List<String> campIDs = CampManager.getAllCampsByStaff(staff).stream()
-    // .filter(
-    // c -> c.getStaffID().equals(staff.getID())
-    // && c.getVisibility().equals("true"))
-    // .map(Camp::getID)
-    // .collect(Collectors.toList());
-    // return RequestRepository.getInstance().findByRules(
-    // r -> r.getRequestType() == RequestType.ENQUIRY,
-    // r -> r.getRequestStatus() == RequestStatus.PENDING,
-    // r -> campIDs.contains(r.getCampID()))
-    // .stream()
-    // .map(r -> (Enquiry) r)
-    // .collect(Collectors.toList());
-    // }
-
-    // public static List<Suggestion> getAllPendingSuggestionsByStaff(Staff staff) {
-    // List<String> campIDs = CampManager.getAllCampsByStaff(staff).stream()
-    // .filter(
-    // c -> c.getStaffID().equals(staff.getID())
-    // && c.getVisibility().equals("true"))
-    // .map(Camp::getID)
-    // .collect(Collectors.toList());
-    // return RequestRepository.getInstance().findByRules(
-    // r -> r.getRequestType() == RequestType.SUGGESTION,
-    // r -> r.getRequestStatus() == RequestStatus.PENDING,
-    // r -> campIDs.contains(r.getCampID()))
-    // .stream()
-    // .map(r -> (Suggestion) r)
-    // .collect(Collectors.toList());
-    // }
-
     /**
      * get camp by the camp ID
      * 
