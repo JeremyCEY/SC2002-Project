@@ -149,15 +149,15 @@ public class RequestManager {
         String campID = s.getCampID();
         Camp c = CampManager.getCampByID(campID);
     
-        if (s.getCampName() != "") {
+        if (!s.getCampName().equals("null")) {
             c.setCampName(s.getCampName());
         }
     
-        if (s.getDates() != "") {
+        if (!s.getDates().equals("null")) {
             c.setDates(s.getDates());
         }
     
-        if (s.getRegistrationClosingDate() != "") {
+        if (!s.getRegistrationClosingDate().equals("null")) {
             c.setRegistrationClosingDate(s.getRegistrationClosingDate());
         }
     
@@ -165,7 +165,7 @@ public class RequestManager {
             c.setCampType(s.getCampType());
         }
     
-        if (s.getLocation() != "") {
+        if (!s.getLocation().equals("null")) {
             c.setLocation(s.getLocation());
         }
     
@@ -177,11 +177,11 @@ public class RequestManager {
             c.setCampCommSlots(s.getCampCommSlots());
         }
     
-        if (s.getDescription() != "") {
+        if (!s.getDescription().equals("null")) {
             c.setDescription(s.getDescription());
         }
     
-        if (s.getCampStaff() != "") {
+        if (!s.getCampStaff().equals("null")) {
             c.setStaffID(s.getCampStaff());
         }
     

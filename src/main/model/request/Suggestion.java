@@ -31,15 +31,15 @@ public class Suggestion implements Request{
 		this.staffID = EmptyID.EMPTY_ID;
 		// this.message = message;
 
-		this.campName = null;
-		this.campDates = null;
-		this.registrationClosing = null;
+		this.campName = EmptyID.EMPTY_ID;
+		this.campDates = EmptyID.EMPTY_ID;
+		this.registrationClosing = EmptyID.EMPTY_ID;
 		this.faculty = Faculty.NA;
-		this.location = null;
+		this.location = EmptyID.EMPTY_ID;
 		this.totalSlots = -1;
 		this.campCommSlots = -1;
-		this.description = null;
-		this.campStaff = null;
+		this.description = EmptyID.EMPTY_ID;
+		this.campStaff = EmptyID.EMPTY_ID;
 	}
 
 	public Suggestion(Map<String, String> map){
