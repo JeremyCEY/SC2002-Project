@@ -168,6 +168,7 @@ public class CampManager {
         }
 
         student.removeACamp(campID);
+        student.addPCamp(campID);
         camp.setFilledSlots(camp.getFilledSlots() - 1);
         CampRepository.getInstance().update(camp);
         StudentRepository.getInstance().update(student);

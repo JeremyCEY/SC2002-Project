@@ -204,8 +204,18 @@ public class StudentMainPage {
         Camp camp;
         try {
             camp = CampManager.getByID(campID);
+            //Check if previously registered
+            if (student.getPCamps().contains(campID)) {
+                System.out.println("You are not allowed to register from this camp that you withdrawn from previously.");
+                System.out.println("Press Enter to go back, or enter [r] to retry.");
+                String choice = new Scanner(System.in).nextLine();
+                if (choice.equals("r")) {
+                    registerCampAttendee(student);
+                }
+                throw new PageBackException();
+            }
             //Check if already camp comm for this camp might be able to remove based on how we display avail camps
-            if (student.getCCamps().equals(campID)) {
+            else if (student.getCCamps().equals(campID)) {
                 System.out.println("You are already a camp committee for this camp.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
                 String choice = new Scanner(System.in).nextLine();
@@ -216,7 +226,7 @@ public class StudentMainPage {
             }
             //Check if no camps registered previously + clash?
             //Check deadline
-            if (checkClash(student, camp)) {
+            else if (checkClash(student, camp)) {
                 System.out.println("This camp's dates clashes with your other registered camps.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
                 String choice = new Scanner(System.in).nextLine();
@@ -541,46 +551,6 @@ public class StudentMainPage {
         return campID;
     }
     
-
-    /**
-     * This private method is called to view the history and status of the student's project. It displays the project's information.
-     *
-     * @param student the student.
-     * @throws PageBackException if the user wants to go back.
-     */
-    // private static void viewHistoryAndStatusOfMyProject(Student student) throws PageBackException {
-    //     ChangePage.changePage();
-    //     System.out.println("Here is the history and status of your project: ");
-    //     ModelViewer.displayListOfDisplayable(StudentManager.getStudentRequestHistory(student.getID()));
-    //     System.out.println("Press Enter to go back.");
-    //     new Scanner(System.in).nextLine();
-    //     throw new PageBackException();
-    // }
-
-
-
-    /**
-     * This private method is called to view the supervisor of the student's project. It displays the supervisor's information.
-     *
-     * @param student the student.
-     * @throws PageBackException if the user wants to go back.
-     */
-    // private static void viewMySupervisor(Student student) throws PageBackException {
-    //     ChangePage.changePage();
-    //     if (EmptyID.isEmptyID(student.getSupervisorID())) {
-    //         System.out.println("You do not have a supervisor.");
-    //     } else {
-    //         try {
-    //             Supervisor supervisor = (Supervisor) AccountManager.getByDomainAndID(UserType.FACULTY, student.getSupervisorID());
-    //             ViewUserProfile.viewUserProfile(supervisor);
-    //         } catch (ModelNotFoundException e) {
-    //             System.out.println("Your supervisor is not found.");
-    //         }
-    //     }
-    //     System.out.println("Press Enter to go back.");
-    //     new Scanner(System.in).nextLine();
-    //     throw new PageBackException();
-    // }
     public static void submitEnquiry(Student student) throws PageBackException{
         ChangePage.changePage(); 
         System.out.println("Here is the list of available camps: ");
