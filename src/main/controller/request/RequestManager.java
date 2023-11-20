@@ -125,7 +125,7 @@ public class RequestManager {
     e -> e.getRequestStatus() == RequestStatus.PENDING,
     e -> campIDs.contains(e.getCampID()))
     .stream()
-    .map(r -> (Enquiry) r)
+    .map(e -> (Enquiry) e)
     .collect(Collectors.toList());
     }
 
