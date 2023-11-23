@@ -182,35 +182,77 @@ public class Suggestion implements Request{
 	
 	
 	
-	public String getDisplayableString(){
-        String status = null;
-		if (getRequestStatus()==RequestStatus.PENDING)
-			status = "PENDING"; //add colours to statuses
-		else if (getRequestStatus()==RequestStatus.APPROVED)
-			status = "APPROVED";
-		else if (getRequestStatus()==RequestStatus.DENIED)
-			status = "DENIED";
-		else
-			status = "ERROR";
+	// public String getDisplayableString(){
+    //     String status = null;
+	// 	if (getRequestStatus()==RequestStatus.PENDING)
+	// 		status = "PENDING"; //add colours to statuses
+	// 	else if (getRequestStatus()==RequestStatus.APPROVED)
+	// 		status = "APPROVED";
+	// 	else if (getRequestStatus()==RequestStatus.DENIED)
+	// 		status = "DENIED";
+	// 	else
+	// 		status = "ERROR";
 
-		return String.format("|                     %-26s    |\n", status)+
-                "|---------------------------------------------------|\n" +
-                String.format("| Enquiry ID                | %-21s |\n", getID()) +
-                String.format("| Student ID                | %-21s |\n", getSenderID()) +
-                String.format("| Camp ID                   | %-21s |\n", getCampID()) +
-				"|---------------------------------------------------|\n" +
-                String.format("|                 Suggested Edits                   |\n") +
-				"|---------------------------------------------------|\n" +
-				String.format("| Camp Name                 | %-21s |\n", getCampName())+
-				String.format("| Camp Dates                | %-21s |\n", getDates())+
-				String.format("| Registration Closing Date | %-21s |\n", getRegistrationClosingDate())+
-				String.format("| Camp Type                 | %-21s |\n", getCampTypeString(this.faculty))+
-				String.format("| Location                  | %-21s |\n", getLocation())+
-				String.format("| Attendee Slots            | %-21s |\n", getTotalSlots())+
-				String.format("| Committee Slots           | %-21s |\n", getCampCommSlots())+
-				String.format("| Description               | %-21s |\n", getDescription())+
-				String.format("| Staff in Charge           | %-21s |\n", getCampStaff());
-	}
+	// 	return String.format("|                     %-26s    |\n", status)+
+    //             "|---------------------------------------------------|\n" +
+    //             String.format("| Enquiry ID                | %-21s |\n", getID()) +
+    //             String.format("| Student ID                | %-21s |\n", getSenderID()) +
+    //             String.format("| Camp ID                   | %-21s |\n", getCampID()) +
+	// 			"|---------------------------------------------------|\n" +
+    //             String.format("|                 Suggested Edits                   |\n") +
+	// 			"|---------------------------------------------------|\n" +
+	// 			String.format("| Camp Name                 | %-21s |\n", getCampName())+
+	// 			String.format("| Camp Dates                | %-21s |\n", getDates())+
+	// 			String.format("| Registration Closing Date | %-21s |\n", getRegistrationClosingDate())+
+	// 			String.format("| Camp Type                 | %-21s |\n", getCampTypeString(this.faculty))+
+	// 			String.format("| Location                  | %-21s |\n", getLocation())+
+	// 			String.format("| Attendee Slots            | %-21s |\n", getTotalSlots())+
+	// 			String.format("| Committee Slots           | %-21s |\n", getCampCommSlots())+
+	// 			String.format("| Description               | %-21s |\n", getDescription())+
+	// 			String.format("| Staff in Charge           | %-21s |\n", getCampStaff());
+	// }
+
+		public String getDisplayableString() {
+			String status = null;
+			if (getRequestStatus() == RequestStatus.PENDING)
+				status = "PENDING"; // add colors to statuses
+			else if (getRequestStatus() == RequestStatus.APPROVED)
+				status = "APPROVED";
+			else if (getRequestStatus() == RequestStatus.DENIED)
+				status = "DENIED";
+			else
+				status = "ERROR";
+		
+			StringBuilder result = new StringBuilder(String.format("|                     %-26s    |\n", status) +
+					"|---------------------------------------------------|\n" +
+					String.format("| Enquiry ID                | %-21s |\n", getID()) +
+					String.format("| Student ID                | %-21s |\n", getSenderID()) +
+					String.format("| Camp ID                   | %-21s |\n", getCampID()) +
+					"|---------------------------------------------------|\n" +
+					String.format("|                 Suggested Edits                   |\n") +
+					"|---------------------------------------------------|\n");
+		
+			// Check and display suggested edits only if they are not null for string stuff or -1 for int or "NA" for faculty
+			if (getCampName() != null) {
+				result.append(String.format("| Camp Name                 | %-21s |\n", getCampName()));
+			}
+			if (getDates() != null) {
+				result.append(String.format("| Camp Dates                | %-21s |\n", getDates()));
+			}
+			if (getRegistrationClosingDate() != null) {
+				result.append(String.format("| Registration Closing Date | %-21s |\n", getRegistrationClosingDate()));
+			}
+			if (getCampTypeString(this.faculty) != null) {
+				result.append(String.format("| Camp Type                 | %-21s |\n", getCampTypeString(this.faculty)));
+			}
+			if (getLocation() != null) {
+				result.append(String.format("| Location                  | %-21s |\n", getLocation()));
+			}
+			// Add similar if statements for other fields
+		
+			return result.toString();
+		}
+	
 
 		public String getDisplayableStringWithType(String type){
         String status = null;

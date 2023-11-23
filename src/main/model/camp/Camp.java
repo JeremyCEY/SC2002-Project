@@ -171,12 +171,12 @@ public class Camp implements Model, Displayable {
             String[] words = campName.split("\\s+");
             String firstLine = "";
             String secondLine = "";
-            int remainingLength = maxTitleLength;
+            //int remainingLength = maxTitleLength;
             int i = 0;
             while (i < words.length) {
                 if (firstLine.length() + words[i].length() + 1 <= maxTitleLength) {
                     firstLine += words[i] + " ";
-                    remainingLength = maxTitleLength - firstLine.length();
+                   // remainingLength = maxTitleLength - firstLine.length();
                     i++;
                 } else {
                     break;
@@ -224,12 +224,12 @@ public class Camp implements Model, Displayable {
             String[] words = campName.split("\\s+");
             String firstLine = "";
             String secondLine = "";
-            int remainingLength = maxTitleLength;
+            //int remainingLength = maxTitleLength;
             int i = 0;
             while (i < words.length) {
                 if (firstLine.length() + words[i].length() + 1 <= maxTitleLength) {
                     firstLine += words[i] + " ";
-                    remainingLength = maxTitleLength - firstLine.length();
+              //      remainingLength = maxTitleLength - firstLine.length();
                     i++;
                 } else {
                     break;
