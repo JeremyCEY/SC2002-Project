@@ -28,70 +28,126 @@ public class StudentMainPage {
      */
     public static void studentMainPage(User user) {
         if (user instanceof Student student) {
-            ChangePage.changePage();
-            System.out.println(BoundaryStrings.separator);
-            System.out.println("Welcome to Student Main Page");
-            System.out.println("Hello, " + student.getUserName() + "!");
-            System.out.println();
-            System.out.println("\t1. View my profile");
-            System.out.println("\t2. Change my password");
-            System.out.println("\t3. View all Camps");
-            System.out.println("\t4. View Registered Camps");
-            System.out.println("\t5. Camp Attendee Registration");
-            System.out.println("\t6. Withdraw from Camp");
-            System.out.println("\t7. Camp Committee Registration");
-            System.out.println("\t8. Submit Enquiry");
-            System.out.println("\t9. View Enquiry (Edit/Delete)");//edit and delete option inside
-            System.out.println("\t10. Submit Suggestion");
-            System.out.println("\t11. View Suggestion (Edit/Delete)");//edit and delete option inside
-            System.out.println("\t12. Logout");
-            System.out.println(BoundaryStrings.separator);
+            if (!student.getCCamps().equals("null")){
+                ChangePage.changePage();
+                System.out.println(BoundaryStrings.separator);
+                System.out.println("Welcome to Student Main Page");
+                System.out.println("Hello, " + student.getUserName() + "!");
+                System.out.println();
+                System.out.println("\t1. View my profile");
+                System.out.println("\t2. Change my password");
+                System.out.println("\t3. View all Camps");
+                System.out.println("\t4. View Registered Camps");
+                System.out.println("\t5. Camp Attendee Registration");
+                System.out.println("\t6. Withdraw from Camp");
+                System.out.println("\t7. Camp Committee Registration");
+                System.out.println("\t8. Submit Enquiry");
+                System.out.println("\t9. View Enquiry (Edit/Delete)");
+                System.out.println("\t10. Logout");
+                System.out.println();
+                System.out.println("Camp Committee Menu");
+                System.out.println();
+                System.out.println("\t11. Submit Suggestion");
+                System.out.println("\t12. View Suggestion (Edit/Delete)");
+                System.out.println("\t13. Reply to Enquiries");
+                System.out.println("\t14. Generate Camp List");
 
-            System.out.println();
-            System.out.print("Please enter your choice: ");
+                System.out.println(BoundaryStrings.separator);
 
-            int choice = IntGetter.readInt();
+                System.out.println();
+                System.out.print("Please enter your choice: ");
 
-            try {
-                student = StudentRepository.getInstance().getByID(student.getID());
-            } catch (ModelNotFoundException e) {
-                e.printStackTrace();
-            }
+                int choice = IntGetter.readInt();
 
-            try {
-                switch (choice) {
-                    case 1 -> ViewUserProfile.viewUserProfilePage(student);
-                    case 2 -> ChangeAccountPassword.changePassword(UserType.STUDENT, student.getID());
-                    case 3 -> CampViewer.viewVisibleFacultyCampList(student);
-                    case 4 -> CampViewer.viewStudentCamps(student);
-                    case 5 -> StudentManager.registerCampAttendee(student);
-                    case 6 -> StudentManager.withdrawCampAttendee(student);
-                    case 7 -> StudentManager.registerCampCommittee(student);
-                    case 8 -> StudentManager.submitEnquiry(student);
-                    case 9 -> StudentManager.viewEnquiry(student);
-                    case 10 -> StudentManager.submitSuggestion(student);
-                    case 11 -> StudentManager.viewSuggestion(student);
-                    case 12 -> Logout.logout();
-                    default -> {
-                        System.out.println("Invalid choice. Please press enter to try again.");
-                        new Scanner(System.in).nextLine();
-                        throw new PageBackException();
+                try {
+                    student = StudentRepository.getInstance().getByID(student.getID());
+                } catch (ModelNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    switch (choice) {
+                        case 1 -> ViewUserProfile.viewUserProfilePage(student);
+                        case 2 -> ChangeAccountPassword.changePassword(UserType.STUDENT, student.getID());
+                        case 3 -> CampViewer.viewVisibleFacultyCampList(student);
+                        case 4 -> CampViewer.viewStudentCamps(student);
+                        case 5 -> StudentManager.registerCampAttendee(student);
+                        case 6 -> StudentManager.withdrawCampAttendee(student);
+                        case 7 -> StudentManager.registerCampCommittee(student);
+                        case 8 -> StudentManager.submitEnquiry(student);
+                        case 9 -> StudentManager.viewEnquiry(student);
+                        case 10 -> Logout.logout();
+                        case 11 -> StudentManager.submitSuggestion(student);
+                        case 12 -> StudentManager.viewSuggestion(student);
+                        // case 13 -> StudentManager.replyEnquiry(student);
+                        // case 14 -> StudentManager.generateCampList(student);
+                        default -> {
+                            System.out.println("Invalid choice. Please press enter to try again.");
+                            new Scanner(System.in).nextLine();
+                            throw new PageBackException();
+                        }
                     }
+                } 
+                catch (PageBackException | ModelNotFoundException e) {
+                    StudentMainPage.studentMainPage(student);
                 }
             } 
-            catch (PageBackException | ModelNotFoundException e) {
-                StudentMainPage.studentMainPage(student);
+            else{
+                ChangePage.changePage();
+                System.out.println(BoundaryStrings.separator);
+                System.out.println("Welcome to Student Main Page");
+                System.out.println("Hello, " + student.getUserName() + "!");
+                System.out.println();
+                System.out.println("\t1. View my profile");
+                System.out.println("\t2. Change my password");
+                System.out.println("\t3. View all Camps");
+                System.out.println("\t4. View Registered Camps");
+                System.out.println("\t5. Camp Attendee Registration");
+                System.out.println("\t6. Withdraw from Camp");
+                System.out.println("\t7. Camp Committee Registration");
+                System.out.println("\t8. Submit Enquiry");
+                System.out.println("\t9. View Enquiry (Edit/Delete)");
+                System.out.println("\t10. Logout");
+                System.out.println(BoundaryStrings.separator);
+
+                System.out.println();
+                System.out.print("Please enter your choice: ");
+
+                int choice = IntGetter.readInt();
+
+                try {
+                    student = StudentRepository.getInstance().getByID(student.getID());
+                } catch (ModelNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    switch (choice) {
+                        case 1 -> ViewUserProfile.viewUserProfilePage(student);
+                        case 2 -> ChangeAccountPassword.changePassword(UserType.STUDENT, student.getID());
+                        case 3 -> CampViewer.viewVisibleFacultyCampList(student);
+                        case 4 -> CampViewer.viewStudentCamps(student);
+                        case 5 -> StudentManager.registerCampAttendee(student);
+                        case 6 -> StudentManager.withdrawCampAttendee(student);
+                        case 7 -> StudentManager.registerCampCommittee(student);
+                        case 8 -> StudentManager.submitEnquiry(student);
+                        case 9 -> StudentManager.viewEnquiry(student);
+                        case 10 -> Logout.logout();
+                        default -> {
+                            System.out.println("Invalid choice. Please press enter to try again.");
+                            new Scanner(System.in).nextLine();
+                            throw new PageBackException();
+                        }
+                    }
+                } 
+                catch (PageBackException | ModelNotFoundException e) {
+                    StudentMainPage.studentMainPage(student);
+                }
             }
-        } 
+    }
         
         else {
             throw new IllegalArgumentException("User is not a student.");
         }
     }
-
-
-
-    
-
-    
 }
