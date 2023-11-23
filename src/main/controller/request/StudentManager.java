@@ -604,18 +604,81 @@ public class StudentManager {
         System.out.println("\t9. Camp Staff ID In Charge");
     
         int choice = IntGetter.readInt();
+        int valid=1; 
+        do{
+            if (valid==0){
+                choice=IntGetter.readInt(); 
+            }
+            valid=1; 
+            if (choice>9){
+                valid=0; 
+                System.out.println("Invalid choice of field, please reenter!"); 
+            }
+        }while(choice>9); 
+        int suggest=-1; 
+        String suggt=""; 
         System.out.println("The new value of the field to update");
+        do{
+            suggt=""; 
+            if ((choice==6) || (choice==7)){
+                suggest=scanner.nextInt(); 
+                suggt="default"; 
+            }
+            else if (choice==4){
+                System.out.println("Please enter one of the following faculties name (case is not important):"); 
+                System.out.println("    NA,\r\n" + //
+                        "    NTU,\r\n" + //
+                        "    ADM,\r\n" + //
+                        "    EEE,\r\n" + //
+                        "    NBS,\r\n" + //
+                        "    SCSE,\r\n" + //
+                        "    SSS"); 
+                //String faculty=scanner.nextLine(); 
+                int included=0; 
+                do {
+                    suggt=scanner.nextLine(); 
+                    suggt=suggt.toUpperCase(); 
+                    included=0; 
+                    Faculty fc[]=Faculty.values();
+                    for (Faculty fcl: fc){
+                        if (fcl.name().equalsIgnoreCase(suggt)){
+                            included=1; 
+                            break; 
+                        }
+                    }
+                    if (included==0){
+                        System.out.println("Please enter one of the following faculties name (case is not important):"); 
+                        System.out.println("    NA,\r\n" + //
+                        "    NTU,\r\n" + //
+                        "    ADM,\r\n" + //
+                        "    EEE,\r\n" + //
+                        "    NBS,\r\n" + //
+                        "    SCSE,\r\n" + //
+                        "    SSS"); 
+                    }
+                }while (included==0); 
+
+                //suggt="default"; 
+            }
+            else {//(choice==0 || choice==1 || choice==2 || choice==3 || choice==5 || choice==8 || choice==9){
+                suggt=scanner.nextLine(); 
+            }
+            //System.out.println("Suggest is: "+suggest); 
+            if ((Integer.toString(suggest)=="") || (suggt=="")){
+                System.out.println("You have not entered any new value, please reenter!"); 
+            }
+        }while((Integer.toString(suggest)=="") || (suggt=="")); 
         switch (choice) {
             case 0 -> throw new PageBackException();
-            case 1 -> s.setCampName(scanner.nextLine());
-            case 2 -> s.setDates(scanner.nextLine());
-            case 3 -> s.setRegistrationClosingDate(scanner.nextLine());
-            case 4 -> s.setCampType(Faculty.valueOf(scanner.nextLine()));
-            case 5 -> s.setLocation(scanner.nextLine());
-            case 6 -> s.setTotalSlots(scanner.nextInt());
-            case 7 -> s.setCampCommSlots(scanner.nextInt());
-            case 8 -> s.setDescription(scanner.nextLine());
-            case 9 -> s.setCampStaff(scanner.nextLine());
+            case 1 -> s.setCampName(suggt);
+            case 2 -> s.setDates(suggt);
+            case 3 -> s.setRegistrationClosingDate(suggt);
+            case 4 -> s.setCampType(Faculty.valueOf(suggt));
+            case 5 -> s.setLocation(suggt);
+            case 6 -> s.setTotalSlots(suggest);
+            case 7 -> s.setCampCommSlots(suggest);
+            case 8 -> s.setDescription(suggt);
+            case 9 -> s.setCampStaff(suggt);
         }
         System.out.println("Have other field to update?");
         System.out.println("\t0. No");

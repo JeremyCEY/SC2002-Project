@@ -20,7 +20,7 @@ public class main {
 
         // Skip to student page
         //AccountManager.loadUsers();
-        //CampManager.loadcamps();
+        CampManager.loadcamps();
         // try {
         //     User user = AccountManager.login(UserType.STUDENT, "YCHERN", "password");
         //     StudentMainPage.studentMainPage(user);
