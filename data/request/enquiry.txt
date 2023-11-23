@@ -1,4 +1,4 @@
 senderIDKOH1campIDC1requestIDE1messagethanksreplynullrequestStatusREPLIEDreplierIDYCHERN
 senderIDKOH1campIDC1requestIDE2messagecan wearreplynullrequestStatusREPLIEDreplierIDYCHERN
 senderIDKOH1campIDC1requestIDE3messagecan wear belt?replycan brorequestStatusREPLIEDreplierIDYCHERN
-senderIDYCHERNcampIDC1requestIDE4messagereplynullrequestStatusPENDINGreplierIDnull
+senderIDYCHERNcampIDC1requestIDE4messagemessareplynullrequestStatusPENDINGreplierIDnull
