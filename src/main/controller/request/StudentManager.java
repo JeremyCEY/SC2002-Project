@@ -521,36 +521,45 @@ public class StudentManager {
 
 
     public static void submitSuggestion(Student student) throws PageBackException, ModelNotFoundException{
-        
-        System.out.println("Here is the list of available camps: ");
-        ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());//based on camp committee
-    
-        System.out.println("Enter Camp ID to create Suggestion");
-        String studentID = student.getID();
-        String campID = new Scanner(System.in).nextLine();
-    
-        try{
-            CampManager.getCampByID(campID);
-        } catch(ModelNotFoundException e){
+        Scanner sc = new Scanner(System.in);
+        if (student.getCCamps().equals("null")){
             ChangePage.changePage();
-            System.out.println("Camp ID is invalid.");
-            System.out.println("Enter [b] to go back, or press enter to retry.");
-            String yNChoice = new Scanner(System.in).nextLine();
-            if (yNChoice.equals("b")) {
-                throw new PageBackException();
-            } else {
-                submitEnquiry(student);
-            }
+            System.out.println("You are not a camp committee member.");
+            System.out.println("Press enter to go back.");
+            sc.nextLine();
+            throw new PageBackException();
         }
+        else{
+            System.out.println("Here is the list of available camps: ");
+            ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());//based on camp committee
         
-        Suggestion s;
+            System.out.println("Enter Camp ID to create Suggestion");
+            String studentID = student.getID();
+            String campID = sc.nextLine();
+        
+            try{
+                CampManager.getCampByID(campID);
+            } catch(ModelNotFoundException e){
+                ChangePage.changePage();
+                System.out.println("Camp ID is invalid.");
+                System.out.println("Enter [b] to go back, or press enter to retry.");
+                String yNChoice = sc.nextLine();
+                if (yNChoice.equals("b")) {
+                    throw new PageBackException();
+                } else {
+                    submitEnquiry(student);
+                }
+            }
+            
+            Suggestion s;
 
-        try{
-            s = RequestManager.createSuggestion(campID, studentID);
-        } catch(ModelAlreadyExistsException e){
-            throw new RuntimeException(e);
+            try{
+                s = RequestManager.createSuggestion(campID, studentID);
+            } catch(ModelAlreadyExistsException e){
+                throw new RuntimeException(e);
+            }
+            editSuggestion(s, student);
         }
-        editSuggestion(s, student);
     }
 
     private static void editSuggestion(Suggestion s, Student student) throws PageBackException, ModelNotFoundException{
