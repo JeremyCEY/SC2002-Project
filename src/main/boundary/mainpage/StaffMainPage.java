@@ -190,7 +190,7 @@ public class StaffMainPage {
             new Scanner(System.in).nextLine();
             throw new PageBackException();
         }
-        System.out.println("Project created successfully!");
+        System.out.println("Camp created successfully!");
         System.out.println("Enter enter to continue");
         new Scanner(System.in).nextLine();
         throw new PageBackException();
