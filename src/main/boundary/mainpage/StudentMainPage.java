@@ -60,9 +60,9 @@ public class StudentMainPage {
             System.out.println("\t6. Withdraw from Camp");
             System.out.println("\t7. Camp Committee Registration");
             System.out.println("\t8. Submit Enquiry");
-            System.out.println("\t9. View Enquiry(EDIT/DELETE)");//edit and delete option inside
+            System.out.println("\t9. View Enquiry (Edit/Delete)");//edit and delete option inside
             System.out.println("\t10. Submit Suggestion");
-            System.out.println("\t11. View Suggestion(EDIT/DELETE)");//edit and delete option inside
+            System.out.println("\t11. View Suggestion (Edit/Delete)");//edit and delete option inside
             System.out.println("\t12. Logout");
             System.out.println(BoundaryStrings.separator);
 

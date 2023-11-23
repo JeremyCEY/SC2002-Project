@@ -20,11 +20,13 @@ public class ViewUserProfile {
      */
     public static void viewUserProfile(User user) {
         String userType = UserTypeGetter.getUserTypeInCamelCase(user);
+        int points = 0;
         if ("Student".equals(userType)) { // I know this is a weird way to do string compare in java LMAOOOO // delete this later
             String type = "x";
 
             if (user instanceof Student) {
                 Student student = (Student) user;
+                points = student.getPoints();
                 if(EmptyID.isEmptyID(student.getACamps()) && EmptyID.isEmptyID(student.getCCamps())){
                     type = "No camp registrations";
                 }
@@ -35,16 +37,18 @@ public class ViewUserProfile {
                     type = "Camp Committee";
                 }
                 else if(!EmptyID.isEmptyID(student.getACamps()) && !EmptyID.isEmptyID(student.getCCamps())){
-                    type = "Camp Attendee & Committee";
+                    type = "Camp Attendee & Committee";   
                 }
             }
 
+            
+
             System.out.println("Welcome to View " + userType + " Profile");
-            System.out.println("┌-------------------------------------------------------------------------------------------------┐");
-            System.out.printf("| %-15s | %-30s | %-15s | %-26s |\n", "Name", "Email", userType + " ID", "Role");
-            System.out.println("|-----------------|--------------------------------|-----------------|----------------------------|");
-            System.out.printf("| %-15s | %-30s | %-15s | %-26s |\n", user.getUserName(), user.getEmail(), user.getID(), type);
-            System.out.println("└-------------------------------------------------------------------------------------------------┘");
+            System.out.println("┌---------------------------------------------------------------------------------------------------------------┐");
+            System.out.printf("| %-15s | %-30s | %-15s | %-26s | %-11s |\n", "Name", "Email", userType + " ID", "Role", "Points");
+            System.out.println("|-----------------|--------------------------------|-----------------|----------------------------|-------------|");
+            System.out.printf("| %-15s | %-30s | %-15s | %-26s | %-11s |\n", user.getUserName(), user.getEmail(), user.getID(), type, points);
+            System.out.println("└---------------------------------------------------------------------------------------------------------------┘");
          } 
          if ("Staff".equals(userType)) {
             System.out.println("Welcome to View " + userType + " Profile");
