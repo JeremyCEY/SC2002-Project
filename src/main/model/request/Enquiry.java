@@ -105,6 +105,7 @@ public class Enquiry implements Request{
                 String.format("| Student ID             | %-24s |\n", getSenderID()) +
                 String.format("| Camp ID                | %-24s |\n", getCampID()) +
 				String.format("| Message                | %-24s |\n", getMessage()) +
+				String.format("| Reply                  | %-24s |\n", getReply()) +
 				String.format("| Replier ID             | %-24s |\n", getReplierID());
 	}
 
@@ -126,6 +127,7 @@ public class Enquiry implements Request{
                 String.format("| Student ID             | %-24s |\n", getSenderID()) +
                 String.format("| Camp ID                | %-24s |\n", getCampID()) +
 				String.format("| Message                | %-24s |\n", getMessage()) +
+				String.format("| Reply                  | %-24s |\n", getReply()) +
 				String.format("| Replier ID             | %-24s |\n", getReplierID());
 	}
 

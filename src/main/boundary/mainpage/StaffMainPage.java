@@ -341,8 +341,13 @@ public class StaffMainPage {
         }
         suggestion.setReplierID(user.getID());
         SuggestionRepository.getInstance().update(suggestion);
+        System.out.println(suggestion.getSenderID());
+        Student student = StudentRepository.getInstance().getByID(suggestion.getSenderID());
+        student.addPoint();
+        StudentRepository.getInstance().update(student);
         ChangePage.changePage();
         System.out.println("Successfully handled a suggestion:");
+        System.out.println("A point has been rewarded to the suggestion sender!");
         System.out.println();
         System.out.println("Have other suggestion to handle?");
         System.out.println("\t0. No");

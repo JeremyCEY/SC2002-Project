@@ -782,13 +782,14 @@ public class StudentManager {
             else{
                 System.out.println("Type Reply Message below:");
                 String message = scanner.nextLine();
-                enquiry.setMessage(message);
+                enquiry.setReply(message);
                 enquiry.setReplierID(student.getID());
                 enquiry.setRequestStatus(RequestStatus.REPLIED);
                 EnquiryRepository.getInstance().update(enquiry);
                 student.addPoint();
                 StudentRepository.getInstance().update(student);
                 System.out.println("Successfully replied an enquiry:");
+                System.out.println("A point has been rewarded to you!");
                 System.out.println();
                 ChangePage.changePage();
                 System.out.println("Have other enquiry to reply?");
