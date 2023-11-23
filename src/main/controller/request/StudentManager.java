@@ -419,8 +419,15 @@ public class StudentManager {
                 submitEnquiry(student);
             }
         }
-        System.out.printf("Please input the enquiry that you have regarding camp %s: \n", campID);
-        String message=new Scanner(System.in).nextLine(); 
+        String message; 
+        do {
+            System.out.printf("Please input the enquiry that you have regarding camp %s: \n", campID);
+            message=new Scanner(System.in).nextLine();
+            if (message==""){
+                System.out.println("You have not submitted any enquiry, please reenter!"); 
+            }
+
+        }while (message==""); 
         try{
             RequestManager.createEnquiry(campID, studentID, message); 
         } catch(ModelAlreadyExistsException e){
