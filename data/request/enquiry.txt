@@ -1,3 +1,1 @@
-senderIDYCHERNcampIDC59requestIDE1messagereplynullrequestStatusPENDINGreplierIDnull
-senderIDYCHERNcampIDC129requestIDE2messagehihireplynullrequestStatusPENDINGreplierIDnull
-senderIDKOH1campIDC1requestIDE3message10dollarsreplynullrequestStatusREPLIEDreplierIDYCHERN
+senderIDKOH1campIDC1requestIDE1messagethanksreplynullrequestStatusREPLIEDreplierIDYCHERN

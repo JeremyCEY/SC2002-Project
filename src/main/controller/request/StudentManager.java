@@ -782,6 +782,8 @@ public class StudentManager {
                 enquiry.setReplierID(student.getID());
                 enquiry.setRequestStatus(RequestStatus.REPLIED);
                 EnquiryRepository.getInstance().update(enquiry);
+                student.addPoint();
+                StudentRepository.getInstance().update(student);
                 System.out.println("Successfully replied an enquiry:");
                 System.out.println();
                 ChangePage.changePage();
