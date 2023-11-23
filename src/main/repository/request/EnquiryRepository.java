@@ -10,7 +10,7 @@ import static main.utils.config.Location.RESOURCE_LOCATION;
 public class EnquiryRepository extends Repository<Enquiry>{
 
     /**
-     * The file path of the project data file.
+     * The file path of the enquiry data file.
      */
     private static final String FILE_PATH = "/data/request/enquiry.txt";
 
@@ -19,9 +19,9 @@ public class EnquiryRepository extends Repository<Enquiry>{
         load();
     }
     /**
-     * Gets the file path of the project data file.
+     * Gets the file path of the enquiry data file.
      *
-     * @return the file path of the project data file
+     * @return the file path of the enquiry data file
      */
     @Override
     public String getFilePath() {

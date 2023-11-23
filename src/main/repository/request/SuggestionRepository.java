@@ -9,7 +9,7 @@ import static main.utils.config.Location.RESOURCE_LOCATION;
 public class SuggestionRepository extends Repository<Suggestion>{
 
     /**
-     * The file path of the project data file.
+     * The file path of the suggestion data file.
      */
     private static final String FILE_PATH = "/data/request/suggestion.txt";
 
@@ -18,9 +18,9 @@ public class SuggestionRepository extends Repository<Suggestion>{
         load();
     }
     /**
-     * Gets the file path of the project data file.
+     * Gets the file path of the suggestion data file.
      *
-     * @return the file path of the project data file
+     * @return the file path of the suggestion data file
      */
     @Override
     public String getFilePath() {

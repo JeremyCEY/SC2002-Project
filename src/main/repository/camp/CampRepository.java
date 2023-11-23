@@ -16,7 +16,7 @@ import static main.utils.config.Location.RESOURCE_LOCATION;
 public class CampRepository extends Repository<Camp> {
 
     /**
-     * The file path of the project data file.
+     * The file path of the camp data file.
      */
     private static final String FILE_PATH = "/data/camp/camp.txt";
 
@@ -29,18 +29,18 @@ public class CampRepository extends Repository<Camp> {
     }
 
     /**
-     * Gets a new ProjectRepository object.
+     * Gets a new CampRepository object.
      *
-     * @return a new ProjectRepository object
+     * @return a new CampRepository object
      */
     public static CampRepository getInstance() {
         return new CampRepository();
     }
 
     /**
-     * Gets the file path of the project data file.
+     * Gets the file path of the camp data file.
      *
-     * @return the file path of the project data file
+     * @return the file path of the camp data file
      */
     @Override
     public String getFilePath() {

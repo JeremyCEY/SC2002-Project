@@ -80,7 +80,7 @@ public class StudentMainPage {
                         case 11 -> StudentManager.submitSuggestion(student);
                         case 12 -> StudentManager.viewSuggestion(student);
                         case 13 -> StudentManager.commViewPendingEnquiries(student);
-                        // case 14 -> StudentManager.generateCampList(student);
+                        case 14 -> StudentManager.generateCampList(student);
                         default -> {
                             System.out.println("Invalid choice. Please press enter to try again.");
                             new Scanner(System.in).nextLine();
