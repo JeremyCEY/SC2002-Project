@@ -245,11 +245,17 @@ public class CampViewer {
         switch (sortChoice) {
             case 1:
                 sortTitle = "List of Available Camps (ID order):";
-                campComparator = Comparator.comparing(Camp::getID);
+                campComparator = Comparator.comparingInt(camp -> {
+                    try {
+                        return Integer.parseInt(camp.getID().replaceAll("\\D", ""));
+                    } catch (NumberFormatException e) {
+                        return Integer.MAX_VALUE;
+                    }
+                });
                 break;
             case 2:
                 sortTitle = "List of Available Camps (Alphabetical order):";
-                campComparator = Comparator.comparing(Camp::getCampName);
+                campComparator = Comparator.comparing(Camp::getCampName, String.CASE_INSENSITIVE_ORDER);
                 break;
             case 3:
                 sortTitle = "List of Available Camps (Date order):";
