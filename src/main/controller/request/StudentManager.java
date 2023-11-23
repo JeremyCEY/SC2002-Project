@@ -57,7 +57,7 @@ public class StudentManager {
         System.out.print("Please enter the camp ID: ");
         String campID = new Scanner(System.in).nextLine();
         if (CampManager.notContainsCampByID(campID)) {
-            System.out.println("Camp not found.");
+            System.out.println("Camp ID is invalid.");
             System.out.println("Press Enter to go back, or enter [r] to retry.");
             String choice = new Scanner(System.in).nextLine();
             if (choice.equals("r")) {
@@ -89,7 +89,7 @@ public class StudentManager {
                 throw new PageBackException();
             }
             //Check if no camps registered previously + clash?
-            //Check deadline
+            //Check clash of camp dates
             else if (checkClash(student, camp)) {
                 System.out.println("This camp's dates clashes with your other registered camps.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -232,12 +232,15 @@ public class StudentManager {
         }
         System.out.print("Please enter the camp ID: ");
         String campID = new Scanner(System.in).nextLine();
-        // try {
-        // Camp project = CampRepository.getInstance().getByID(student.getID());
-        // ModelViewer.displaySingleDisplayable(project);
-        // } catch (ModelNotFoundException e) {
-        // throw new IllegalArgumentException("Camp not found.");
-        // }
+        
+        //check whether student is registered to camp
+        String ACamps = student.getACamps();
+        if(!ACamps.toLowerCase().contains(campID.toLowerCase())){
+            System.out.println("Camp ID is invalid");
+            System.out.println("Press Enter to go back.");
+            new Scanner(System.in).nextLine();
+            throw new PageBackException();
+        }
 
         if (!student.getCCamps().equals("null")) {
             String CCamps = student.getCCamps();
@@ -290,7 +293,7 @@ public class StudentManager {
         System.out.print("Please enter the camp ID: ");
         String campID = new Scanner(System.in).nextLine();
         if (CampManager.notContainsCampByID(campID)) {
-            System.out.println("Camp not found.");
+            System.out.println("Camp ID is invalid.");
             System.out.println("Press Enter to go back, or enter [r] to retry.");
             String choice = new Scanner(System.in).nextLine();
             if (choice.equals("r")) {
@@ -346,14 +349,14 @@ public class StudentManager {
         } catch (ModelNotFoundException e) {
             throw new RuntimeException(e);
         }
-        // ChangePage.changePage();
-        // System.out.println("Here is the project information: ");
-        // try {
-        //     Camp camp1 = CampRepository.getInstance().getByID(projectID);
-        //     ModelViewer.displaySingleDisplayable(camp1);
-        // } catch (ModelNotFoundException e) {
-        //     throw new RuntimeException(e);
-        // }
+        ChangePage.changePage();
+        System.out.println("Here is the camp information: ");
+        try {
+            Camp camp1 = CampRepository.getInstance().getByID(campID);
+            ModelViewer.displaySingleDisplayable(camp1);
+        } catch (ModelNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         System.out.print("Are you sure you want to register for this camp? (y/[n]): ");
         String choice = new Scanner(System.in).nextLine();
         if (choice.equalsIgnoreCase("y")) {

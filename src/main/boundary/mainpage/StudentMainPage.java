@@ -26,7 +26,7 @@ public class StudentMainPage {
      * @param user The user object of the student.
      * @throws ModelNotFoundException
      */
-    public static void studentMainPage(User user) throws ModelNotFoundException {
+    public static void studentMainPage(User user) {
         if (user instanceof Student student) {
             ChangePage.changePage();
             System.out.println(BoundaryStrings.separator);
@@ -79,46 +79,18 @@ public class StudentMainPage {
                     }
                 }
             } 
-            // catch (PageBackException | ModelNotFoundException e) {
-            //     StudentMainPage.studentMainPage(student);
-            // }
-            catch (PageBackException e) {
-                 StudentMainPage.studentMainPage(student);
+            catch (PageBackException | ModelNotFoundException e) {
+                StudentMainPage.studentMainPage(student);
             }
-
-
-        } else {
+        } 
+        
+        else {
             throw new IllegalArgumentException("User is not a student.");
         }
     }
 
 
-    // /**
-    //  * This private method is called to get the camp ID from the user. It prompts the user to enter the camp ID and returns it as a string. If the user wants to go back, a PageBackException is thrown.
-    //  *
-    //  * @return the camp ID.
-    //  * @throws PageBackException if the user wants to go back.
-    //  */
-    // private static String getCampID() throws PageBackException {
-    //     System.out.println("Please enter the project ID: ");
-    //     String campID = new Scanner(System.in).nextLine();
-    //     if (CampRepository.getInstance().contains(campID)) {
-    //         System.out.println("Camp found.");
-    //         System.out.println("Here is the camp information: ");
-    //         try {
-    //             Camp camp = CampRepository.getInstance().getByID(campID);
-    //             ModelViewer.displaySingleDisplayable(camp);
-    //         } catch (ModelNotFoundException e) {
-    //             //e.printStackTrace();
-    //         }
-    //     } else {
-    //         System.out.println("Camp not found.");
-    //         System.out.println("Press Enter to go back.");
-    //         new Scanner(System.in).nextLine();
-    //         throw new PageBackException();
-    //     }
-    //     return campID;
-    // }
+
     
 
     

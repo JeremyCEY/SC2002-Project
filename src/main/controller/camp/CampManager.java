@@ -13,15 +13,9 @@ import main.utils.exception.ModelNotFoundException;
 import main.utils.iocontrol.CSVReader;
 import main.utils.parameters.EmptyID;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.Map;
 import java.util.HashMap;
-
 /**
  * A class manages the camp
  */
@@ -374,6 +368,5 @@ public class CampManager {
     public static Camp getCampByID(String campID) throws ModelNotFoundException {
         return CampRepository.getInstance().getByID(campID);
     }
-
 
 }
