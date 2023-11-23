@@ -392,7 +392,7 @@ public class StudentManager {
             CampManager.getCampByID(campID);
         } catch(ModelNotFoundException e){
             ChangePage.changePage();
-            System.out.println("Camp does not exist.");
+            System.out.println("Camp ID is invalid.");
             System.out.println("Enter [b] to go back, or press enter to retry.");
             String yNChoice = new Scanner(System.in).nextLine();
             if (yNChoice.equals("b")) {
@@ -451,7 +451,7 @@ public class StudentManager {
         } while (!isValidChoice);
     }
 
-    public static void editEnquiry(Student student) throws PageBackException, ModelNotFoundException{
+    private static void editEnquiry(Student student) throws PageBackException, ModelNotFoundException{
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter ID of Enquiry to edit");
         String enquiryID = sc.nextLine();
@@ -459,7 +459,7 @@ public class StudentManager {
             RequestManager.getEnquiryByID(enquiryID);
         } catch(ModelNotFoundException e){
             ChangePage.changePage();
-            System.out.println("Enquiry does not exist.");
+            System.out.println("Enquiry ID is invalid.");
             System.out.println("Press enter to go back.");
             sc.nextLine();
             throw new PageBackException();
@@ -480,11 +480,19 @@ public class StudentManager {
     }
 
 
-    public static void deleteEnquiry(Student student) throws PageBackException, ModelNotFoundException{
+    private static void deleteEnquiry(Student student) throws PageBackException, ModelNotFoundException{
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter ID of Enquiry to delete");
         String enquiryID = sc.nextLine();
-        //check if enquiry exists;
+        try{
+            RequestManager.getEnquiryByID(enquiryID);
+        } catch(ModelNotFoundException e){
+            ChangePage.changePage();
+            System.out.println("Enquiry ID is invalid.");
+            System.out.println("Press enter to go back.");
+            sc.nextLine();
+            throw new PageBackException();
+        }
 
         Enquiry enquiryToDelete = RequestManager.getEnquiryByID(enquiryID);
 
@@ -492,6 +500,7 @@ public class StudentManager {
     
         String input = sc.nextLine();
         if (!input.equalsIgnoreCase("Y")) {
+            ChangePage.changePage();
             System.out.println("Enquiry deletion cancelled!");
             System.out.println("Press enter to continue");
             sc.nextLine();
@@ -524,7 +533,7 @@ public class StudentManager {
             CampManager.getCampByID(campID);
         } catch(ModelNotFoundException e){
             ChangePage.changePage();
-            System.out.println("Camp does not exist.");
+            System.out.println("Camp ID is invalid.");
             System.out.println("Enter [b] to go back, or press enter to retry.");
             String yNChoice = new Scanner(System.in).nextLine();
             if (yNChoice.equals("b")) {
@@ -544,7 +553,7 @@ public class StudentManager {
         editSuggestion(s, student);
     }
 
-    public static void editSuggestion(Suggestion s, Student student) throws PageBackException, ModelNotFoundException{
+    private static void editSuggestion(Suggestion s, Student student) throws PageBackException, ModelNotFoundException{
         Scanner scanner = new Scanner(System.in);
         ChangePage.changePage();
 
@@ -592,53 +601,63 @@ public class StudentManager {
 
 
     public static void viewSuggestion(Student student) throws PageBackException, ModelNotFoundException{
-        ChangePage.changePage();
-        System.out.println("Here is the list of Suggestion you made");
-        ModelViewer.displayListOfDisplayable((RequestManager.viewSuggestionBySender(student.getID())));
+        Scanner sc = new Scanner(System.in);
+        if (student.getCCamps().equals("null")){
+            ChangePage.changePage();
+            System.out.println("You are not a camp committee member.");
+            System.out.println("Press enter to go back.");
+            sc.nextLine();
+            throw new PageBackException();
+        }
+        else{
+            ChangePage.changePage();
+            System.out.println("Here is the list of Suggestion you made");
+            ModelViewer.displayListOfDisplayable((RequestManager.viewSuggestionBySender(student.getID())));
 
-        System.out.println();
-        System.out.println("1. Edit Suggestion");
-        System.out.println("2. Delete Suggestion");
-        System.out.println("3. Exit");
-        
-        boolean isValidChoice;
-        do {
-            Scanner scanner = new Scanner(System.in);
-            int choice = scanner.nextInt();
+            System.out.println();
+            System.out.println("1. Edit Suggestion");
+            System.out.println("2. Delete Suggestion");
+            System.out.println("3. Exit");
+            
+            boolean isValidChoice;
+            do {
+                Scanner scanner = new Scanner(System.in);
+                int choice = scanner.nextInt();
 
-            switch (choice) {
-                case 1:
-                    Scanner sc = new Scanner(System.in);
-                    System.out.println("Enter ID of Suggestion to edit");
-                    String suggestionID = sc.nextLine();
-                    try{
-                        RequestManager.getSuggestionByID(suggestionID);
-                    } catch(ModelNotFoundException e){
-                        ChangePage.changePage();
-                        System.out.println("Suggestion does not exist.");
-                        System.out.println("Press enter to go back.");
-                        sc.nextLine();
+                switch (choice) {
+                    case 1:
+                        
+                        System.out.println("Enter ID of Suggestion to edit");
+                        String suggestionID = sc.nextLine();
+                        try{
+                            RequestManager.getSuggestionByID(suggestionID);
+                        } catch(ModelNotFoundException e){
+                            ChangePage.changePage();
+                            System.out.println("Suggestion ID is invalid.");
+                            System.out.println("Press enter to go back.");
+                            sc.nextLine();
+                            throw new PageBackException();
+                        }
+                        Suggestion suggestionToEdit = RequestManager.getSuggestionByID(suggestionID);
+                        editSuggestion(suggestionToEdit, student);
+                        isValidChoice = true;
+                        break;
+                    case 2:
+                        deleteSuggestion(student);
+                        isValidChoice = true;
+                        break;
+                    case 3:
                         throw new PageBackException();
-                    }
-                    Suggestion suggestionToEdit = RequestManager.getSuggestionByID(suggestionID);
-                    editSuggestion(suggestionToEdit, student);
-                    isValidChoice = true;
-                    break;
-                case 2:
-                    deleteSuggestion(student);
-                    isValidChoice = true;
-                    break;
-                case 3:
-                    throw new PageBackException();
-                default:
-                    System.out.println("Invalid choice. Please enter a valid option.");
-                    isValidChoice = false;
-            }
-        } while (!isValidChoice);
+                    default:
+                        System.out.println("Invalid choice. Please enter a valid option.");
+                        isValidChoice = false;
+                }
+            } while (!isValidChoice);
+        }
     }
 
 
-    public static void deleteSuggestion(Student student) throws PageBackException, ModelNotFoundException{
+    private static void deleteSuggestion(Student student) throws PageBackException, ModelNotFoundException{
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter ID of Suggestion to delete");
         String suggestionID = sc.nextLine();
@@ -646,7 +665,7 @@ public class StudentManager {
             RequestManager.getSuggestionByID(suggestionID);
         } catch(ModelNotFoundException e){
             ChangePage.changePage();
-            System.out.println("Suggestion does not exist.");
+            System.out.println("Suggestion ID is invalid.");
             System.out.println("Press enter to go back.");
             sc.nextLine();
             throw new PageBackException();
