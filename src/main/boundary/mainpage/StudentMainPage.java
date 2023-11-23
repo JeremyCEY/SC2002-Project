@@ -41,15 +41,15 @@ public class StudentMainPage {
                 System.out.println("\t5. Camp Attendee Registration");
                 System.out.println("\t6. Withdraw from Camp");
                 System.out.println("\t7. Camp Committee Registration");
-                System.out.println("\t8. Submit Enquiry");
-                System.out.println("\t9. View Enquiry (Edit/Delete)");
+                System.out.println("\t8. Submit new Enquiry");
+                System.out.println("\t9. View my Enquiries (Edit/Delete)");
                 System.out.println("\t10. Logout");
                 System.out.println();
                 System.out.println("Camp Committee Menu");
                 System.out.println();
-                System.out.println("\t11. Submit Suggestion");
-                System.out.println("\t12. View Suggestion (Edit/Delete)");
-                System.out.println("\t13. Reply to Enquiries");
+                System.out.println("\t11. Submit new Suggestion");
+                System.out.println("\t12. View my Suggestions (Edit/Delete)");
+                System.out.println("\t13. View & Reply Enquiries");
                 System.out.println("\t14. Generate Camp List");
 
                 System.out.println(BoundaryStrings.separator);
@@ -79,7 +79,7 @@ public class StudentMainPage {
                         case 10 -> Logout.logout();
                         case 11 -> StudentManager.submitSuggestion(student);
                         case 12 -> StudentManager.viewSuggestion(student);
-                        // case 13 -> StudentManager.replyEnquiry(student);
+                        case 13 -> StudentManager.commViewPendingEnquiries(student);
                         // case 14 -> StudentManager.generateCampList(student);
                         default -> {
                             System.out.println("Invalid choice. Please press enter to try again.");
@@ -105,8 +105,8 @@ public class StudentMainPage {
                 System.out.println("\t5. Camp Attendee Registration");
                 System.out.println("\t6. Withdraw from Camp");
                 System.out.println("\t7. Camp Committee Registration");
-                System.out.println("\t8. Submit Enquiry");
-                System.out.println("\t9. View Enquiry (Edit/Delete)");
+                System.out.println("\t8. Submit new Enquiry");
+                System.out.println("\t9. View my Enquiries (Edit/Delete)");
                 System.out.println("\t10. Logout");
                 System.out.println(BoundaryStrings.separator);
 

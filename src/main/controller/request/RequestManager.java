@@ -114,34 +114,43 @@ public class RequestManager {
         return SuggestionRepository.getInstance().getByID(suggestionID);
     }
 
+    public static List<Enquiry> getAllPendingEnquiriesByCampID(String campID) throws ModelNotFoundException{
+        return EnquiryRepository.getInstance().findByRules(
+            e -> e.getRequestStatus() == RequestStatus.PENDING,
+            e -> campID.contains(e.getCampID()))
+            .stream()
+            .map(e -> (Enquiry) e)
+            .collect(Collectors.toList());
+    }
+
     public static List<Enquiry> getAllPendingEnquiriesByStaff(Staff staff) {
-    List<String> campIDs = CampManager.getAllCampsByStaff(staff).stream()
-    .filter(
-    c -> c.getStaffID().equals(staff.getID())
-    && c.getVisibility().equals("true"))
-    .map(Camp::getID)
-    .collect(Collectors.toList());
-    return EnquiryRepository.getInstance().findByRules(
-    e -> e.getRequestStatus() == RequestStatus.PENDING,
-    e -> campIDs.contains(e.getCampID()))
-    .stream()
-    .map(e -> (Enquiry) e)
-    .collect(Collectors.toList());
+        List<String> campIDs = CampManager.getAllCampsByStaff(staff).stream()
+        .filter(
+        c -> c.getStaffID().equals(staff.getID())
+        && c.getVisibility().equals("true"))
+        .map(Camp::getID)
+        .collect(Collectors.toList());
+        return EnquiryRepository.getInstance().findByRules(
+        e -> e.getRequestStatus() == RequestStatus.PENDING,
+        e -> campIDs.contains(e.getCampID()))
+        .stream()
+        .map(e -> (Enquiry) e)
+        .collect(Collectors.toList());
     }
 
     public static List<Suggestion> getAllPendingSuggestionsByStaff(Staff staff) {
-    List<String> campIDs = CampManager.getAllCampsByStaff(staff).stream()
-    .filter(
-    c -> c.getStaffID().equals(staff.getID())
-    && c.getVisibility().equals("true"))
-    .map(Camp::getID)
-    .collect(Collectors.toList());
-    return SuggestionRepository.getInstance().findByRules(
-    s -> s.getRequestStatus() == RequestStatus.PENDING,
-    s -> campIDs.contains(s.getCampID()))
-    .stream()
-    .map(r -> (Suggestion) r)
-    .collect(Collectors.toList());
+        List<String> campIDs = CampManager.getAllCampsByStaff(staff).stream()
+        .filter(
+        c -> c.getStaffID().equals(staff.getID())
+        && c.getVisibility().equals("true"))
+        .map(Camp::getID)
+        .collect(Collectors.toList());
+        return SuggestionRepository.getInstance().findByRules(
+        s -> s.getRequestStatus() == RequestStatus.PENDING,
+        s -> campIDs.contains(s.getCampID()))
+        .stream()
+        .map(r -> (Suggestion) r)
+        .collect(Collectors.toList());
     }
 
     public static void approveSuggestion(Suggestion s) throws ModelNotFoundException {

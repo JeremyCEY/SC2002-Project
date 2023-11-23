@@ -8,6 +8,7 @@ import main.model.camp.Camp;
 import main.model.user.Faculty;
 import main.model.user.Student;
 import main.model.request.Enquiry;
+import main.model.request.RequestStatus;
 import main.model.request.Suggestion;
 import main.repository.camp.CampRepository;
 import main.repository.request.EnquiryRepository;
@@ -38,6 +39,16 @@ import javax.management.RuntimeErrorException;
  * StudentManager class
  */
 public class StudentManager {
+    /**
+     * get the student by ID
+     * @param studentID the student ID
+     * @return the student
+     * @throws ModelNotFoundException if the student is not found
+     */
+    public static Student getByID(String studentID) throws ModelNotFoundException {
+        return StudentRepository.getInstance().getByID(studentID);
+    }
+
     /**
      * This private method is called when the student wants to register for a project. It prompts the student to enter the project ID, sends a request to register for the project, and displays a success message. If an error occurs, the student is given the option to go back or retry.
      *
@@ -708,14 +719,87 @@ public class StudentManager {
         throw new PageBackException();
     }
 
-    /**
-     * get the student by ID
-     * @param studentID the student ID
-     * @return the student
-     * @throws ModelNotFoundException if the student is not found
-     */
-    public static Student getByID(String studentID) throws ModelNotFoundException {
-        return StudentRepository.getInstance().getByID(studentID);
+    public static void commViewPendingEnquiries(Student student) throws PageBackException, ModelNotFoundException{
+        Scanner sc = new Scanner(System.in);        
+        if (student.getCCamps().equals("null")){
+            ChangePage.changePage();
+            System.out.println("You are not a camp committee member.");
+            System.out.println("Press enter to go back.");
+            sc.nextLine();
+            throw new PageBackException();
+        }
+        else{
+            ChangePage.changePage();
+            System.out.println(BoundaryStrings.separator);
+            System.out.println("View Pending Enquiries");
+            System.out.println();
+            String campID = student.getCCamps().toUpperCase();
+            //if empty
+            if(RequestManager.getAllPendingEnquiriesByCampID(campID).isEmpty()){
+                ChangePage.changePage();
+                System.out.println("No Pending Enquiries.");
+                System.out.println("Press enter to go back.");
+                sc.nextLine();
+                throw new PageBackException();
+            }
+            ModelViewer.displayListOfDisplayable(
+            RequestManager.getAllPendingEnquiriesByCampID(campID));
+            System.out.println("Which enquiry ID do you want to reply to?");
+            Scanner scanner = new Scanner(System.in);
+            String enquiryID = scanner.nextLine();
+            try{
+                RequestManager.getEnquiryByID(enquiryID);
+            } catch(ModelNotFoundException e){
+                ChangePage.changePage();
+                System.out.println("Enquiry ID is invalid.");
+                System.out.println("Press enter to go back.");
+                sc.nextLine();
+                throw new PageBackException();
+            }
+            
+            Enquiry enquiry = (Enquiry) EnquiryRepository.getInstance().getByID(enquiryID);
+
+            if (!enquiry.getCampID().equals(campID)){
+                ChangePage.changePage();
+                System.out.println("Enquiry ID is invalid");
+                System.out.println("Press enter to go back.");
+                sc.nextLine();
+                throw new PageBackException();
+            }
+            //check that member is not replying to himself
+            if(enquiry.getSenderID().equals(student.getID())){
+                ChangePage.changePage();
+                System.out.println("You cannot reply to an enquiry you made.");
+                System.out.println("Press enter to go back.");
+                sc.nextLine();
+                throw new PageBackException();
+            }
+            
+            else{
+                System.out.println("Type Reply Message below:");
+                String message = scanner.nextLine();
+                enquiry.setMessage(message);
+                enquiry.setReplierID(student.getID());
+                enquiry.setRequestStatus(RequestStatus.REPLIED);
+                EnquiryRepository.getInstance().update(enquiry);
+                System.out.println("Successfully replied an enquiry:");
+                System.out.println();
+                ChangePage.changePage();
+                System.out.println("Have other enquiry to reply?");
+                System.out.println("\t0. No");
+                System.out.println("\t1. Yes");
+                int choice = scanner.nextInt();
+                if (choice == 1) {
+                    commViewPendingEnquiries(student);
+                }
+                ModelViewer.displaySingleDisplayable(enquiry);
+                System.out.println(BoundaryStrings.separator);
+                System.out.println("Press enter to go back.");
+                scanner.nextLine();
+                throw new PageBackException();
+            }
+        }
     }
+
 }
 
