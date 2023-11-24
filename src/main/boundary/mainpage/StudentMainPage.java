@@ -13,6 +13,12 @@ import main.utils.iocontrol.IntGetter;
 import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
 
+import controller.request.RequestManager;
+import controller.request.StudentManager;
+import controller.request.StaffManager;
+import controller.user.student;
+
+
 
 import java.util.Scanner;
 
@@ -150,4 +156,6 @@ public class StudentMainPage {
             throw new IllegalArgumentException("User is not a student.");
         }
     }
+
+
 }
