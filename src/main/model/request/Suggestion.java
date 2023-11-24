@@ -233,19 +233,19 @@ public class Suggestion implements Request{
 					"|---------------------------------------------------|\n");
 		
 			// Check and display suggested edits only if they are not null for string stuff or -1 for int or "NA" for faculty
-			if (getCampName() != null) {
+			if (! getCampName().equals(null)) {
 				result.append(String.format("| Camp Name                 | %-21s |\n", getCampName()));
 			}
-			if (getDates() != null) {
+			if (! getDates().equals(null)) {
 				result.append(String.format("| Camp Dates                | %-21s |\n", getDates()));
 			}
-			if (getRegistrationClosingDate() != null) {
+			if (! getRegistrationClosingDate().equals(null)) {
 				result.append(String.format("| Registration Closing Date | %-21s |\n", getRegistrationClosingDate()));
 			}
-			if (getCampTypeString(this.faculty) != null) {
+			if (! getCampTypeString(this.faculty).equals(null)) {
 				result.append(String.format("| Camp Type                 | %-21s |\n", getCampTypeString(this.faculty)));
 			}
-			if (getLocation() != null) {
+			if (! getLocation().equals(null)) {
 				result.append(String.format("| Location                  | %-21s |\n", getLocation()));
 			}
 			// Add similar if statements for other fields
