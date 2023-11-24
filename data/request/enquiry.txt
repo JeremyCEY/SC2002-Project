@@ -1,3 +1,8 @@
 senderIDYCHERNcampIDc1requestIDE1messageghjklreplynullrequestStatusPENDINGreplierIDnull
 senderIDYCHERNcampIDc1requestIDE2messagesadfhgjkl;replynullrequestStatusPENDINGreplierIDnull
 senderIDYCHERNcampIDc1requestIDE3message5replynullrequestStatusPENDINGreplierIDnull
+senderIDYCHERNcampIDc3requestIDE4messageDoes this camp conduct remotely?replynullrequestStatusPENDINGreplierIDnull
+senderIDYCHERNcampIDc1requestIDE5messageI am good. replynullrequestStatusPENDINGreplierIDnull
+senderIDYCHERNcampIDc2requestIDE6messageIs it OK?replynullrequestStatusPENDINGreplierIDnull
+senderIDYCHERNcampIDC2requestIDE7messageI want to test. replynullrequestStatusPENDINGreplierIDnull
+senderIDYCHERNcampIDC2requestIDE8messageI am OK. replynullrequestStatusPENDINGreplierIDnull
