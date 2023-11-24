@@ -249,16 +249,16 @@ public class Suggestion implements Request{
 				result.append(String.format("| Location                  | %-21s |\n", getLocation()));
 			}
 			if (getTotalSlots() != -1){
-				result.append(String.format("| Camp Attendee Total slots | %-21s |\n", getTotalSlots()));
+				result.append(String.format("| Camp Attendee Total slots | ") + getTotalSlots());
 			}
 			if (getCampCommSlots() != -1){
-				result.append(String.format("| Camp Commitee Total slots | %-21s |\n",  getCampCommSlots()));
+				result.append(String.format("| Camp Commitee Total slots | %-21s|\n",  getCampCommSlots()));
 			}
-			if (! getDescription().equals("null")){
-				result.append(String.format("| Camp Description          | %-21s |\n", getDescription()));
+			if (! getDescription().equals(null)){
+				result.append(String.format("| Camp Description | %-21s |", getDescription()));
 			}
-			if (! getCampStaff().equals("null")){
-				result.append(String.format("| Staff In Charge | %-21s |\n", getCampStaff()));
+			if (! getCampStaff().equals(null)){
+				result.append(String.format("| Camp Staff id in charge | %-21s |", getCampStaff()));
 			}
 			// Add similar if statements for other fields
 		
