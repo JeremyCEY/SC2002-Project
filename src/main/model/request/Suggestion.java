@@ -233,32 +233,32 @@ public class Suggestion implements Request{
 					"|---------------------------------------------------|\n");
 		
 			// Check and display suggested edits only if they are not null for string stuff or -1 for int or "NA" for faculty
-			if (! getCampName().equals(null)) {
+			if (! getCampName().equals("null")) {
 				result.append(String.format("| Camp Name                 | %-21s |\n", getCampName()));
 			}
-			if (! getDates().equals(null)) {
+			if (! getDates().equals("null")) {
 				result.append(String.format("| Camp Dates                | %-21s |\n", getDates()));
 			}
-			if (! getRegistrationClosingDate().equals(null)) {
+			if (! getRegistrationClosingDate().equals("null")) {
 				result.append(String.format("| Registration Closing Date | %-21s |\n", getRegistrationClosingDate()));
 			}
-			if (! getCampTypeString(this.faculty).equals(null)) {
+			if (! getCampTypeString(this.faculty).equals("null")) {
 				result.append(String.format("| Camp Type                 | %-21s |\n", getCampTypeString(this.faculty)));
 			}
-			if (! getLocation().equals(null)) {
+			if (! getLocation().equals("null")) {
 				result.append(String.format("| Location                  | %-21s |\n", getLocation()));
 			}
 			if (getTotalSlots() != -1){
-				result.append(String.format("| Camp Attendee Total slots | ") + getTotalSlots());
+				result.append(String.format("| Camp Attendee Total slots | %-21s |\n", getTotalSlots()));
 			}
 			if (getCampCommSlots() != -1){
-				result.append(String.format("| Camp Commitee Total slots |") + getCampCommSlots());
+				result.append(String.format("| Camp Commitee Total slots | %-21s |\n",  getCampCommSlots()));
 			}
-			if (! getDescription().equals(null)){
-				result.append(String.format("| Camp Description | %-21s |", getDescription()));
+			if (! getDescription().equals("null")){
+				result.append(String.format("| Camp Description          | %-21s |\n", getDescription()));
 			}
-			if (! getCampStaff().equals(null)){
-				result.append(String.format("| Camp Staff id in charge | %-21s |", getCampStaff()));
+			if (! getCampStaff().equals("null")){
+				result.append(String.format("| Staff In Charge | %-21s |\n", getCampStaff()));
 			}
 			// Add similar if statements for other fields
 		
