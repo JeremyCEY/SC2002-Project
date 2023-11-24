@@ -14,6 +14,7 @@ import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
 
 
+
 import java.util.Scanner;
 
 /**
@@ -150,4 +151,6 @@ public class StudentMainPage {
             throw new IllegalArgumentException("User is not a student.");
         }
     }
+
+
 }

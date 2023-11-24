@@ -563,6 +563,14 @@ public class StudentManager {
             System.out.println("Enter Camp ID to create Suggestion");
             String studentID = student.getID();
             String campID = sc.nextLine();
+        //     //String message; 
+        // do {
+        //     //System.out.printf("Please input the suggestion that you have regarding camp %s: \n", campID);
+        //     campID = new Scanner(System.in).nextLine();
+        //     if (campID==""){
+        //         System.out.println("Your ID is invalid, please reenter!"); 
+        //     }
+        // }while (campID==""); 
         
             try{
                 CampManager.getCampByID(campID);
@@ -606,6 +614,7 @@ public class StudentManager {
         System.out.println("\t9. Camp Staff ID In Charge");
     
         int choice = IntGetter.readInt();
+        if (choice == 0) throw new PageBackException();
         int valid=1; 
         do{
             if (valid==0){
