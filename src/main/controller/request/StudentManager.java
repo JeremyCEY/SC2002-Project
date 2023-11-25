@@ -406,6 +406,8 @@ public class StudentManager {
         System.out.println("First of all, would you mind telling us the CampID that you want to submit this enquiry to: "); 
         String studentID = student.getID();
         String campID = new Scanner(System.in).nextLine();
+        campID=campID.toUpperCase();
+        System.out.println("CampID is :"+campID);  
         try{
             CampManager.getCampByID(campID);
         } catch(ModelNotFoundException e){
