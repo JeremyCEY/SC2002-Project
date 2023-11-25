@@ -13,23 +13,29 @@ import main.utils.iocontrol.IntGetter;
 import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
 
-
-
 import java.util.Scanner;
 
 /**
- * This is a Java class that represents the main page of a student in a system or application. It contains several methods for displaying different functionalities of the student main page, such as viewing the user profile, changing the password, viewing project lists, registering/deregistering for projects, changing project title, viewing project history and status, and logging out.
+ * This is a Java class that represents the main page of a student in a system
+ * or application. It contains several methods for displaying different
+ * functionalities of the student main page, such as viewing the user profile,
+ * changing the password, viewing project lists, registering/deregistering for
+ * projects, changing project title, viewing project history and status, and
+ * logging out.
  */
 public class StudentMainPage {
     /**
-     * This method displays the main page of a student. It takes a User object as a parameter and displays a menu of options for the student to choose from. The user's choice is then processed using a switch statement, which calls different methods based on the choice.
+     * This method displays the main page of a student. It takes a User object as a
+     * parameter and displays a menu of options for the student to choose from. The
+     * user's choice is then processed using a switch statement, which calls
+     * different methods based on the choice.
      *
      * @param user The user object of the student.
      * @throws ModelNotFoundException
      */
     public static void studentMainPage(User user) {
         if (user instanceof Student student) {
-            if (!student.getCCamps().equals("null")){
+            if (!student.getCCamps().equals("null")) {
                 ChangePage.changePage();
                 System.out.println(BoundaryStrings.separator);
                 System.out.println("Welcome to Student Main Page");
@@ -88,12 +94,10 @@ public class StudentMainPage {
                             throw new PageBackException();
                         }
                     }
-                } 
-                catch (PageBackException | ModelNotFoundException e) {
+                } catch (PageBackException | ModelNotFoundException e) {
                     StudentMainPage.studentMainPage(student);
                 }
-            } 
-            else{
+            } else {
                 ChangePage.changePage();
                 System.out.println(BoundaryStrings.separator);
                 System.out.println("Welcome to Student Main Page");
@@ -140,17 +144,15 @@ public class StudentMainPage {
                             throw new PageBackException();
                         }
                     }
-                } 
-                catch (PageBackException | ModelNotFoundException e) {
+                } catch (PageBackException | ModelNotFoundException e) {
                     StudentMainPage.studentMainPage(student);
                 }
             }
-    }
-        
+        }
+
         else {
             throw new IllegalArgumentException("User is not a student.");
         }
     }
-
 
 }

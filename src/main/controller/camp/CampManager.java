@@ -21,21 +21,6 @@ import java.util.HashMap;
  */
 public class CampManager {
 
-    /**
-     * Change the title of a camp
-     *
-     * @param campID   the ID of the camp
-     * @param newTitle the new title of the camp
-     * @throws ModelNotFoundException if the camp is not found
-     */
-    // public static void changecampTitle(String campID, String newTitle) throws
-    // ModelNotFoundException {
-    // Camp p1 = CampRepository.getInstance().getByID(campID);
-    // p1.setcampTitle(newTitle);
-    // CampRepository.getInstance().update(p1);
-    // CampManager.updatecampsStatus();
-    // }
-
     public static void updateCamp(String campID, Camp updatedCamp) throws ModelNotFoundException {
         updatedCamp.setCampID(campID);
         CampRepository.getInstance().update(updatedCamp);
@@ -102,9 +87,6 @@ public class CampManager {
      */
     public static void withdrawCampAttendee(String campID, String studentID) throws ModelNotFoundException {
         Camp camp = CampRepository.getInstance().getByID(campID);
-        // if (p1.getStatus() != campStatus.ALLOCATED) {
-        // throw new IllegalStateException("The camp status is not ALLOCATED");
-        // }
         Student student;
         try {
             student = StudentRepository.getInstance().getByID(studentID);
@@ -117,7 +99,6 @@ public class CampManager {
         camp.setFilledSlots(camp.getFilledSlots() - 1);
         CampRepository.getInstance().update(camp);
         StudentRepository.getInstance().update(student);
-        // campManager.updatecampsStatus();
     }
 
     /**
@@ -135,18 +116,12 @@ public class CampManager {
         } catch (ModelNotFoundException e) {
             throw new IllegalStateException("Student not found");
         }
-        // if (camp.getFilledSlots() >= camp.getTotalSlots()) {
-        // throw new IllegalStateException("Attendee slots maxed");
-        // }
-
-        // check whether student has register before
 
         student.addACamp(campID);
         camp.setFilledSlots(camp.getFilledSlots() + 1);
 
         CampRepository.getInstance().update(camp);
         StudentRepository.getInstance().update(student);
-        // CampManager.updatecampsStatus();
     }
 
     public static void registerCampCommittee(String campID, String studentID) throws ModelNotFoundException {
@@ -157,11 +132,6 @@ public class CampManager {
         } catch (ModelNotFoundException e) {
             throw new IllegalStateException("Student not found");
         }
-        // if (camp.getFilledSlots() >= camp.getTotalSlots()) {
-        // throw new IllegalStateException("Attendee slots maxed");
-        // }
-
-        // check whether student has register before
 
         student.addCCamp(campID);
         camp.setFilledCampCommSlots(camp.getFilledCampCommSlots() + 1);
@@ -175,7 +145,7 @@ public class CampManager {
     /**
      * load camps from csv resource file
      */
-    public static void loadcamps() {
+    public static void loadCamps() {
         List<List<String>> camps = CSVReader.read(Location.RESOURCE_LOCATION + "/resources/CampList.csv", true);
         for (List<String> camp : camps) {
             try {

@@ -19,7 +19,8 @@ public class LoginUI {
     /**
      * Displays a login page.
      *
-     * @throws PageBackException if the user chooses to go back to the previous page.
+     * @throws PageBackException if the user chooses to go back to the previous
+     *                           page.
      */
     public static void login() throws PageBackException {
         ChangePage.changePage();
@@ -32,12 +33,9 @@ public class LoginUI {
                 login();
             }
         }
+
         String password = AttributeGetter.getPassword();
-//        System.err.println("Logging in...");
-//        System.err.println("Domain: " + domain);
-//        System.err.println("User ID: " + userID);
-//        System.err.println("Password: " + password);
-//        new Scanner(System.in).nextLine();
+
         try {
             User user = AccountManager.login(domain, userID, password);
             switch (domain) {

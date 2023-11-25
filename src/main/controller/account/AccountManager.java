@@ -107,10 +107,10 @@ public class AccountManager {
     public static User register(UserType userType, String userID, String name, String email, Faculty faculty)
             throws ModelAlreadyExistsException {
         // if (userType == UserType.STAFF) {
-        //     System.err.println("Registering coordinator...");
-        //     System.err.println("Coordinator ID: " + userID);
-        //     System.err.println("Coordinator name: " + name);
-        //     System.err.println("Coordinator email: " + email);
+        // System.err.println("Registering coordinator...");
+        // System.err.println("Coordinator ID: " + userID);
+        // System.err.println("Coordinator name: " + name);
+        // System.err.println("Coordinator email: " + email);
         // }
         return register(userType, userID, "password", name, email, faculty);
     }

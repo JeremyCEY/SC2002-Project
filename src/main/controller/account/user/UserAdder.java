@@ -15,7 +15,8 @@ public class UserAdder {
      * Adds the specified user to the database.
      *
      * @param user the user to be added
-     * @throws ModelAlreadyExistsException if the user already exists in the database
+     * @throws ModelAlreadyExistsException if the user already exists in the
+     *                                     database
      */
     public static void addUser(User user) throws ModelAlreadyExistsException {
         if (user instanceof Student student) {
@@ -29,17 +30,19 @@ public class UserAdder {
      * Adds the specified coordinator to the database.
      *
      * @param coordinator the coordinator to be added
-     * @throws ModelAlreadyExistsException if the coordinator already exists in the database
+     * @throws ModelAlreadyExistsException if the coordinator already exists in the
+     *                                     database
      */
     private static void addStaff(Staff staff) throws ModelAlreadyExistsException {
         StaffRepository.getInstance().add(staff);
     }
-    
+
     /**
      * Adds the specified student to the database.
      *
      * @param student the student to be added
-     * @throws ModelAlreadyExistsException if the student already exists in the database
+     * @throws ModelAlreadyExistsException if the student already exists in the
+     *                                     database
      */
     private static void addStudent(Student student) throws ModelAlreadyExistsException {
         StudentRepository.getInstance().add(student);

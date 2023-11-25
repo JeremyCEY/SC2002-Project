@@ -11,22 +11,23 @@ public class UIEntry {
     /**
      * Checks if the application is being run for the first time.
      *
-     * @return true if the application is being run for the first time, false otherwise.
+     * @return true if the application is being run for the first time, false
+     *         otherwise.
      */
     private static boolean firstStart() {
         return AccountManager.repositoryIsEmpty() && CampManager.repositoryIsEmpty();
-        //return true;
     }
 
     /**
      * Starts the application.
-     * If the application is being run for the first time, it loads the default users and projects.
+     * If the application is being run for the first time, it loads the default
+     * users and projects.
      * Then it displays the welcome page.
      */
     public static void start() {
         if (firstStart()) {
             AccountManager.loadUsers();
-            //CampManager.loadCamps();
+            CampManager.loadCamps();
         }
         Welcome.welcome();
     }

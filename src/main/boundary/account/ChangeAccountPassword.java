@@ -12,13 +12,17 @@ import main.utils.ui.UserTypeGetter;
 import java.util.Scanner;
 
 /**
- * This class is responsible for handling the change password feature for a given user account. It contains
- * two methods, {@code changePassword} and {@code askToRetry}, that are used for this purpose.
+ * This class is responsible for handling the change password feature for a
+ * given user account. It contains
+ * two methods, {@code changePassword} and {@code askToRetry}, that are used for
+ * this purpose.
  */
 public class ChangeAccountPassword {
     /**
-     * This method is called when the user enters an incorrect password and wants to retry the password change. It
-     * prompts the user to either go back or try again, and throws a {@code PageBackException} if the user chooses to
+     * This method is called when the user enters an incorrect password and wants to
+     * retry the password change. It
+     * prompts the user to either go back or try again, and throws a
+     * {@code PageBackException} if the user chooses to
      * go back.
      *
      * @param userType the type of user who wants to change their password
@@ -38,9 +42,12 @@ public class ChangeAccountPassword {
     }
 
     /**
-     * This method is called to change the password for a given user account. It prompts the user for their old password
-     * and verifies it, then prompts the user for their new password and verifies that it is entered correctly. If
-     * successful, it updates the user's password and displays a success message before throwing a
+     * This method is called to change the password for a given user account. It
+     * prompts the user for their old password
+     * and verifies it, then prompts the user for their new password and verifies
+     * that it is entered correctly. If
+     * successful, it updates the user's password and displays a success message
+     * before throwing a
      * {@code PageBackException} to return to the previous page.
      *
      * @param userType the type of user who wants to change their password
@@ -68,13 +75,10 @@ public class ChangeAccountPassword {
         String newPasswordAgain;
 
         do {
-            // read the new password
             System.out.print("Please enter your new password: ");
             newPassword = PasswordReader.getPassword();
-            // read the new password again
             System.out.print("Please enter your new password again: ");
             newPasswordAgain = PasswordReader.getPassword();
-            // if the new password is not the same as the new password again, ask the user to enter again
 
             if (!newPassword.equals(newPasswordAgain)) {
                 System.out.println("Two passwords are not the same.");

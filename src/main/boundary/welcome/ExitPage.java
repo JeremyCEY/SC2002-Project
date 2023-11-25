@@ -11,7 +11,7 @@ public class ExitPage {
      */
     public static void exitPage() {
         ChangePage.changePage();
-        System.out.println("Thank you for using our system!");
+        System.out.println("Thank you!");
         System.exit(0);
     }
 }

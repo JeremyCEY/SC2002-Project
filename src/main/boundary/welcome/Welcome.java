@@ -27,10 +27,18 @@ public class Welcome {
             while (true) {
                 int choice = IntGetter.readInt();
                 switch (choice) {
-                    case 1: LoginUI.login(); break;
-                    case 2: ForgetUserID.forgotUserID(); break;
-                    case 3: ExitPage.exitPage(); break;
-                    default: System.out.println("Invalid choice. Please try again."); break;
+                    case 1:
+                        LoginUI.login();
+                        break;
+                    case 2:
+                        ForgetUserID.forgotUserID();
+                        break;
+                    case 3:
+                        ExitPage.exitPage();
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
                 }
             }
         } catch (PageBackException e) {

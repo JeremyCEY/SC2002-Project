@@ -22,8 +22,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RequestManager {
-
-
     public static List<Enquiry> viewAllEnquiry() {
         return EnquiryRepository.getInstance().getList();
     }
@@ -154,7 +152,6 @@ public class RequestManager {
     }
 
     public static void approveSuggestion(Suggestion s) throws ModelNotFoundException {
-        //update Camp details
         String campID = s.getCampID();
         Camp c = CampManager.getCampByID(campID);
     
