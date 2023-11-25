@@ -345,7 +345,7 @@ public class StaffMainPage {
         suggestion.setReplierID(user.getID());
         SuggestionRepository.getInstance().update(suggestion);
         System.out.println(suggestion.getSenderID());
-        
+
         ChangePage.changePage();
         System.out.println("Successfully handled a suggestion:");
         System.out.println();
@@ -362,84 +362,470 @@ public class StaffMainPage {
         throw new PageBackException();
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static List<Student> getAllAttendeesByCamp(Camp camp) {
+        return StudentRepository.getInstance().findByRules(
+                s -> s.getACamps().toLowerCase().contains(camp.getID().toLowerCase()))
+                .stream()
+                .map(s -> (Student) s)
+                .collect(Collectors.toList());
+    }
+
+    public static List<Student> getAllCampCommByCamp(Camp camp) {
+        return StudentRepository.getInstance().findByRules(
+                s -> s.getCCamps().toLowerCase().contains(camp.getID().toLowerCase()))
+                .stream()
+                .map(s -> (Student) s)
+                .collect(Collectors.toList());
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+    public static void generateStudentsReport(String campID) throws PageBackException, ModelNotFoundException {
+        Scanner sc = new Scanner(System.in);
+        ChangePage.changePage();
+        Camp camp = CampRepository.getInstance().getByID(campID);
+        if (camp == null) {
+            // Throw ModelNotFoundException if the camp is not found
+            throw new ModelNotFoundException("Camp not found with ID: " + campID);
+        }
+
+        System.out.printf("Generating Camp Report for %s...\n", camp.getCampName());
+
+        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_students_" + campID + ".csv";
+
+        String campName = camp.getCampName();
+        String campDates = camp.getDates();
+        String campRegistrationDeadline = camp.getRegistrationClosingDate();
+        Faculty openTo = camp.getOpenTo();
+        String location = camp.getLocation();
+        int currentAttendeeSlots = camp.getFilledSlots();
+        int totalAttendeeSlots = camp.getTotalSlots();
+        int currentCampCommSlots = camp.getFilledCampCommSlots();
+        int totalCampCommSlots = camp.getCampCommSlots();
+        String description = camp.getDescription();
+
+        List<Student> attendees = getAllAttendeesByCamp(camp);
+        List<Student> campCommMembers = getAllCampCommByCamp(camp);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            // Writing headers to the CSV file
+            writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
+                    + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
+            writer.newLine();
+
+            // Writing camp details to the CSV file
+            writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
+                    campName, campDates, campRegistrationDeadline, openTo.toString(), location,
+                    currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots, description));
+            writer.newLine();
+
+            // Writing list of attendees to the CSV file
+            writer.write("List of Attendees");
+            writer.newLine();
+            for (Student attendee : attendees) {
+                writer.write(attendee.getUserName()); // Include any relevant attendee information
+                writer.newLine();
+            }
+
+            // Writing list of camp committee members to the CSV file
+            writer.write("List of Camp Committee Members");
+            writer.newLine();
+            for (Student campCommMember : campCommMembers) {
+                writer.write(campCommMember.getUserName()); // Include any relevant camp
+                // committee member information
+                writer.newLine();
+            }
+
+            System.out.printf("Camp Report for attendees %s generated successfully and saved at %s.\n", campName,
+                    FILE_PATH);
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+
+        System.out.println("Press enter to go back.");
+        sc.nextLine();
+        throw new PageBackException();
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////
+    public static void generateAttendeeReport(String campID) throws PageBackException, ModelNotFoundException {
+        Scanner sc = new Scanner(System.in);
+        ChangePage.changePage();
+        Camp camp = CampRepository.getInstance().getByID(campID);
+        if (camp == null) {
+            throw new ModelNotFoundException("Camp not found with ID: " + campID);
+        }
+
+        System.out.printf("Generating Camp Report for %s...\n", camp.getCampName());
+
+        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_attendee_" + campID + ".csv";
+
+        String campName = camp.getCampName();
+        String campDates = camp.getDates();
+        String campRegistrationDeadline = camp.getRegistrationClosingDate();
+        Faculty openTo = camp.getOpenTo();
+        String location = camp.getLocation();
+        int currentAttendeeSlots = camp.getFilledSlots();
+        int totalAttendeeSlots = camp.getTotalSlots();
+        int currentCampCommSlots = camp.getFilledCampCommSlots();
+        int totalCampCommSlots = camp.getCampCommSlots();
+        String description = camp.getDescription();
+
+        List<Student> attendees = getAllAttendeesByCamp(camp);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            // Writing headers to the CSV file
+            writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
+                    + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
+            writer.newLine();
+
+            // Writing camp details to the CSV file
+            writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
+                    campName, campDates, campRegistrationDeadline, openTo.toString(), location,
+                    currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots, description));
+            writer.newLine();
+
+            // Writing list of attendees to the CSV file
+            writer.write("List of Attendees");
+            writer.newLine();
+            for (Student attendee : attendees) {
+                writer.write(attendee.getUserName()); // Include any relevant attendee information
+                writer.newLine();
+            }
+
+            System.out.printf("Camp Report for attendees %s generated successfully and saved at %s.\n", campName,
+                    FILE_PATH);
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+
+        System.out.println("Press enter to go back.");
+        sc.nextLine();
+        throw new PageBackException();
+    }
+    /////////////////////////////////////////////////////////////////////////////////
+
+    public static void generateCommitteeReport(String campID) throws PageBackException, ModelNotFoundException {
+        Scanner sc = new Scanner(System.in);
+        ChangePage.changePage();
+        Camp camp = CampRepository.getInstance().getByID(campID);
+        // Check if the camp is null
+        if (camp == null) {
+            // Throw ModelNotFoundException if the camp is not found
+            throw new ModelNotFoundException("Camp not found with ID: " + campID);
+        }
+
+        System.out.printf("Generating Camp Report for %s...\n", camp.getCampName());
+
+        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_committee_" + campID + ".csv";
+
+        String campName = camp.getCampName();
+        String campDates = camp.getDates();
+        String campRegistrationDeadline = camp.getRegistrationClosingDate();
+        Faculty openTo = camp.getOpenTo();
+        String location = camp.getLocation();
+        int currentAttendeeSlots = camp.getFilledSlots();
+        int totalAttendeeSlots = camp.getTotalSlots();
+        int currentCampCommSlots = camp.getFilledCampCommSlots();
+        int totalCampCommSlots = camp.getCampCommSlots();
+        String description = camp.getDescription();
+
+        // List<Student> attendees = getAllAttendeesByCamp(camp);
+        List<Student> campCommMembers = getAllCampCommByCamp(camp);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            // Writing headers to the CSV file
+            writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
+                    + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
+            writer.newLine();
+
+            // Writing camp details to the CSV file
+            writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
+                    campName, campDates, campRegistrationDeadline, openTo.toString(), location,
+                    currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots, description));
+            writer.newLine();
+
+            // Writing list of camp committee members to the CSV file
+            writer.write("List of Camp Committee Members");
+            writer.newLine();
+            for (Student campCommMember : campCommMembers) {
+                writer.write(campCommMember.getUserName()); // Include any relevant camp committee member information
+                writer.newLine();
+            }
+
+            System.out.printf("Camp Report for attendees %s generated successfully and saved at %s.\n", campName,
+                    FILE_PATH);
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+
+        System.out.println("Press enter to go back.");
+        sc.nextLine();
+        throw new PageBackException();
+    }
+    //////////////////////////////////////////////////////////////////////////////
+
+    public static void generatePerformaceReport(String campID) throws PageBackException, ModelNotFoundException {
+        Scanner sc = new Scanner(System.in);
+        ChangePage.changePage();
+        Camp camp = CampRepository.getInstance().getByID(campID);
+        // Check if the camp is null
+        if (camp == null) {
+            // Throw ModelNotFoundException if the camp is not found
+            throw new ModelNotFoundException("Camp not found with ID: " + campID);
+        }
+
+        System.out.printf("Generating Camp Committee Members Performance report %s...\n", camp.getCampName());
+
+        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_performance_" + campID + ".csv";
+
+        String campName = camp.getCampName();
+        String campDates = camp.getDates();
+        String campRegistrationDeadline = camp.getRegistrationClosingDate();
+        Faculty openTo = camp.getOpenTo();
+        String location = camp.getLocation();
+        int currentAttendeeSlots = camp.getFilledSlots();
+        int totalAttendeeSlots = camp.getTotalSlots();
+        int currentCampCommSlots = camp.getFilledCampCommSlots();
+        int totalCampCommSlots = camp.getCampCommSlots();
+        String description = camp.getDescription();
+
+        // List<Student> attendees = getAllAttendeesByCamp(camp);
+        List<Student> campCommMembers = getAllCampCommByCamp(camp);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            // Writing headers to the CSV file
+            writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
+                    + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
+            writer.newLine();
+
+            // Writing camp details to the CSV file
+            writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
+                    campName, campDates, campRegistrationDeadline, openTo.toString(), location,
+                    currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots, description));
+            writer.newLine();
+
+            // Writing list of camp committee members to the CSV file
+            writer.write("List of Camp Committee Members,Points");
+            writer.newLine();
+            for (Student campCommMember : campCommMembers) {
+                writer.write(String.format("%s,%d",
+                        campCommMember.getUserName(), campCommMember.getPoints()));
+                writer.newLine();
+            }
+
+            System.out.printf(
+                    "Camp Committee Members Performance report for %s generated successfully and saved at %s.\n",
+                    campName,
+                    FILE_PATH);
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+
+        System.out.println("Press enter to go back.");
+        sc.nextLine();
+        throw new PageBackException();
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    public static void generateEnquiryReport(String campID) throws PageBackException, ModelNotFoundException {
+        Scanner sc = new Scanner(System.in);
+        ChangePage.changePage();
+        Camp camp = CampRepository.getInstance().getByID(campID);
+        // Check if the camp is null
+        if (camp == null) {
+            // Throw ModelNotFoundException if the camp is not found
+            throw new ModelNotFoundException("Camp not found with ID: " + campID);
+        }
+
+        System.out.printf("Generating Enquiry report for %s...\n", camp.getCampName());
+
+        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_enquiry_" + campID + ".csv";
+
+        String campName = camp.getCampName();
+        String campDates = camp.getDates();
+        String campRegistrationDeadline = camp.getRegistrationClosingDate();
+        Faculty openTo = camp.getOpenTo();
+        String location = camp.getLocation();
+        int currentAttendeeSlots = camp.getFilledSlots();
+        int totalAttendeeSlots = camp.getTotalSlots();
+        int currentCampCommSlots = camp.getFilledCampCommSlots();
+        int totalCampCommSlots = camp.getCampCommSlots();
+        String description = camp.getDescription();
+
+        List<Enquiry> enquiries = getAllEnquiriesByCamp(camp);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            // Writing headers to the CSV file
+            writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
+                    + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
+            writer.newLine();
+
+            // Writing camp details to the CSV file
+            writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
+                    campName, campDates, campRegistrationDeadline, openTo.toString(), location,
+                    currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots, description));
+            writer.newLine();
+
+            // Writing list of camp committee members to the CSV file
+            writer.newLine();
+            writer.write("Enquiries");
+            writer.newLine();
+            for (Enquiry e : enquiries) {
+
+                writer.write("RequestID,RequestStatus,SenderID,ReplierID,Message,Reply");
+                writer.newLine();
+                writer.write(String.format("%s,%s,%s,%s,%s,%s",
+                        e.getID(), e.getRequestStatus().toString(), e.getSenderID(), e.getReplierID(), e.getMessage(),
+                        e.getReply()));
+                writer.newLine();
+                writer.newLine();
+            }
+
+            System.out.printf("Enquiry report for %s generated successfully and saved at %s.\n", campName,
+                    FILE_PATH);
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+
+        System.out.println("Press enter to go back.");
+        sc.nextLine();
+        throw new PageBackException();
+    }
+
+    public static List<Enquiry> getAllEnquiriesByCamp(Camp camp) {
+        return EnquiryRepository.getInstance().findByRules(
+                e -> e.getCampID().toLowerCase().contains(camp.getID().toLowerCase()))
+                .stream()
+                .map(e -> (Enquiry) e)
+                .collect(Collectors.toList());
+    }
+
+    // NEW FUNCTION /////////
     private static void generateReports(User user) throws IOException, PageBackException {
         ChangePage.changePage();
         CampViewer.viewStaffCamps((Staff) user);
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter Camp ID of camp to generate report");
-        String campID = scanner.nextLine();
+        System.out.println("Select the type of report to generate:");
+        System.out.println("\t1. Generate reports for all camps");
+        System.out.println("\t2. Generate reports for a specific camp");
+        System.out.println("\t3. Go Back");
+
+        System.out.print("Enter your choice: ");
+        int reportChoice = IntGetter.readInt();
         System.out.println(BoundaryStrings.separator);
 
-        System.out.println("Generating Camps Report");
-        System.out.println("\t0. Go Back");
-        System.out.println("\t1. My Camps Report");
-        System.out.println("\t2. Attendee List");
-        System.out.println("\t3. Committee List");
-        System.out.println("\t4. Enquiries Report");
-        System.out.println("\t5. Committee Performance Report");
-        System.out.println();
-        int choice = IntGetter.readInt();
-        List<Camp> camps = CampManager.getAllCampsByStaff((Staff) user);
-        List<String> campIDs = camps.stream()
-                .map(c -> c.getID()).collect(Collectors.toList());
-        switch (choice) {
-            case 0:
-                throw new PageBackException();
+        switch (reportChoice) {
             case 1:
-                System.out.println("My Camp Report");
-                generateCampList(camps, (Staff) user);
+                System.out.println("Select the type of report for all camps:");
+                System.out.println("\t1. All Students List");
+                System.out.println("\t2. Attendee List");
+                System.out.println("\t3. Committee List");
+                System.out.println("\t4. Enquiries Report");
+                System.out.println("\t5. Committee Performance Report");
+                System.out.println("\t6. Go Back");
+                System.out.print("Enter your choice: ");
+                int allCampsReportChoice = IntGetter.readInt();
+
+                switch (allCampsReportChoice) {
+                    case 1:
+                        generateStudentsReportForStaffCamps(CampManager.getAllCampsByStaff((Staff) user), (Staff) user);
+                        break;
+                    case 2:
+                        generateAttendeeReportForStaffCamps(CampManager.getAllCampsByStaff((Staff) user), (Staff) user);
+                        break;
+                    case 3:
+                        generateCommitteeReportForStaffCamps(CampManager.getAllCampsByStaff((Staff) user), (Staff) user);
+                        break;
+                    case 4:
+                        generateEnquiryReportForStaffCamps(CampManager.getAllCampsByStaff((Staff) user), (Staff) user);
+                        break;
+                    case 5:
+                        generatePerformanceReportForStaffCamps(CampManager.getAllCampsByStaff((Staff) user), (Staff) user);
+                        break;
+                    case 6:
+                        throw new PageBackException();
+                    default:
+                        System.out.println("Invalid choice. Try again.");
+                        new Scanner(System.in).nextLine();
+                        generateReports(user);
+                }
                 break;
+
             case 2:
-                List<Student> attendees = StudentRepository.getInstance().findByRules(
-                        s -> campIDs.contains(s.getACamps())).stream()
-                        .collect(Collectors.toList());
-                        
+                System.out.println("Enter Camp ID of the camp to generate reports:");
+                String campID = scanner.nextLine();
+
+                System.out.println("Select the type of report for the specific camp:");
+                System.out.println("\t1. All Students List");
+                System.out.println("\t2. Attendee List");
+                System.out.println("\t3. Committee List");
+                System.out.println("\t4. Enquiries Report");
+                System.out.println("\t5. Committee Performance Report");
+                System.out.println("\t6. Go Back");
+                System.out.print("Enter your choice: ");
+                int specificCampReportChoice = IntGetter.readInt();
+
+                switch (specificCampReportChoice) {
+                    case 1:
                         try {
-                            generateAttendeeReports(campID);
+                            generateStudentsReport(campID);
                         } catch (ModelNotFoundException e) {
-                            // Handle the exception or log an error message
                             e.printStackTrace();
                         }
-                System.out.println("Attendee List");
-                break;
-            case 3:
-                // List<Student> committees =
-                // StudentRepository.getInstance().findByRules(
-                // s -> campIDs.contains(s.getCCamps())).stream()
-                // .collect(Collectors.toList());
-                // //generateCommitteeReports(committees);
-                try {
-                            generateCommitteeReports(campID);
+                        break;
+                    case 2:
+                        try {
+                            generateAttendeeReport(campID);
                         } catch (ModelNotFoundException e) {
-                            // Handle the exception or log an error message
                             e.printStackTrace();
                         }
-                // System.out.println("Committee List");
-                break;
-            case 4:
-                try {
-                            generateEnquiryReports(campID);
+                        break;
+                    case 3:
+                        try {
+                            generateCommitteeReport(campID);
                         } catch (ModelNotFoundException e) {
-                            // Handle the exception or log an error message
                             e.printStackTrace();
                         }
-                System.out.println("Enquiry Report");
-            case 5:
-            try {
+                        break;
+                    case 4:
+                        try {
+                            generateEnquiryReport(campID);
+                        } catch (ModelNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 5:
+                        try {
                             generatePerformaceReport(campID);
                         } catch (ModelNotFoundException e) {
-                            // Handle the exception or log an error message
                             e.printStackTrace();
                         }
-                ;
-                System.out.println("Camp Committee Performance Report");
+                        break;
+                    case 6:
+                        throw new PageBackException();
+                    default:
+                        System.out.println("Invalid choice. Try again.");
+                        new Scanner(System.in).nextLine();
+                        generateReports(user);
+                }
+                break;
+
+            case 3:
+                throw new PageBackException();
+
+            default:
+                System.out.println("Invalid choice. Try again.");
+                new Scanner(System.in).nextLine();
+                generateReports(user);
         }
 
         System.out.println();
-        System.out.println("Have other reports to generate?");
+        System.out.println("Do you want to generate other reports?");
         System.out.println("\t0. No");
         System.out.println("\t1. Yes");
-        choice = IntGetter.readInt();
+        int choice = IntGetter.readInt();
         if (choice == 1) {
             generateReports(user);
         }
@@ -448,13 +834,13 @@ public class StaffMainPage {
         throw new PageBackException();
     }
 
-    public static void generateCampList(List<Camp> camps, Staff staff) throws PageBackException {
+    public static void generateStudentsReportForStaffCamps(List<Camp> camps, Staff staff) throws PageBackException {
         Scanner sc = new Scanner(System.in);
         ChangePage.changePage();
         System.out.printf("Generating Camp Report for %s...\n", staff.getID());
 
         String staffID = staff.getID();
-        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_camp_" + staffID + ".csv";
+        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_students_" + staffID + ".csv";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
 
@@ -517,293 +903,54 @@ public class StaffMainPage {
         throw new PageBackException();
     }
 
-    public static List<Student> getAllAttendeesByCamp(Camp camp) {
-        return StudentRepository.getInstance().findByRules(
-                s -> s.getACamps().toLowerCase().contains(camp.getID().toLowerCase()))
-                .stream()
-                .map(s -> (Student) s)
-                .collect(Collectors.toList());
-    }
-
-    public static List<Student> getAllCampCommByCamp(Camp camp) {
-        return StudentRepository.getInstance().findByRules(
-                s -> s.getCCamps().toLowerCase().contains(camp.getID().toLowerCase()))
-                .stream()
-                .map(s -> (Student) s)
-                .collect(Collectors.toList());
-    }
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static void generateAttendeeReports(String campID) throws PageBackException, ModelNotFoundException {
+    public static void generateAttendeeReportForStaffCamps(List<Camp> camps, Staff staff) throws PageBackException {
         Scanner sc = new Scanner(System.in);
         ChangePage.changePage();
-        Camp camp = CampRepository.getInstance().getByID(campID);
-        if (camp == null) {
-            // Throw ModelNotFoundException if the camp is not found
-            throw new ModelNotFoundException("Camp not found with ID: " + campID);
-        }
+        System.out.printf("Generating Camp Report for %s...\n", staff.getID());
 
-        System.out.printf("Generating Camp Report for %s...\n", camp.getCampName());
-
-        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_attendee_" + campID + ".csv";
-
-        String campName = camp.getCampName();
-        String campDates = camp.getDates();
-        String campRegistrationDeadline = camp.getRegistrationClosingDate();
-        Faculty openTo = camp.getOpenTo();
-        String location = camp.getLocation();
-        int currentAttendeeSlots = camp.getFilledSlots();
-        int totalAttendeeSlots = camp.getTotalSlots();
-        int currentCampCommSlots = camp.getFilledCampCommSlots();
-        int totalCampCommSlots = camp.getCampCommSlots();
-        String description = camp.getDescription();
-
-        List<Student> attendees = getAllAttendeesByCamp(camp);
-        // List<Student> campCommMembers = getAllCampCommByCamp(camp);
+        String staffID = staff.getID();
+        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_attendees_" + staffID + ".csv";
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            // Writing headers to the CSV file
-            writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
-                    + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
-            writer.newLine();
 
-            // Writing camp details to the CSV file
-            writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
-                    campName, campDates, campRegistrationDeadline, openTo.toString(), location,
-                    currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots, description));
-            writer.newLine();
+            for (Camp camp : camps) {
+                // Writing headers to the CSV file
+                writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
+                        + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
+                writer.newLine();
 
-            // Writing list of attendees to the CSV file
-            writer.write("List of Attendees");
-            writer.newLine();
-            for (Student attendee : attendees) {
-                writer.write(attendee.getUserName()); // Include any relevant attendee information
+                String campName = camp.getCampName();
+                String campDates = camp.getDates();
+                String campRegistrationDeadline = camp.getRegistrationClosingDate();
+                Faculty openTo = camp.getOpenTo();
+                String location = camp.getLocation();
+                int currentAttendeeSlots = camp.getFilledSlots();
+                int totalAttendeeSlots = camp.getTotalSlots();
+                int currentCampCommSlots = camp.getFilledCampCommSlots();
+                int totalCampCommSlots = camp.getCampCommSlots();
+                String description = camp.getDescription();
+
+                List<Student> attendees = getAllAttendeesByCamp(camp);
+
+                // Writing camp details to the CSV file
+                writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
+                        campName, campDates, campRegistrationDeadline, openTo.toString(), location,
+                        currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots,
+                        description));
+                writer.newLine();
+                writer.newLine();
+
+                // Writing list of attendees to the CSV file
+                writer.write("List of Attendees");
+                writer.newLine();
+                for (Student attendee : attendees) {
+                    writer.write(attendee.getUserName()); // Include any relevant attendee information
+                    writer.newLine();
+                }
                 writer.newLine();
             }
 
-            // Writing list of camp committee members to the CSV file
-            // writer.write("List of Camp Committee Members");
-            // writer.newLine();
-            // for (Student campCommMember : campCommMembers) {
-            // writer.write(campCommMember.getUserName()); // Include any relevant camp
-            // committee member information
-            // writer.newLine();
-            // }
-
-            System.out.printf("Camp Report for attendees %s generated successfully and saved at %s.\n", campName,
-                    FILE_PATH);
-        } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception appropriately
-        }
-
-        System.out.println("Press enter to go back.");
-        sc.nextLine();
-        throw new PageBackException();
-    }
-    /////////////////////////////////////////////////////////////////////////////////
-
-    public static void generateCommitteeReports(String campID) throws PageBackException, ModelNotFoundException {
-        Scanner sc = new Scanner(System.in);
-        ChangePage.changePage();
-        Camp camp = CampRepository.getInstance().getByID(campID);
-        // Check if the camp is null
-        if (camp == null) {
-            // Throw ModelNotFoundException if the camp is not found
-            throw new ModelNotFoundException("Camp not found with ID: " + campID);
-        }
-
-        System.out.printf("Generating Camp Report for %s...\n", camp.getCampName());
-
-        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_committee_" + campID + ".csv";
-
-        String campName = camp.getCampName();
-        String campDates = camp.getDates();
-        String campRegistrationDeadline = camp.getRegistrationClosingDate();
-        Faculty openTo = camp.getOpenTo();
-        String location = camp.getLocation();
-        int currentAttendeeSlots = camp.getFilledSlots();
-        int totalAttendeeSlots = camp.getTotalSlots();
-        int currentCampCommSlots = camp.getFilledCampCommSlots();
-        int totalCampCommSlots = camp.getCampCommSlots();
-        String description = camp.getDescription();
-
-        // List<Student> attendees = getAllAttendeesByCamp(camp);
-        List<Student> campCommMembers = getAllCampCommByCamp(camp);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            // Writing headers to the CSV file
-            writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
-                    + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
-            writer.newLine();
-
-            // Writing camp details to the CSV file
-            writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
-                    campName, campDates, campRegistrationDeadline, openTo.toString(), location,
-                    currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots, description));
-            writer.newLine();
-
-            // Writing list of attendees to the CSV file
-            // writer.write("List of Attendees");
-            // writer.newLine();
-            // for (Student attendee : attendees) {
-            // writer.write(attendee.getUserName()); // Include any relevant attendee
-            // information
-            // writer.newLine();
-            // }
-
-            // Writing list of camp committee members to the CSV file
-            writer.write("List of Camp Committee Members");
-            writer.newLine();
-            for (Student campCommMember : campCommMembers) {
-                writer.write(campCommMember.getUserName()); // Include any relevant camp committee member information
-                writer.newLine();
-            }
-
-            System.out.printf("Camp Report for attendees %s generated successfully and saved at %s.\n", campName,
-                    FILE_PATH);
-        } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception appropriately
-        }
-
-        System.out.println("Press enter to go back.");
-        sc.nextLine();
-        throw new PageBackException();
-    }
-    //////////////////////////////////////////////////////////////////////////////
-    
-    public static void generatePerformaceReport(String campID) throws PageBackException, ModelNotFoundException {
-        Scanner sc = new Scanner(System.in);
-        ChangePage.changePage();
-        Camp camp = CampRepository.getInstance().getByID(campID);
-        // Check if the camp is null
-        if (camp == null) {
-            // Throw ModelNotFoundException if the camp is not found
-            throw new ModelNotFoundException("Camp not found with ID: " + campID);
-        }
-
-        System.out.printf("Generating Camp Committee Members Performance report %s...\n", camp.getCampName());
-
-        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_performance_" + campID + ".csv";
-
-        String campName = camp.getCampName();
-        String campDates = camp.getDates();
-        String campRegistrationDeadline = camp.getRegistrationClosingDate();
-        Faculty openTo = camp.getOpenTo();
-        String location = camp.getLocation();
-        int currentAttendeeSlots = camp.getFilledSlots();
-        int totalAttendeeSlots = camp.getTotalSlots();
-        int currentCampCommSlots = camp.getFilledCampCommSlots();
-        int totalCampCommSlots = camp.getCampCommSlots();
-        String description = camp.getDescription();
-
-        // List<Student> attendees = getAllAttendeesByCamp(camp);
-        List<Student> campCommMembers = getAllCampCommByCamp(camp);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            // Writing headers to the CSV file
-            writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
-                    + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
-            writer.newLine();
-
-            // Writing camp details to the CSV file
-            writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
-                    campName, campDates, campRegistrationDeadline, openTo.toString(), location,
-                    currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots, description));
-            writer.newLine();
-
-            // Writing list of attendees to the CSV file
-            // writer.write("List of Attendees");
-            // writer.newLine();
-            // for (Student attendee : attendees) {
-            // writer.write(attendee.getUserName()); // Include any relevant attendee
-            // information
-            // writer.newLine();
-            // }
-
-            // Writing list of camp committee members to the CSV file
-            writer.write("List of Camp Committee Members,Points");
-            writer.newLine();
-            for (Student campCommMember : campCommMembers) {
-                writer.write(String.format("%s,%d",
-                    campCommMember.getUserName(), campCommMember.getPoints()));
-                writer.newLine();
-            }
-
-            System.out.printf("Camp Committee Members Performance report for %s generated successfully and saved at %s.\n", campName,
-                    FILE_PATH);
-        } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception appropriately
-        }
-
-        System.out.println("Press enter to go back.");
-        sc.nextLine();
-        throw new PageBackException();
-    }
-    //////////////////////////////////////////////////////////////////////////////////////
-    public static void generateEnquiryReports(String campID) throws PageBackException, ModelNotFoundException {
-        Scanner sc = new Scanner(System.in);
-        ChangePage.changePage();
-        Camp camp = CampRepository.getInstance().getByID(campID);
-        // Check if the camp is null
-        if (camp == null) {
-            // Throw ModelNotFoundException if the camp is not found
-            throw new ModelNotFoundException("Camp not found with ID: " + campID);
-        }
-
-        System.out.printf("Generating Enquiry report for %s...\n", camp.getCampName());
-
-        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_enquiry_" + campID + ".csv";
-
-        String campName = camp.getCampName();
-        String campDates = camp.getDates();
-        String campRegistrationDeadline = camp.getRegistrationClosingDate();
-        Faculty openTo = camp.getOpenTo();
-        String location = camp.getLocation();
-        int currentAttendeeSlots = camp.getFilledSlots();
-        int totalAttendeeSlots = camp.getTotalSlots();
-        int currentCampCommSlots = camp.getFilledCampCommSlots();
-        int totalCampCommSlots = camp.getCampCommSlots();
-        String description = camp.getDescription();
-
-        List<Enquiry> enquiries = getAllEnquiriesByCamp(camp);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            // Writing headers to the CSV file
-            writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
-                    + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
-            writer.newLine();
-
-            // Writing camp details to the CSV file
-            writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
-                    campName, campDates, campRegistrationDeadline, openTo.toString(), location,
-                    currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots, description));
-            writer.newLine();
-
-            // Writing list of attendees to the CSV file
-            // writer.write("List of Attendees");
-            // writer.newLine();
-            // for (Student attendee : attendees) {
-            // writer.write(attendee.getUserName()); // Include any relevant attendee
-            // information
-            // writer.newLine();
-            // }
-
-            // Writing list of camp committee members to the CSV file
-           writer.newLine();
-            writer.write("Enquiries");
-            writer.newLine();
-            for (Enquiry e : enquiries) {
-                
-                writer.write("RequestID,RequestStatus,SenderID,ReplierID,Message,Reply");
-                writer.newLine();
-                writer.write(String.format("%s,%s,%s,%s,%s,%s",
-                e.getID(), e.getRequestStatus().toString(),e.getSenderID(),e.getReplierID(),e.getMessage(),e.getReply()));
-                writer.newLine();
-                writer.newLine();
-            }
-
-            System.out.printf("Enquiry report for %s generated successfully and saved at %s.\n", campName,
-                    FILE_PATH);
+            System.out.printf("All camp reports for %s generated successfully and saved at %s.\n", staffID, FILE_PATH);
         } catch (IOException e) {
             e.printStackTrace(); // Handle the exception appropriately
         }
@@ -813,12 +960,187 @@ public class StaffMainPage {
         throw new PageBackException();
     }
 
-    	public static List<Enquiry> getAllEnquiriesByCamp(Camp camp) {
-		return EnquiryRepository.getInstance().findByRules(
-				e -> e.getCampID().toLowerCase().contains(camp.getID().toLowerCase()))
-				.stream()
-				.map(e -> (Enquiry) e)
-				.collect(Collectors.toList());
-	}
+    public static void generateCommitteeReportForStaffCamps(List<Camp> camps, Staff staff) throws PageBackException {
+        Scanner sc = new Scanner(System.in);
+        ChangePage.changePage();
+        System.out.printf("Generating Camp Report for %s...\n", staff.getID());
 
+        String staffID = staff.getID();
+        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_committee_" + staffID + ".csv";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+
+            for (Camp camp : camps) {
+                // Writing headers to the CSV file
+                writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
+                        + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
+                writer.newLine();
+
+                String campName = camp.getCampName();
+                String campDates = camp.getDates();
+                String campRegistrationDeadline = camp.getRegistrationClosingDate();
+                Faculty openTo = camp.getOpenTo();
+                String location = camp.getLocation();
+                int currentAttendeeSlots = camp.getFilledSlots();
+                int totalAttendeeSlots = camp.getTotalSlots();
+                int currentCampCommSlots = camp.getFilledCampCommSlots();
+                int totalCampCommSlots = camp.getCampCommSlots();
+                String description = camp.getDescription();
+
+                List<Student> campCommMembers = getAllCampCommByCamp(camp);
+
+                // Writing camp details to the CSV file
+                writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
+                        campName, campDates, campRegistrationDeadline, openTo.toString(), location,
+                        currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots,
+                        description));
+                writer.newLine();
+                writer.newLine();
+
+                // Writing list of camp committee members to the CSV file
+                writer.write("List of Camp Committee Members");
+                writer.newLine();
+                for (Student campCommMember : campCommMembers) {
+                    writer.write(campCommMember.getUserName()); // Include any relevant camp committee member
+                                                                // information
+                    writer.newLine();
+                }
+                writer.newLine();
+                writer.newLine();
+            }
+
+            System.out.printf("All camp reports for %s generated successfully and saved at %s.\n", staffID, FILE_PATH);
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+
+        System.out.println("Press enter to go back.");
+        sc.nextLine();
+        throw new PageBackException();
+    }
+
+    public static void generateEnquiryReportForStaffCamps(List<Camp> camps, Staff staff) throws PageBackException {
+        Scanner sc = new Scanner(System.in);
+        ChangePage.changePage();
+        System.out.printf("Generating Enquiry Report for %s...\n", staff.getID());
+
+        String staffID = staff.getID();
+        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_enquiry_" + staffID + ".csv";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+
+            for (Camp camp : camps) {
+                // Writing headers to the CSV file
+                writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
+                        + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
+                writer.newLine();
+
+                String campName = camp.getCampName();
+                String campDates = camp.getDates();
+                String campRegistrationDeadline = camp.getRegistrationClosingDate();
+                Faculty openTo = camp.getOpenTo();
+                String location = camp.getLocation();
+                int currentAttendeeSlots = camp.getFilledSlots();
+                int totalAttendeeSlots = camp.getTotalSlots();
+                int currentCampCommSlots = camp.getFilledCampCommSlots();
+                int totalCampCommSlots = camp.getCampCommSlots();
+                String description = camp.getDescription();
+
+                List<Enquiry> enquiries = getAllEnquiriesByCamp(camp);
+
+                // Writing camp details to the CSV file
+                writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
+                        campName, campDates, campRegistrationDeadline, openTo.toString(), location,
+                        currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots,
+                        description));
+                writer.newLine();
+                writer.newLine();
+
+                // Writing list of camp committee members to the CSV file
+                writer.newLine();
+                writer.write("Enquiries");
+                writer.newLine();
+                for (Enquiry e : enquiries) {
+
+                    writer.write("RequestID,RequestStatus,SenderID,ReplierID,Message,Reply");
+                    writer.newLine();
+                    writer.write(String.format("%s,%s,%s,%s,%s,%s",
+                            e.getID(), e.getRequestStatus().toString(), e.getSenderID(), e.getReplierID(),
+                            e.getMessage(), e.getReply()));
+                    writer.newLine();
+                    writer.newLine();
+                }
+
+                System.out.printf("Enquiry report for %s generated successfully and saved at %s.\n", campName,
+                        FILE_PATH);
+            }
+
+            System.out.printf("All camp reports for %s generated successfully and saved at %s.\n", staffID, FILE_PATH);
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+
+        System.out.println("Press enter to go back.");
+        sc.nextLine();
+        throw new PageBackException();
+    }
+
+    public static void generatePerformanceReportForStaffCamps(List<Camp> camps, Staff staff) throws PageBackException {
+        Scanner sc = new Scanner(System.in);
+        ChangePage.changePage();
+        System.out.printf("Generating Performance Report for %s's Camps\n", staff.getID());
+
+        String staffID = staff.getID();
+        String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_performance_" + staffID + ".csv";
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+
+            for (Camp camp : camps) {
+                // Writing headers to the CSV file
+                writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
+                        + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
+                writer.newLine();
+
+                String campName = camp.getCampName();
+                String campDates = camp.getDates();
+                String campRegistrationDeadline = camp.getRegistrationClosingDate();
+                Faculty openTo = camp.getOpenTo();
+                String location = camp.getLocation();
+                int currentAttendeeSlots = camp.getFilledSlots();
+                int totalAttendeeSlots = camp.getTotalSlots();
+                int currentCampCommSlots = camp.getFilledCampCommSlots();
+                int totalCampCommSlots = camp.getCampCommSlots();
+                String description = camp.getDescription();
+
+                List<Student> campCommMembers = getAllCampCommByCamp(camp);
+
+                // Writing camp details to the CSV file
+                writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
+                        campName, campDates, campRegistrationDeadline, openTo.toString(), location,
+                        currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots,
+                        description));
+                writer.newLine();
+                writer.newLine();
+
+                // Writing list of camp committee members to the CSV file
+                writer.write("List of Camp Committee Members,Points");
+                writer.newLine();
+                for (Student campCommMember : campCommMembers) {
+                    writer.write(String.format("%s,%d",
+                            campCommMember.getUserName(), campCommMember.getPoints()));
+                    writer.newLine();
+                }
+
+            }
+
+            System.out.printf("Performance report for %s generated successfully and saved at %s.\n", staffID,
+                    FILE_PATH);
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+
+        System.out.println("Press enter to go back.");
+        sc.nextLine();
+        throw new PageBackException();
+    }
 }

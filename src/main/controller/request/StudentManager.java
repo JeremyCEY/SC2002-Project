@@ -45,6 +45,7 @@ import static main.utils.config.Location.RESOURCE_LOCATION;
 public class StudentManager {
     /**
      * get the student by ID
+     * 
      * @param studentID the student ID
      * @return the student
      * @throws ModelNotFoundException if the student is not found
@@ -54,18 +55,22 @@ public class StudentManager {
     }
 
     /**
-     * This private method is called when the student wants to register for a project. It prompts the student to enter the project ID, sends a request to register for the project, and displays a success message. If an error occurs, the student is given the option to go back or retry.
+     * This private method is called when the student wants to register for a
+     * project. It prompts the student to enter the project ID, sends a request to
+     * register for the project, and displays a success message. If an error occurs,
+     * the student is given the option to go back or retry.
      *
      * @param student the student.
      * @throws PageBackException if the user wants to go back.
      */
     public static void registerCampAttendee(Student student) throws PageBackException {
         ChangePage.changePage();
-        // if (student.getStatus() == StudentStatus.REGISTERED || student.getStatus() == StudentStatus.DEREGISTERED) {
-        //     System.out.println("You are already registered/deregistered for a project.");
-        //     System.out.println("Press Enter to go back.");
-        //     new Scanner(System.in).nextLine();
-        //     throw new PageBackException();
+        // if (student.getStatus() == StudentStatus.REGISTERED || student.getStatus() ==
+        // StudentStatus.DEREGISTERED) {
+        // System.out.println("You are already registered/deregistered for a project.");
+        // System.out.println("Press Enter to go back.");
+        // new Scanner(System.in).nextLine();
+        // throw new PageBackException();
         // }
         System.out.println("Here is the list of available camps: ");
         ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());
@@ -83,9 +88,10 @@ public class StudentManager {
         Camp camp;
         try {
             camp = CampManager.getByID(campID);
-            //Check if previously registered
+            // Check if previously registered
             if (student.getPCamps().contains(campID)) {
-                System.out.println("You are not allowed to register from this camp that you withdrawn from previously.");
+                System.out
+                        .println("You are not allowed to register from this camp that you withdrawn from previously.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
                 String choice = new Scanner(System.in).nextLine();
                 if (choice.equals("r")) {
@@ -93,7 +99,8 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            //Check if already camp comm for this camp might be able to remove based on how we display avail camps
+            // Check if already camp comm for this camp might be able to remove based on how
+            // we display avail camps
             else if (student.getCCamps().equalsIgnoreCase(campID)) {
                 System.out.println("You are already a camp committee for this camp.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -103,8 +110,8 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            //Check if no camps registered previously + clash?
-            //Check clash of camp dates
+            // Check if no camps registered previously + clash?
+            // Check clash of camp dates
             else if (checkClash(student, camp)) {
                 System.out.println("This camp's dates clashes with your other registered camps.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -114,7 +121,7 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            //Check deadline
+            // Check deadline
             else if (Integer.parseInt(CurrentDate.DATE) >= Integer.parseInt(camp.getRegistrationClosingDate())) {
                 System.out.println("Camp Registration Closed.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -124,7 +131,7 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            //Attendee slots maxed
+            // Attendee slots maxed
             else if (camp.getFilledSlots() >= camp.getTotalSlots()) {
                 System.out.println("Attendee Slots maxed.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -165,40 +172,40 @@ public class StudentManager {
     }
 
     public static boolean checkClash(Student student, Camp camp) {
-    // no camps registered initially so confirm no clashes
-    if (student.getACamps().equals("null") && student.getCCamps().equals("null")) {
-        return false;
-    }
-
-    List<String> campIds = new ArrayList<>();
-
-    if (!student.getACamps().equals("null")) {
-        String[] aCampsArray = student.getACamps().split(",");
-        campIds.addAll(Arrays.asList(aCampsArray));
-    }
-
-    if (!student.getCCamps().equals("null")) {
-        campIds.add(student.getCCamps());
-    }
-
-    // have camps registered initially
-
-    for (String campId : campIds) {
-        try {
-            Camp registeredCamp = CampRepository.getInstance().getByID(campId);
-
-            // Check for date clash
-            if (hasDateClash(registeredCamp.getDates(), camp.getDates())) {
-                return true; // Clash detected
-            }
-        } catch (ModelNotFoundException e) {
-            // Handle the case where the camp is not found
-            e.printStackTrace();
+        // no camps registered initially so confirm no clashes
+        if (student.getACamps().equals("null") && student.getCCamps().equals("null")) {
+            return false;
         }
-    }
 
-    // No clashes found
-    return false;
+        List<String> campIds = new ArrayList<>();
+
+        if (!student.getACamps().equals("null")) {
+            String[] aCampsArray = student.getACamps().split(",");
+            campIds.addAll(Arrays.asList(aCampsArray));
+        }
+
+        if (!student.getCCamps().equals("null")) {
+            campIds.add(student.getCCamps());
+        }
+
+        // have camps registered initially
+
+        for (String campId : campIds) {
+            try {
+                Camp registeredCamp = CampRepository.getInstance().getByID(campId);
+
+                // Check for date clash
+                if (hasDateClash(registeredCamp.getDates(), camp.getDates())) {
+                    return true; // Clash detected
+                }
+            } catch (ModelNotFoundException e) {
+                // Handle the case where the camp is not found
+                e.printStackTrace();
+            }
+        }
+
+        // No clashes found
+        return false;
     }
 
     public static boolean hasDateClash(String dates1, String dates2) {
@@ -221,7 +228,10 @@ public class StudentManager {
     }
 
     /**
-     * This private method is called when the student wants to deregister from a camp. It prompts the student to enter the project ID, sends a request to deregister from the project, and displays a success message. If an error occurs, the student is given the option to go back or retry.
+     * This private method is called when the student wants to deregister from a
+     * camp. It prompts the student to enter the project ID, sends a request to
+     * deregister from the project, and displays a success message. If an error
+     * occurs, the student is given the option to go back or retry.
      *
      * @param student the student.
      * @throws PageBackException if the user wants to go back.
@@ -247,10 +257,10 @@ public class StudentManager {
         }
         System.out.print("Please enter the camp ID: ");
         String campID = new Scanner(System.in).nextLine();
-        
-        //check whether student is registered to camp
+
+        // check whether student is registered to camp
         String ACamps = student.getACamps();
-        if(!ACamps.toLowerCase().contains(campID.toLowerCase())){
+        if (!ACamps.toLowerCase().contains(campID.toLowerCase())) {
             System.out.println("Camp ID is invalid");
             System.out.println("Press Enter to go back.");
             new Scanner(System.in).nextLine();
@@ -319,9 +329,10 @@ public class StudentManager {
         Camp camp;
         try {
             camp = CampManager.getByID(campID);
-            //Check if previously registered
+            // Check if previously registered
             if (student.getPCamps().contains(campID)) {
-                System.out.println("You are not allowed to register from this camp that you withdrawn from previously.");
+                System.out
+                        .println("You are not allowed to register from this camp that you withdrawn from previously.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
                 String choice = new Scanner(System.in).nextLine();
                 if (choice.equals("r")) {
@@ -329,7 +340,8 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            //Check if already attendee for this camp might be able to remove based on how we display avail camps
+            // Check if already attendee for this camp might be able to remove based on how
+            // we display avail camps
             if (student.getACamps().contains(campID)) {
                 System.out.println("You are already an attendee for this camp.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -339,8 +351,8 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            //Check if no camps registered previously + clash?
-            //Check deadline
+            // Check if no camps registered previously + clash?
+            // Check deadline
             if (checkClash(student, camp)) {
                 System.out.println("This camp's dates clashes with your other registered camps.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -350,7 +362,7 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            //Check deadline
+            // Check deadline
             else if (Integer.parseInt(CurrentDate.DATE) >= Integer.parseInt(camp.getRegistrationClosingDate())) {
                 System.out.println("Camp Registration Closed.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -360,7 +372,7 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            //Attendee slots maxed
+            // Attendee slots maxed
             else if (camp.getFilledCampCommSlots() >= camp.getCampCommSlots()) {
                 System.out.println("Camp Committee Slots maxed.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -408,19 +420,20 @@ public class StudentManager {
         throw new PageBackException();
     }
 
-    public static void submitEnquiry(Student student) throws PageBackException{
-        ChangePage.changePage(); 
+    public static void submitEnquiry(Student student) throws PageBackException {
+        ChangePage.changePage();
         System.out.println("Here is the list of available camps: ");
         ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());
-        System.out.println("Our staff are always devoted themselves to resolve the enquiry from students!"); 
-        System.out.println("First of all, would you mind telling us the CampID that you want to submit this enquiry to: "); 
+        System.out.println("Our staff are always devoted themselves to resolve the enquiry from students!");
+        System.out.println(
+                "First of all, would you mind telling us the CampID that you want to submit this enquiry to: ");
         String studentID = student.getID();
         String campID = new Scanner(System.in).nextLine();
-        campID=campID.toUpperCase();
-        System.out.println("CampID is :"+campID);  
-        try{
+        campID = campID.toUpperCase();
+        System.out.println("CampID is :" + campID);
+        try {
             CampManager.getCampByID(campID);
-        } catch(ModelNotFoundException e){
+        } catch (ModelNotFoundException e) {
             ChangePage.changePage();
             System.out.println("Camp ID is invalid.");
             System.out.println("Enter [b] to go back, or press enter to retry.");
@@ -431,21 +444,21 @@ public class StudentManager {
                 submitEnquiry(student);
             }
         }
-        String message; 
+        String message;
         do {
             System.out.printf("Please input the enquiry that you have regarding camp %s: \n", campID);
-            message=new Scanner(System.in).nextLine();
-            if (message==""){
-                System.out.println("You have not submitted any enquiry, please reenter!"); 
+            message = new Scanner(System.in).nextLine();
+            if (message == "") {
+                System.out.println("You have not submitted any enquiry, please reenter!");
             }
 
-        }while (message==""); 
-        try{
-            RequestManager.createEnquiry(campID, studentID, message); 
-        } catch(ModelAlreadyExistsException e){
+        } while (message == "");
+        try {
+            RequestManager.createEnquiry(campID, studentID, message);
+        } catch (ModelAlreadyExistsException e) {
             throw new RuntimeException(e);
         }
-        
+
         ChangePage.changePage();
 
         System.out.println("Enquiry Submitted");
@@ -454,13 +467,13 @@ public class StudentManager {
         throw new PageBackException();
     }
 
-    public static void viewEnquiry(Student student) throws PageBackException, ModelNotFoundException{
+    public static void viewEnquiry(Student student) throws PageBackException, ModelNotFoundException {
         ChangePage.changePage();
         System.out.println("Here is the list of Enquiries you made");
-        ModelViewer.displayListOfDisplayable((RequestManager.viewEnquiryBySender(student.getID())));//change to by user
+        ModelViewer.displayListOfDisplayable((RequestManager.viewEnquiryBySender(student.getID())));// change to by user
         System.out.println();
-        
-        //if empty dont print below
+
+        // if empty dont print below
         System.out.println("1. Edit Enquiry");
         System.out.println("2. Delete Enquiry");
         System.out.println("3. Exit");
@@ -488,13 +501,14 @@ public class StudentManager {
         } while (!isValidChoice);
     }
 
-    private static void editEnquiry(Student student) throws PageBackException, ModelNotFoundException{
+    private static void editEnquiry(Student student) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter ID of Enquiry to edit");
         String enquiryID = sc.nextLine();
-        try{
+        enquiryID = enquiryID.toUpperCase();
+        try {
             RequestManager.getEnquiryByID(enquiryID);
-        } catch(ModelNotFoundException e){
+        } catch (ModelNotFoundException e) {
             ChangePage.changePage();
             System.out.println("Enquiry ID is invalid.");
             System.out.println("Press enter to go back.");
@@ -516,14 +530,14 @@ public class StudentManager {
         throw new PageBackException();
     }
 
-
-    private static void deleteEnquiry(Student student) throws PageBackException, ModelNotFoundException{
+    private static void deleteEnquiry(Student student) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter ID of Enquiry to delete");
         String enquiryID = sc.nextLine();
-        try{
+        enquiryID = enquiryID.toUpperCase();
+        try {
             RequestManager.getEnquiryByID(enquiryID);
-        } catch(ModelNotFoundException e){
+        } catch (ModelNotFoundException e) {
             ChangePage.changePage();
             System.out.println("Enquiry ID is invalid.");
             System.out.println("Press enter to go back.");
@@ -534,7 +548,7 @@ public class StudentManager {
         Enquiry enquiryToDelete = RequestManager.getEnquiryByID(enquiryID);
 
         System.out.println("Are you sure you want to delete this Enquiry? (Y/N)");
-    
+
         String input = sc.nextLine();
         if (!input.equalsIgnoreCase("Y")) {
             ChangePage.changePage();
@@ -544,9 +558,9 @@ public class StudentManager {
             throw new PageBackException();
         }
 
-        try{
+        try {
             EnquiryRepository.getInstance().remove(enquiryToDelete.getID());
-        } catch (ModelNotFoundException e){
+        } catch (ModelNotFoundException e) {
             throw new RuntimeException(e);
         }
         ChangePage.changePage();
@@ -556,35 +570,26 @@ public class StudentManager {
         throw new PageBackException();
     }
 
-
-    public static void submitSuggestion(Student student) throws PageBackException, ModelNotFoundException{
+    public static void submitSuggestion(Student student) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
-        if (student.getCCamps().equals("null")){
+        if (student.getCCamps().equals("null")) {
             ChangePage.changePage();
             System.out.println("You are not a camp committee member.");
             System.out.println("Press enter to go back.");
             sc.nextLine();
             throw new PageBackException();
-        }
-        else{
+        } else {
             System.out.println("Here is the list of available camps: ");
-            ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());//based on camp committee
-        
+            ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());// based on camp committee
+
             System.out.println("Enter Camp ID to create Suggestion");
             String studentID = student.getID();
             String campID = sc.nextLine();
-        //     //String message; 
-        // do {
-        //     //System.out.printf("Please input the suggestion that you have regarding camp %s: \n", campID);
-        //     campID = new Scanner(System.in).nextLine();
-        //     if (campID==""){
-        //         System.out.println("Your ID is invalid, please reenter!"); 
-        //     }
-        // }while (campID==""); 
-        
-            try{
+            campID = campID.toUpperCase();
+
+            try {
                 CampManager.getCampByID(campID);
-            } catch(ModelNotFoundException e){
+            } catch (ModelNotFoundException e) {
                 ChangePage.changePage();
                 System.out.println("Camp ID is invalid.");
                 System.out.println("Enter [b] to go back, or press enter to retry.");
@@ -595,19 +600,19 @@ public class StudentManager {
                     submitEnquiry(student);
                 }
             }
-            
+
             Suggestion s;
 
-            try{
+            try {
                 s = RequestManager.createSuggestion(campID, studentID);
-            } catch(ModelAlreadyExistsException e){
+            } catch (ModelAlreadyExistsException e) {
                 throw new RuntimeException(e);
             }
             editSuggestion(s, student);
         }
     }
 
-    private static void editSuggestion(Suggestion s, Student student) throws PageBackException, ModelNotFoundException{
+    private static void editSuggestion(Suggestion s, Student student) throws PageBackException, ModelNotFoundException {
         Scanner scanner = new Scanner(System.in);
         ChangePage.changePage();
 
@@ -622,73 +627,73 @@ public class StudentManager {
         System.out.println("\t7. Camp Committee Total Slots");
         System.out.println("\t8. Camp Description");
         System.out.println("\t9. Camp Staff ID In Charge");
-    
+
         int choice = IntGetter.readInt();
-        if (choice == 0) throw new PageBackException();
-        int valid=1; 
-        do{
-            if (valid==0){
-                choice=IntGetter.readInt(); 
+        if (choice == 0)
+            throw new PageBackException();
+        int valid = 1;
+        do {
+            if (valid == 0) {
+                choice = IntGetter.readInt();
             }
-            valid=1; 
-            if (choice>9){
-                valid=0; 
-                System.out.println("Invalid choice of field, please reenter!"); 
+            valid = 1;
+            if (choice > 9) {
+                valid = 0;
+                System.out.println("Invalid choice of field, please reenter!");
             }
-        }while(choice>9); 
-        int suggest=-1; 
-        String suggt=""; 
+        } while (choice > 9);
+        int suggest = -1;
+        String suggt = "";
         System.out.println("The new value of the field to update");
-        do{
-            suggt=""; 
-            if ((choice==6) || (choice==7)){
-                suggest=scanner.nextInt(); 
-                suggt="default"; 
-            }
-            else if (choice==4){
-                System.out.println("Please enter one of the following faculties name (case is not important):"); 
+        do {
+            suggt = "";
+            if ((choice == 6) || (choice == 7)) {
+                suggest = scanner.nextInt();
+                suggt = "default";
+            } else if (choice == 4) {
+                System.out.println("Please enter one of the following faculties name (case is not important):");
                 System.out.println("    NA,\r\n" + //
                         "    NTU,\r\n" + //
                         "    ADM,\r\n" + //
                         "    EEE,\r\n" + //
                         "    NBS,\r\n" + //
                         "    SCSE,\r\n" + //
-                        "    SSS"); 
-                //String faculty=scanner.nextLine(); 
-                int included=0; 
+                        "    SSS");
+                // String faculty=scanner.nextLine();
+                int included = 0;
                 do {
-                    suggt=scanner.nextLine(); 
-                    suggt=suggt.toUpperCase(); 
-                    included=0; 
-                    Faculty fc[]=Faculty.values();
-                    for (Faculty fcl: fc){
-                        if (fcl.name().equalsIgnoreCase(suggt)){
-                            included=1; 
-                            break; 
+                    suggt = scanner.nextLine();
+                    suggt = suggt.toUpperCase();
+                    included = 0;
+                    Faculty fc[] = Faculty.values();
+                    for (Faculty fcl : fc) {
+                        if (fcl.name().equalsIgnoreCase(suggt)) {
+                            included = 1;
+                            break;
                         }
                     }
-                    if (included==0){
-                        System.out.println("Please enter one of the following faculties name (case is not important):"); 
+                    if (included == 0) {
+                        System.out.println("Please enter one of the following faculties name (case is not important):");
                         System.out.println("    NA,\r\n" + //
-                        "    NTU,\r\n" + //
-                        "    ADM,\r\n" + //
-                        "    EEE,\r\n" + //
-                        "    NBS,\r\n" + //
-                        "    SCSE,\r\n" + //
-                        "    SSS"); 
+                                "    NTU,\r\n" + //
+                                "    ADM,\r\n" + //
+                                "    EEE,\r\n" + //
+                                "    NBS,\r\n" + //
+                                "    SCSE,\r\n" + //
+                                "    SSS");
                     }
-                }while (included==0); 
+                } while (included == 0);
 
-                //suggt="default"; 
+                // suggt="default";
+            } else {// (choice==0 || choice==1 || choice==2 || choice==3 || choice==5 || choice==8
+                    // || choice==9){
+                suggt = scanner.nextLine();
             }
-            else {//(choice==0 || choice==1 || choice==2 || choice==3 || choice==5 || choice==8 || choice==9){
-                suggt=scanner.nextLine(); 
+            // System.out.println("Suggest is: "+suggest);
+            if ((Integer.toString(suggest) == "") || (suggt == "")) {
+                System.out.println("You have not entered any new value, please reenter!");
             }
-            //System.out.println("Suggest is: "+suggest); 
-            if ((Integer.toString(suggest)=="") || (suggt=="")){
-                System.out.println("You have not entered any new value, please reenter!"); 
-            }
-        }while((Integer.toString(suggest)=="") || (suggt=="")); 
+        } while ((Integer.toString(suggest) == "") || (suggt == ""));
         switch (choice) {
             case 0 -> throw new PageBackException();
             case 1 -> s.setCampName(suggt);
@@ -706,10 +711,10 @@ public class StudentManager {
         System.out.println("\t1. Yes");
         choice = scanner.nextInt();
         if (choice == 1) {
-            RequestManager.updateSuggestion(s.getID(),s);
+            RequestManager.updateSuggestion(s.getID(), s);
             editSuggestion(s, student);
         }
-        RequestManager.updateSuggestion(s.getID(),s);
+        RequestManager.updateSuggestion(s.getID(), s);
         ChangePage.changePage();
         System.out.println("Suggestion updated!");
         System.out.println("Press Enter to go back.");
@@ -717,17 +722,15 @@ public class StudentManager {
         throw new PageBackException();
     }
 
-
-    public static void viewSuggestion(Student student) throws PageBackException, ModelNotFoundException{
+    public static void viewSuggestion(Student student) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
-        if (student.getCCamps().equals("null")){
+        if (student.getCCamps().equals("null")) {
             ChangePage.changePage();
             System.out.println("You are not a camp committee member.");
             System.out.println("Press enter to go back.");
             sc.nextLine();
             throw new PageBackException();
-        }
-        else{
+        } else {
             ChangePage.changePage();
             System.out.println("Here is the list of Suggestion you made");
             ModelViewer.displayListOfDisplayable((RequestManager.viewSuggestionBySender(student.getID())));
@@ -736,7 +739,7 @@ public class StudentManager {
             System.out.println("1. Edit Suggestion");
             System.out.println("2. Delete Suggestion");
             System.out.println("3. Exit");
-            
+
             boolean isValidChoice;
             do {
                 Scanner scanner = new Scanner(System.in);
@@ -744,12 +747,12 @@ public class StudentManager {
 
                 switch (choice) {
                     case 1:
-                        
+
                         System.out.println("Enter ID of Suggestion to edit");
                         String suggestionID = sc.nextLine();
-                        try{
+                        try {
                             RequestManager.getSuggestionByID(suggestionID);
-                        } catch(ModelNotFoundException e){
+                        } catch (ModelNotFoundException e) {
                             ChangePage.changePage();
                             System.out.println("Suggestion ID is invalid.");
                             System.out.println("Press enter to go back.");
@@ -774,14 +777,14 @@ public class StudentManager {
         }
     }
 
-
-    private static void deleteSuggestion(Student student) throws PageBackException, ModelNotFoundException{
+    private static void deleteSuggestion(Student student) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter ID of Suggestion to delete");
         String suggestionID = sc.nextLine();
-        try{
+        suggestionID = suggestionID.toUpperCase();
+        try {
             RequestManager.getSuggestionByID(suggestionID);
-        } catch(ModelNotFoundException e){
+        } catch (ModelNotFoundException e) {
             ChangePage.changePage();
             System.out.println("Suggestion ID is invalid.");
             System.out.println("Press enter to go back.");
@@ -792,7 +795,7 @@ public class StudentManager {
         Suggestion suggestionToDelete = RequestManager.getSuggestionByID(suggestionID);
 
         System.out.println("Are you sure you want to delete this Suggestion? (Y/N)");
-    
+
         String input = sc.nextLine();
         if (!input.equalsIgnoreCase("Y")) {
             ChangePage.changePage();
@@ -802,9 +805,9 @@ public class StudentManager {
             throw new PageBackException();
         }
 
-        try{
+        try {
             SuggestionRepository.getInstance().remove(suggestionToDelete.getID());
-        } catch (ModelNotFoundException e){
+        } catch (ModelNotFoundException e) {
             throw new RuntimeException(e);
         }
         ChangePage.changePage();
@@ -814,23 +817,22 @@ public class StudentManager {
         throw new PageBackException();
     }
 
-    public static void commViewPendingEnquiries(Student student) throws PageBackException, ModelNotFoundException{
-        Scanner sc = new Scanner(System.in);        
-        if (student.getCCamps().equals("null")){
+    public static void commViewPendingEnquiries(Student student) throws PageBackException, ModelNotFoundException {
+        Scanner sc = new Scanner(System.in);
+        if (student.getCCamps().equals("null")) {
             ChangePage.changePage();
             System.out.println("You are not a camp committee member.");
             System.out.println("Press enter to go back.");
             sc.nextLine();
             throw new PageBackException();
-        }
-        else{
+        } else {
             ChangePage.changePage();
             System.out.println(BoundaryStrings.separator);
             System.out.println("View Pending Enquiries");
             System.out.println();
             String campID = student.getCCamps().toUpperCase();
-            //if empty
-            if(RequestManager.getAllPendingEnquiriesByCampID(campID).isEmpty()){
+            // if empty
+            if (RequestManager.getAllPendingEnquiriesByCampID(campID).isEmpty()) {
                 ChangePage.changePage();
                 System.out.println("No Pending Enquiries.");
                 System.out.println("Press enter to go back.");
@@ -838,39 +840,39 @@ public class StudentManager {
                 throw new PageBackException();
             }
             ModelViewer.displayListOfDisplayable(
-            RequestManager.getAllPendingEnquiriesByCampID(campID));
+                    RequestManager.getAllPendingEnquiriesByCampID(campID));
             System.out.println("Which enquiry ID do you want to reply to?");
             Scanner scanner = new Scanner(System.in);
             String enquiryID = scanner.nextLine();
-            try{
+            try {
                 RequestManager.getEnquiryByID(enquiryID);
-            } catch(ModelNotFoundException e){
+            } catch (ModelNotFoundException e) {
                 ChangePage.changePage();
                 System.out.println("Enquiry ID is invalid.");
                 System.out.println("Press enter to go back.");
                 sc.nextLine();
                 throw new PageBackException();
             }
-            
+
             Enquiry enquiry = (Enquiry) EnquiryRepository.getInstance().getByID(enquiryID);
 
-            if (!enquiry.getCampID().equals(campID)){
+            if (!enquiry.getCampID().equals(campID)) {
                 ChangePage.changePage();
                 System.out.println("Enquiry ID is invalid");
                 System.out.println("Press enter to go back.");
                 sc.nextLine();
                 throw new PageBackException();
             }
-            //check that member is not replying to himself
-            if(enquiry.getSenderID().equals(student.getID())){
+            // check that member is not replying to himself
+            if (enquiry.getSenderID().equals(student.getID())) {
                 ChangePage.changePage();
                 System.out.println("You cannot reply to an enquiry you made.");
                 System.out.println("Press enter to go back.");
                 sc.nextLine();
                 throw new PageBackException();
             }
-            
-            else{
+
+            else {
                 System.out.println("Type Reply Message below:");
                 String message = scanner.nextLine();
                 enquiry.setReply(message);
@@ -899,24 +901,48 @@ public class StudentManager {
         }
     }
 
-    public static void generateCampList(Student student) throws PageBackException, ModelNotFoundException{
-        Scanner sc = new Scanner(System.in); 
-        if (student.getCCamps().equals("null")){
+    public static void generateCampList(Student student) throws PageBackException, ModelNotFoundException {
+        Scanner sc = new Scanner(System.in);
+        if (student.getCCamps().equals("null")) {
             ChangePage.changePage();
             System.out.println("You are not a camp committee member.");
             System.out.println("Press enter to go back.");
             sc.nextLine();
             throw new PageBackException();
-        }
-        else{
+        } else {
             ChangePage.changePage();
             String campID = student.getCCamps().toUpperCase();
             Camp camp = CampRepository.getInstance().getByID(campID);
+
+            System.out.println("Select the type of report for the specific camp:");
+            System.out.println("\t1. All Students List");
+            System.out.println("\t2. Attendee List");
+            System.out.println("\t3. Committee List");
+            System.out.print("Enter your choice: ");
+            int specificCampReportChoice = IntGetter.readInt();
+
             System.out.printf("Generating Camp Report for %s...\n", camp.getCampName());
-            
+
             String studentID = student.getID();
-            String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_" + studentID +".csv";
-            
+            String FILE_PATH = RESOURCE_LOCATION + "/data/report/report_" + studentID + ".csv";
+
+            switch (specificCampReportChoice) {
+                case 1:
+                    FILE_PATH = RESOURCE_LOCATION + "/data/report/report_students_" + campID + "_" + studentID + ".csv";
+                    break;
+                case 2:
+                    FILE_PATH = RESOURCE_LOCATION + "/data/report/report_attendee_" + campID + "_" + studentID + ".csv";
+                    break;
+                case 3:
+                    FILE_PATH = RESOURCE_LOCATION + "/data/report/report_committee_" + campID + "_" + studentID
+                            + ".csv";
+                    break;
+                default:
+                    System.out.println("Invalid choice. Try again.");
+                    new Scanner(System.in).nextLine();
+                    generateCampList(student);
+            }
+
             String campName = camp.getCampName();
             String campDates = camp.getDates();
             String campRegistrationDeadline = camp.getRegistrationClosingDate();
@@ -936,56 +962,76 @@ public class StudentManager {
                 writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
                         + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
                 writer.newLine();
-        
+
                 // Writing camp details to the CSV file
                 writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
                         campName, campDates, campRegistrationDeadline, openTo.toString(), location,
-                        currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots, description));
+                        currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots,
+                        description));
                 writer.newLine();
-        
-                // Writing list of attendees to the CSV file
-                writer.write("List of Attendees");
-                writer.newLine();
-                for (Student attendee : attendees) {
-                    writer.write(attendee.getUserName()); // Include any relevant attendee information
+
+                if (specificCampReportChoice == 1) {
+                    // Writing list of attendees to the CSV file
+                    writer.write("List of Attendees");
                     writer.newLine();
-                }
-        
-                // Writing list of camp committee members to the CSV file
-                writer.write("List of Camp Committee Members");
-                writer.newLine();
-                for (Student campCommMember : campCommMembers) {
-                    writer.write(campCommMember.getUserName()); // Include any relevant camp committee member information
+                    for (Student attendee : attendees) {
+                        writer.write(attendee.getUserName()); // Include any relevant attendee information
+                        writer.newLine();
+                    }
+
+                    // Writing list of camp committee members to the CSV file
+                    writer.write("List of Camp Committee Members");
                     writer.newLine();
+                    for (Student campCommMember : campCommMembers) {
+                        writer.write(campCommMember.getUserName()); // Include any relevant camp committee member
+                                                                    // information
+                        writer.newLine();
+                    }
                 }
-        
+                else if (specificCampReportChoice == 2) {
+                    // Writing list of attendees to the CSV file
+                    writer.write("List of Attendees");
+                    writer.newLine();
+                    for (Student attendee : attendees) {
+                        writer.write(attendee.getUserName()); // Include any relevant attendee information
+                        writer.newLine();
+                    }
+                }
+                else if (specificCampReportChoice == 3) {
+                    // Writing list of camp committee members to the CSV file
+                    writer.write("List of Camp Committee Members");
+                    writer.newLine();
+                    for (Student campCommMember : campCommMembers) {
+                        writer.write(campCommMember.getUserName()); // Include any relevant camp committee member
+                                                                    // information
+                        writer.newLine();
+                    }
+                }
+
                 System.out.printf("Camp Report for %s generated successfully and saved at %s.\n", campName, FILE_PATH);
             } catch (IOException e) {
                 e.printStackTrace(); // Handle the exception appropriately
             }
-            
+
             System.out.println("Press enter to go back.");
             sc.nextLine();
             throw new PageBackException();
-            }
         }
-
-    public static List<Student> getAllAttendeesByCamp(Camp camp){
-        return StudentRepository.getInstance().findByRules(
-            s -> s.getACamps().toLowerCase().contains(camp.getID().toLowerCase())
-        )
-        .stream()
-        .map(s -> (Student) s)
-        .collect(Collectors.toList());
     }
 
-    public static List<Student> getAllCampCommByCamp(Camp camp){
+    public static List<Student> getAllAttendeesByCamp(Camp camp) {
         return StudentRepository.getInstance().findByRules(
-            s -> s.getCCamps().toLowerCase().contains(camp.getID().toLowerCase())
-        )
-        .stream()
-        .map(s -> (Student) s)
-        .collect(Collectors.toList());
+                s -> s.getACamps().toLowerCase().contains(camp.getID().toLowerCase()))
+                .stream()
+                .map(s -> (Student) s)
+                .collect(Collectors.toList());
+    }
+
+    public static List<Student> getAllCampCommByCamp(Camp camp) {
+        return StudentRepository.getInstance().findByRules(
+                s -> s.getCCamps().toLowerCase().contains(camp.getID().toLowerCase()))
+                .stream()
+                .map(s -> (Student) s)
+                .collect(Collectors.toList());
     }
 }
-

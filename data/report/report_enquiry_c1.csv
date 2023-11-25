@@ -1,16 +1,16 @@
 Camp Name,Camp Dates,Registration Deadline,Open To,Location,Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description
-NEW CAMP NAME,20230102-20230103,20230102,NTU,NTU,0,50,0,10,desc
+F,20230102-20230103,20230102,NTU,NTU,-1,50,0,10,desc
 
 Enquiries
 RequestID,RequestStatus,SenderID,ReplierID,Message,Reply
-E1,PENDING,KOH1,null,enruiry,null
+E1,PENDING,YCHERN,null,ghjkl,null
 
 RequestID,RequestStatus,SenderID,ReplierID,Message,Reply
-E2,PENDING,KOH1,null,asdlfkj,null
+E2,PENDING,YCHERN,null,sadfhgjkl;,null
 
 RequestID,RequestStatus,SenderID,ReplierID,Message,Reply
-E3,REPLIED,KOH1,HUKUMAR,oggood,null
+E3,PENDING,YCHERN,null,5,null
 
 RequestID,RequestStatus,SenderID,ReplierID,Message,Reply
-E4,REPLIED,YCHERN,KOH1,testing?,can bro
+E5,PENDING,YCHERN,null,I am good. ,null
 
