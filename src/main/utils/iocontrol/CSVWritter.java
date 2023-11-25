@@ -1,6 +1,5 @@
 package main.utils.iocontrol;
 
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,7 +9,8 @@ import java.util.stream.Collectors;
 public class CSVWritter {
   private final StringBuilder builder = new StringBuilder();
 
-  private CSVWritter() {}
+  private CSVWritter() {
+  }
 
   public static CSVWritter create(List<String> headers) {
     CSVWritter csv = new CSVWritter();

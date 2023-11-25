@@ -11,7 +11,8 @@ import static main.utils.config.Location.RESOURCE_LOCATION;
 /**
  * The staffRepository class is a repository that stores staff objects
  * through file I/O operations.
- * It extends the Repository class, which provides basic CRUD operations for the repository.
+ * It extends the Repository class, which provides basic CRUD operations for the
+ * repository.
  */
 public class StaffRepository extends Repository<Staff> {
 

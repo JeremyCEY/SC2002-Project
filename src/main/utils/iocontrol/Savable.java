@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * An abstract class for managing objects that can be mapped to and from key-value pairs.
+ * An abstract class for managing objects that can be mapped to and from
+ * key-value pairs.
  *
- * @param <MappableObject> a class that can be mapped to and from key-value pairs
+ * @param <MappableObject> a class that can be mapped to and from key-value
+ *                         pairs
  */
 public abstract class Savable<MappableObject extends Mappable> {
 

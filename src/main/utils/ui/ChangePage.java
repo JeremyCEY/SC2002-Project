@@ -3,7 +3,8 @@ package main.utils.ui;
 import java.io.IOException;
 
 /**
- * The ChangePage class is responsible for changing the console output screen to a new blank screen.
+ * The ChangePage class is responsible for changing the console output screen to
+ * a new blank screen.
  * This is done using the appropriate command depending on the operating system.
  */
 public class ChangePage {
@@ -11,7 +12,8 @@ public class ChangePage {
     /**
      * Changes the console output screen to a new blank screen.
      * This is done using the appropriate command depending on the operating system.
-     * The command for Windows is "cls", and for Unix-like systems it is "\033[H\033[2J".
+     * The command for Windows is "cls", and for Unix-like systems it is
+     * "\033[H\033[2J".
      */
     public static void changePage() {
         String os = System.getProperty("os.name").toLowerCase();

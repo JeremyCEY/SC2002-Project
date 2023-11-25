@@ -45,6 +45,7 @@ public class StaffManager {
         System.out.println("Please select school that camp is open to:");
         System.out.println("NTU,ADM,EEE,NBS,SCSE,SSS");
         String userInput = new Scanner(System.in).nextLine();
+        userInput = userInput.toUpperCase();
         Faculty faculty = Faculty.NTU;
 
         switch (userInput) {

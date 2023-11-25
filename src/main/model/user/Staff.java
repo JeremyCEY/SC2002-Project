@@ -31,7 +31,7 @@ public class Staff implements User {
      *
      * @param staffID   the ID of the staff.
      * @param staffName the name of the staff.
-     * @param email          the email of the staff.
+     * @param email     the email of the staff.
      */
     public Staff(String staffID, String staffName, String email, Faculty faculty) {
         this.staffID = staffID;
@@ -43,8 +43,8 @@ public class Staff implements User {
     /**
      * Constructs a new staff object with the specified staff ID and password.
      *
-     * @param staffID   the ID of the staff.
-     * @param staffName the name of the staff.
+     * @param staffID        the ID of the staff.
+     * @param staffName      the name of the staff.
      * @param email          the email of the staff.
      * @param hashedPassword the password of the staff.
      */
@@ -128,7 +128,7 @@ public class Staff implements User {
         return this.email;
     }
 
-    public Faculty getFaculty(){
+    public Faculty getFaculty() {
         return this.faculty;
     }
 }

@@ -7,17 +7,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface Mappable {
-    //converts object to a map
+    // converts object to a map
 
-    default Map<String, String> toMap(){
+    default Map<String, String> toMap() {
 
         Map<String, String> map = new HashMap<>();
         Field[] fields = getClass().getDeclaredFields();
-        for (Field field: fields){
+        for (Field field : fields) {
 
-            try{
+            try {
                 field.setAccessible(true);
-                try{
+                try {
                     map.put(field.getName(), field.get(this).toString());
                 } catch (NullPointerException e) {
                     map.put(field.getName(), EmptyID.EMPTY_ID);
@@ -30,7 +30,7 @@ public interface Mappable {
 
     }
 
-    default void fromMap(Map<String, String> map){
+    default void fromMap(Map<String, String> map) {
         Field[] fields = getClass().getDeclaredFields();
         for (Field field : fields) {
             try {
@@ -57,5 +57,3 @@ public interface Mappable {
     }
 
 }
-
-

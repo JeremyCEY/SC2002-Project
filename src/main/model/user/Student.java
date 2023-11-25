@@ -22,18 +22,7 @@ public class Student implements User {
 	 * The email of a student
 	 */
 	private String email;
-	/**
-	 * The status of a student - no need
-	 */
-	// private StudentStatus status;
-	/**
-	 * The ID of the supervisor - no need
-	 */
-	// private String supervisorID;
-	/**
-	 * The ID of the project - no need
-	 */
-	// private String projectID;
+
 	private String hashedPassword;
 
 	private String aCamps;
@@ -63,9 +52,6 @@ public class Student implements User {
 		this.faculty = faculty;
 		this.pCamps = EmptyID.EMPTY_ID;
 		this.points = 0;
-		// this.status = StudentStatus.UNREGISTERED;
-		// supervisorID = EmptyID.EMPTY_ID;
-		// projectID = EmptyID.EMPTY_ID;
 	}
 
 	/**
@@ -86,9 +72,6 @@ public class Student implements User {
 		this.faculty = faculty;
 		this.pCamps = EmptyID.EMPTY_ID;
 		this.points = 0;
-		// this.status = StudentStatus.UNREGISTERED;
-		// supervisorID = EmptyID.EMPTY_ID;
-		// projectID = EmptyID.EMPTY_ID;
 		this.hashedPassword = hashedPassword;
 	}
 
@@ -114,7 +97,6 @@ public class Student implements User {
 		this.faculty = Faculty.NA;
 		this.pCamps = EmptyID.EMPTY_ID;
 		this.points = 0;
-		// this.status = StudentStatus.UNREGISTERED;
 	}
 
 	/**
@@ -205,67 +187,59 @@ public class Student implements User {
 	}
 
 	public void addPCamp(String campID) {
-        if (!this.pCamps.contains(campID)) {
-            if(this.pCamps.equals("null"))
-			{
-                this.pCamps = campID;
+		if (!this.pCamps.contains(campID)) {
+			if (this.pCamps.equals("null")) {
+				this.pCamps = campID;
 				return;
-            }
-            this.pCamps += "," + campID;
-        }
-    }
+			}
+			this.pCamps += "," + campID;
+		}
+	}
 
-	public int getPoints(){
+	public int getPoints() {
 		return this.points;
 	}
 
-	public void addPoint(){
+	public void addPoint() {
 		this.points++;
 	}
 
-    public void addACamp(String campID) {
-        // Check if the campId is not already present in aCamps
-        if (!this.aCamps.contains(campID)) {
-            // Concatenate the campId to the existing list of campIds
-            if(this.aCamps.equals("null"))
-			{
-                this.aCamps = campID;
+	public void addACamp(String campID) {
+		if (!this.aCamps.contains(campID)) {
+			if (this.aCamps.equals("null")) {
+				this.aCamps = campID;
 				return;
-            }
-			// else
-			// {
-			// 	this.aCamps += ",";
-			// }
-            this.aCamps += "," + campID;
-        }
-    }
-	
+			}
+			this.aCamps += "," + campID;
+		}
+	}
+
 	public void removeACamp(String campId) {
 		// Check if the campId is present in aCamps
 		int index = this.aCamps.indexOf(campId);
-	
+
 		// If the campId is found, remove it
 		if (index != -1) {
 			// Calculate the end index for the substring to be removed
 			int endIndex = index + campId.length();
-	
+
 			// Remove the campId from aCamps
 			this.aCamps = this.aCamps.substring(0, index) + this.aCamps.substring(endIndex);
-	
+
 			// Remove any leading or trailing commas if they exist
 			this.aCamps = this.aCamps.replaceAll("^,|,$|,,", "");
 		}
-		if(this.aCamps.equals("")){
+		if (this.aCamps.equals("")) {
 			this.aCamps = "null";
 		}
 	}
-	
-   public void addCCamp(String campID) {
-        // Check if the campId is not already present in aCamps
-        if (!this.cCamps.contains(campID)) {
-                this.cCamps = campID;
-				return;
-        }
-    }
+
+	public void addCCamp(String campID) {
+		// Check if the campId is not already present in aCamps
+		if (!this.cCamps.contains(campID)) {
+			this.cCamps = campID;
+			return;
+		}
+	}
 
 }

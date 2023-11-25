@@ -9,9 +9,11 @@ import java.util.Map;
 import static main.utils.config.Location.RESOURCE_LOCATION;
 
 /**
- * The StudentRepository class is a repository for managing the persistence of student objects
+ * The StudentRepository class is a repository for managing the persistence of
+ * student objects
  * through file I/O operations.
- * It extends the Repository class, which provides basic CRUD operations for the repository.
+ * It extends the Repository class, which provides basic CRUD operations for the
+ * repository.
  */
 public class StudentRepository extends Repository<Student> {
 
@@ -23,7 +25,7 @@ public class StudentRepository extends Repository<Student> {
     /**
      * Constructor for the StudentRepository class.
      */
-	
+
     StudentRepository() {
         super();
         load();

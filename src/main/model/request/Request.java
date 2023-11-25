@@ -11,23 +11,13 @@ public interface Request extends Model, Displayable {
 	String getReplierID();
 	RequestStatus getRequestStatus();
 
-
 	void setID(String id);
 	void setCampID(String campID);
 	void setSenderID(String senderID);
 	void setReplierID(String replyID);
 	void setRequestStatus(RequestStatus status);
 
-
 	default String getSplitter(){
 		return "====================================================";
-	}
-	
-
-	
-
-	
-
-
-
+	}	
 }

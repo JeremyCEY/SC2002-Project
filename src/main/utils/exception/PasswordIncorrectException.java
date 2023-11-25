@@ -1,7 +1,8 @@
 package main.utils.exception;
 
 /**
- * The PasswordIncorrectException class represents an exception that is thrown when a password entered by the user is incorrect.
+ * The PasswordIncorrectException class represents an exception that is thrown
+ * when a password entered by the user is incorrect.
  * It extends the base Exception class.
  */
 public class PasswordIncorrectException extends Exception {

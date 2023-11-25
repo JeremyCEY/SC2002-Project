@@ -1,13 +1,14 @@
-package main.repository.request; 
+package main.repository.request;
+
 import java.util.List;
 import java.util.Map;
 
 import main.model.request.Enquiry;
-import main.repository.Repository; 
+import main.repository.Repository;
 
 import static main.utils.config.Location.RESOURCE_LOCATION;
 
-public class EnquiryRepository extends Repository<Enquiry>{
+public class EnquiryRepository extends Repository<Enquiry> {
 
     /**
      * The file path of the enquiry data file.
@@ -18,6 +19,7 @@ public class EnquiryRepository extends Repository<Enquiry>{
         super();
         load();
     }
+
     /**
      * Gets the file path of the enquiry data file.
      *
@@ -31,13 +33,11 @@ public class EnquiryRepository extends Repository<Enquiry>{
     public static EnquiryRepository getInstance() {
         return new EnquiryRepository();
     }
-    
-    
+
     public void setAll(List<Map<String, String>> listOfMappableObjects) {
         for (Map<String, String> map : listOfMappableObjects) {
             getAll().add(new Enquiry(map));
         }
     }
-
 
 }

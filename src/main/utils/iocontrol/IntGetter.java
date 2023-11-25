@@ -3,8 +3,9 @@ package main.utils.iocontrol;
 import java.util.Scanner;
 
 /**
-
- The IntGetter class provides a static method for reading integer input from the user through the console.
+ * 
+ * The IntGetter class provides a static method for reading integer input from
+ * the user through the console.
  */
 public class IntGetter {
     /**

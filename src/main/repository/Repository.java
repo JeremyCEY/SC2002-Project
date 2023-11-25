@@ -10,12 +10,15 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * The Repository abstract class provides the basic functionality for storing, retrieving, and managing a list of model objects.
- * It implements the Savable interface and provides methods for adding, removing, updating, and finding model objects.
+ * The Repository abstract class provides the basic functionality for storing,
+ * retrieving, and managing a list of model objects.
+ * It implements the Savable interface and provides methods for adding,
+ * removing, updating, and finding model objects.
  *
  * @param <ModelObject> the type of model object stored in the repository
  */
-public abstract class Repository<ModelObject extends Model> extends Savable<ModelObject> implements Iterable<ModelObject> {
+public abstract class Repository<ModelObject extends Model> extends Savable<ModelObject>
+        implements Iterable<ModelObject> {
 
     /**
      * The list of model objects stored in the repository.
@@ -52,11 +55,11 @@ public abstract class Repository<ModelObject extends Model> extends Savable<Mode
      *
      * @param modelObjectID the ID of the model object to get
      * @return the model object with the given ID
-     * @throws ModelNotFoundException if the model object with the given ID does not exist
+     * @throws ModelNotFoundException if the model object with the given ID does not
+     *                                exist
      */
     public ModelObject getByID(String modelObjectID) throws ModelNotFoundException {
         for (ModelObject modelObject : listOfModelObjects) {
-            //System.out.println("listOfModelObjects: "+listOfModelObjects); 
             if (modelObject.getID().equalsIgnoreCase(modelObjectID)) {
                 return modelObject;
             }
@@ -68,7 +71,8 @@ public abstract class Repository<ModelObject extends Model> extends Savable<Mode
      * Checks whether the repository contains a model object with the given ID.
      *
      * @param modelObjectID the ID of the model object to check
-     * @return true if the repository contains a model object with the given ID, false otherwise
+     * @return true if the repository contains a model object with the given ID,
+     *         false otherwise
      */
     public boolean contains(String modelObjectID) {
         try {
@@ -83,7 +87,8 @@ public abstract class Repository<ModelObject extends Model> extends Savable<Mode
      * Adds a model object to the repository.
      *
      * @param modelObject the model object to add
-     * @throws ModelAlreadyExistsException if a model object with the same ID already exists in the repository
+     * @throws ModelAlreadyExistsException if a model object with the same ID
+     *                                     already exists in the repository
      */
     public void add(ModelObject modelObject) throws ModelAlreadyExistsException {
         if (contains(modelObject.getID())) {
@@ -98,7 +103,8 @@ public abstract class Repository<ModelObject extends Model> extends Savable<Mode
      * Removes a model object from the repository by ID.
      *
      * @param modelObjectID the ID of the model object to remove
-     * @throws ModelNotFoundException if the model object with the given ID does not exist
+     * @throws ModelNotFoundException if the model object with the given ID does not
+     *                                exist
      */
     public void remove(String modelObjectID) throws ModelNotFoundException {
         listOfModelObjects.remove(getByID(modelObjectID));
@@ -135,7 +141,8 @@ public abstract class Repository<ModelObject extends Model> extends Savable<Mode
      * Updates the specified model object in the repository.
      *
      * @param modelObject the model object to update
-     * @throws ModelNotFoundException if the specified model object is not found in the repository
+     * @throws ModelNotFoundException if the specified model object is not found in
+     *                                the repository
      */
     public void update(ModelObject modelObject) throws ModelNotFoundException {
         ModelObject oldModelObject = getByID(modelObject.getID());
@@ -144,7 +151,8 @@ public abstract class Repository<ModelObject extends Model> extends Savable<Mode
     }
 
     /**
-     * Updates all model objects in the repository with the specified list of model objects.
+     * Updates all model objects in the repository with the specified list of model
+     * objects.
      *
      * @param modelObjects the list of model objects to update
      */
@@ -181,23 +189,26 @@ public abstract class Repository<ModelObject extends Model> extends Savable<Mode
     /**
      * Finds all model objects in the repository that match the specified rules.
      * <p>
-     * Multiple rules can be specified, and all rules must be satisfied for a model object to be considered a match.
+     * Multiple rules can be specified, and all rules must be satisfied for a model
+     * object to be considered a match.
      * <p>
-     * The rules are specified as lambda expressions that take a model object as a parameter and return a boolean.
+     * The rules are specified as lambda expressions that take a model object as a
+     * parameter and return a boolean.
      * <p>
      * Here is an example of how to use this method:
      *
      * <pre>
      * List&lt;Student&gt; modelObjects = repository.findByRules(
-     *     student -&gt; student.getFirstName().equals("John"),
-     *     student -&gt; student.getLastName().equals("Smith")
-     * );
+     *         student -&gt; student.getFirstName().equals("John"),
+     *         student -&gt; student.getLastName().equals("Smith"));
      * </pre>
      * <p>
-     * This will return a list of all students whose first name is "John" and whose last name is "Smith".
+     * This will return a list of all students whose first name is "John" and whose
+     * last name is "Smith".
      *
      * @param rules the rules to match
-     * @return a list of all model objects in the repository that match the specified rules
+     * @return a list of all model objects in the repository that match the
+     *         specified rules
      */
     @SafeVarargs
     public final List<ModelObject> findByRules(RepositoryRule<ModelObject>... rules) {
