@@ -319,6 +319,16 @@ public class StudentManager {
         Camp camp;
         try {
             camp = CampManager.getByID(campID);
+            //Check if previously registered
+            if (student.getPCamps().contains(campID)) {
+                System.out.println("You are not allowed to register from this camp that you withdrawn from previously.");
+                System.out.println("Press Enter to go back, or enter [r] to retry.");
+                String choice = new Scanner(System.in).nextLine();
+                if (choice.equals("r")) {
+                    registerCampCommittee(student);
+                }
+                throw new PageBackException();
+            }
             //Check if already attendee for this camp might be able to remove based on how we display avail camps
             if (student.getACamps().contains(campID)) {
                 System.out.println("You are already an attendee for this camp.");
