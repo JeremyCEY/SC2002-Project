@@ -86,7 +86,7 @@ public class StaffMainPage {
                     case 0 -> Logout.logout();
                     case 1 -> ViewUserProfile.viewUserProfilePage(staff);
                     case 2 -> ChangeAccountPassword.changePassword(UserType.STAFF, user.getID());
-                    case 3 -> CampViewer.viewAllCamps();
+                    case 3 -> CampViewer.selectCampTypeAndDisplay(staff);
                     case 4 -> createCamp(user);
                     case 5 -> editExistingCamp(user);
                     case 6 -> deleteExistingCamp(user);
@@ -345,12 +345,9 @@ public class StaffMainPage {
         suggestion.setReplierID(user.getID());
         SuggestionRepository.getInstance().update(suggestion);
         System.out.println(suggestion.getSenderID());
-        Student student = StudentRepository.getInstance().getByID(suggestion.getSenderID());
-        student.addPoint();
-        StudentRepository.getInstance().update(student);
+        
         ChangePage.changePage();
         System.out.println("Successfully handled a suggestion:");
-        System.out.println("A point has been rewarded to the suggestion sender!");
         System.out.println();
         System.out.println("Have other suggestion to handle?");
         System.out.println("\t0. No");

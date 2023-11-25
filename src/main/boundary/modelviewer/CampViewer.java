@@ -27,153 +27,6 @@ import java.util.Comparator;
  */
 public class CampViewer {
 
-    /**
-     * Displays a menu to the user to select a project status and returns the selected ProjectStatus enum value. If an invalid option is selected, it prompts the user to retry or go back, and throws a PageBackException if the user chooses to go back.
-     *
-     * @return the selected ProjectStatus enum value.
-     * @throws PageBackException if the user chooses to go back to the previous page.
-     */
-    // public static CampStatus getCampStatus() throws PageBackException {
-    //     System.out.println("\t1. Available");
-    //     System.out.println("\t2. Unavailable");
-    //     System.out.println("\t3. Reserved");
-    //     System.out.println("\t4. Allocated");
-    //     System.out.print("Please enter your choice: ");
-    //     int option = IntGetter.readInt();
-    //     return switch (option) {
-    //         case 1 -> ProjectStatus.AVAILABLE;
-    //         case 2 -> ProjectStatus.UNAVAILABLE;
-    //         case 3 -> ProjectStatus.RESERVED;
-    //         case 4 -> ProjectStatus.ALLOCATED;
-    //         default -> {
-    //             System.out.println("Please enter a number between 1-4.");
-    //             System.out.println("Press Enter to retry or enter 0 and press Enter to exit.");
-    //             String input = new Scanner(System.in).nextLine().trim();
-    //             if (input.equals("0")) {
-    //                 throw new PageBackException();
-    //             } else {
-    //                 yield getProjectStatus();
-    //             }
-    //         }
-    //     };
-    // }
-
-    /**
-     * Prompts the user to enter a project ID and displays the details of the project with the matching ID using the ProjectRepository and Project object's displayProject() method.
-     *
-     * @throws PageBackException if the user chooses to go back to the previous page.
-     */
-    // public static void generateDetailsByCampID() throws PageBackException {
-    //     System.out.println("Please Enter the ProjectID to search: ");
-    //     String s1 = new Scanner(System.in).nextLine();
-    //     try {
-    //         Camp p1 = CampRepository.getInstance().getByID(s1);
-    //         p1.displayCamp();
-    //     } catch (ModelNotFoundException e) {
-    //         System.out.println("Cannot find the camp matching this ID");
-    //         System.out.println("Press enter to retry, or enter [b] to go back");
-    //         String input = new Scanner(System.in).nextLine().trim();
-    //         if (input.equals("b")) {
-    //             throw new PageBackException();
-    //         } else {
-    //             generateDetailsByCampID();
-    //         }
-    //     }
-    //     System.out.println("Enter <Enter> to continue");
-    //     new Scanner(System.in).nextLine();
-    //     throw new PageBackException();
-    // }
-
-    /**
-     * Prompts the user to enter a supervisor ID and displays the details of projects supervised by the supervisor with the matching ID. It checks if the supervisor ID is valid using the FacultyRepository and handles cases where the supervisor is not found or the user wants to go back by throwing a PageBackException.
-     * @throws PageBackException if the user wants to go back
-     */
-    // public static void generateDetailsBySupervisorID() throws PageBackException {
-    //     System.out.println("Please enter the SupervisorID to search: ");
-    //     String s1 = new Scanner(System.in).nextLine();
-    //     if (!CampRepository.getInstance().contains(s1)) {
-    //         System.out.println("Supervisor Not Found.");
-    //         System.out.println("Press enter to retry, or enter [b] to go back");
-    //         String input = new Scanner(System.in).nextLine().trim();
-    //         if (input.equalsIgnoreCase("b")) {
-    //             throw new PageBackException();
-    //         } else {
-    //             generateDetailsBySupervisorID();
-    //             return;
-    //         }
-    //     }
-    //     List<Camp> campList = CampRepository.getInstance().findByRules(p -> p.getSupervisorID().equalsIgnoreCase(s1));
-    //     ModelViewer.displayListOfDisplayable(projectList);
-    //     System.out.println("Enter <Enter> to continue");
-    //     new Scanner(System.in).nextLine();
-    //     throw new PageBackException();
-    // }
-
-
-    /**
-     * Prompts the user to enter a student ID and displays the details of projects that require the student with the matching ID. It uses the ProjectRepository to find projects that match the student ID and calls the displayProject() method on each project to display their details. It also handles cases where no projects are found and prompts the user to go back using a PageBackException.
-     * @throws PageBackException if the user wants to go back
-     */
-    // public static void generateDetailsByStudentID() throws PageBackException {
-    //     System.out.println("Enter the StudentID to search");
-    //     String s1 = new Scanner(System.in).nextLine();
-    //     ModelViewer.displayListOfDisplayable(CampRepository.getInstance().findByRules(p -> Objects.equals(p.getStudentID(), s1)));
-    //     System.out.println("Enter <Enter> to continue");
-    //     new Scanner(System.in).nextLine();
-    //     throw new PageBackException();
-    // }
-
-    /**
-     * Prompts the user to select a project status and displays the details of projects with the matching status. It calls the getProjectStatus() method to get the selected status, and uses the ProjectRepository to find projects that match the status. It handles cases where no projects are found and prompts the user to go back using a PageBackException.
-     *
-     * @throws PageBackException if the user wants to go back
-     */
-    // public static void generateDetailsByStatus() throws PageBackException {
-    //     CampStatus status = getCampStatus();
-    //     ModelViewer.displayListOfDisplayable(CampRepository.getInstance().findByRules(p -> Objects.equals(p.getStatus(), status)));
-    //     System.out.println("Enter <Enter> to continue");
-    //     new Scanner(System.in).nextLine();
-    //     throw new PageBackException();
-
-    // }
-
-    /**
-     * Provides a menu to the user to select the way to search for project details and calls the corresponding method based on the user's selection. It also handles cases where the user wants to go back by calling the ChangePage.changePage() method and throwing a PageBackException.
-     *
-     * @throws PageBackException if the user wants to go back
-     */
-    // public static void generateCampDetails() throws PageBackException {
-    //     ChangePage.changePage();
-    //     System.out.println(BoundaryStrings.separator);
-    //     System.out.println("Please select the way to search:");
-    //     System.out.println("\t 1. By ProjectID");
-    //     System.out.println("\t 2. By SupervisorID");
-    //     System.out.println("\t 3. By Student");
-    //     System.out.println("\t 4. By Status");
-    //     System.out.println("\t 0. Go Back");
-    //     System.out.println(BoundaryStrings.separator);
-    //     System.out.print("Please enter your choice: ");
-    //     int c = IntGetter.readInt();
-    //     if (c == 0) {
-    //         throw new PageBackException();
-    //     }
-    //     try {
-    //         switch (c) {
-    //             case 1 -> generateDetailsByCampID();
-    //             case 2 -> generateDetailsBySupervisorID();
-    //             case 3 -> generateDetailsByStudentID();
-    //             case 4 -> generateDetailsByStatus();
-    //             default -> {
-    //                 System.out.println("Invalid choice. Please enter again. ");
-    //                 new Scanner(System.in).nextLine();
-    //                 throw new PageBackException();
-    //             }
-    //         }
-    //     } catch (PageBackException e) {
-    //         generateCampDetails();
-    //     }
-    // }
-
     // /**
     //  * Displays the project details.
     //  * @param student the student to display the project details for
@@ -190,12 +43,15 @@ public class CampViewer {
         throw new PageBackException();
     }
 
+    // FOR STUDENTS /////////////////////////////////////////////////////////////////////////////////////////////
     public static void viewVisibleFacultyCampList(Student student) throws PageBackException {
         ChangePage.changePage();
         List<Camp> camps = CampManager.getCampsForStudent(student);
 
         // Sort camps alphabetically by default
-        Collections.sort(camps, Comparator.comparing(Camp::getCampName));
+        Comparator<Camp> campComparator = null;
+        campComparator = Comparator.comparing(Camp::getCampName, String.CASE_INSENSITIVE_ORDER);
+        Collections.sort(camps, campComparator);
 
         System.out.println("List of Available Camps (Alphabetical Order):");
         ModelViewer.displayListOfDisplayable(camps);
@@ -280,7 +136,6 @@ public class CampViewer {
                 viewVisibleFacultyCampList(student);
         }
 
-        // Sort the list based on the selected comparator
         Collections.sort(camps, campComparator);
 
         ChangePage.changePage();
@@ -292,20 +147,226 @@ public class CampViewer {
         throw new PageBackException();
     }
 
+    // // FOR STAFFS - visible /////////////////////////////////////////////////////////////////////////////////////////////
+    // public static void viewVisibleCampList(Staff staff) throws PageBackException {
+    //     ChangePage.changePage();
+    //     List<Camp> camps = CampManager.getAllVisibleCamps();
 
-    /**
-     * Displays the project details.
-     *
-     * @throws PageBackException if the user wants to go back
-     */
-    public static void viewAllCamps() throws PageBackException {
-        ChangePage.changePage();
-        System.out.println("View All Camp List");
-        ModelViewer.displayListOfDisplayable(CampManager.viewAllcamp());
-        System.out.println("Press Enter to go back.");
-        new Scanner(System.in).nextLine();
-        throw new PageBackException();
-    }
+    //     Comparator<Camp> campComparator = null;
+    //     campComparator = Comparator.comparing(Camp::getCampName, String.CASE_INSENSITIVE_ORDER);
+    //     Collections.sort(camps, campComparator);
+
+    //     System.out.println("List of Available Camps (Alphabetical Order):");
+    //     ModelViewer.displayListOfDisplayable(camps);
+
+    //     System.out.println("Choose an option:");
+    //     System.out.println("\t1. Sort camps");
+    //     System.out.println("\t2. Go Back");
+
+    //     System.out.print("Enter your choice: ");
+    //     int choice = IntGetter.readInt();
+
+    //     switch (choice) {
+    //         case 1:
+    //             // Prompt the user to choose a sorting option
+    //             sortCampsByOptionVisible(camps, staff);
+    //             break;
+    //         case 2:
+    //             throw new PageBackException();
+    //         default:
+    //             System.out.println("Invalid choice. Try again.");
+    //             new Scanner(System.in).nextLine();
+    //             throw new PageBackException();
+    //     }
+    // }
+
+    // private static void sortCampsByOptionVisible(List<Camp> camps, Staff staff) throws PageBackException {
+    //     ChangePage.changePage();
+    //     System.out.println("Sort camps by:");
+    //     System.out.println("\t1. Camp ID");
+    //     System.out.println("\t2. Camp Name");
+    //     System.out.println("\t3. Camp Date");
+    //     System.out.println("\t4. Camp Closing Date");
+    //     System.out.println("\t5. Camp Location");
+    //     System.out.println("\t6. Go Back");
+
+    //     System.out.print("Enter your choice: ");
+    //     int sortChoice = IntGetter.readInt();
+
+    //     if (sortChoice == 6) {
+    //         viewVisibleCampList(staff);
+    //     }
+
+    //     String sortTitle = "List of Available Camps";
+
+    //     Comparator<Camp> campComparator = null;
+
+    //     switch (sortChoice) {
+    //         case 1:
+    //             sortTitle = "List of Available Camps (ID order):";
+    //             campComparator = Comparator.comparingInt(camp -> {
+    //                 try {
+    //                     return Integer.parseInt(camp.getID().replaceAll("\\D", ""));
+    //                 } catch (NumberFormatException e) {
+    //                     return Integer.MAX_VALUE;
+    //                 }
+    //             });
+    //             break;
+    //         case 2:
+    //             sortTitle = "List of Available Camps (Alphabetical order):";
+    //             campComparator = Comparator.comparing(Camp::getCampName, String.CASE_INSENSITIVE_ORDER);
+    //             break;
+    //         case 3:
+    //             sortTitle = "List of Available Camps (Date order):";
+    //             campComparator = (camp1, camp2) -> {
+    //             String date1 = camp1.getDates().substring(0, 8);
+    //             String date2 = camp2.getDates().substring(0, 8);
+    //             return date1.compareTo(date2);
+    //         };
+            
+    //             break;
+    //         case 4:
+    //             sortTitle = "List of Available Camps (Closing Date order):";
+    //             campComparator = Comparator.comparing(Camp::getRegistrationClosingDate);
+    //             break;
+    //         case 5:
+    //             sortTitle = "List of Available Camps (Location order):";
+    //             campComparator = Comparator.comparing(Camp::getLocation);
+    //             break;
+    //         default:
+    //             System.out.println("Invalid choice. Try again.");
+    //             new Scanner(System.in).nextLine();
+    //             viewVisibleCampList(staff);
+    //     }
+
+    //     Collections.sort(camps, campComparator);
+
+    //     ChangePage.changePage();
+    //     System.out.println(sortTitle);
+    //     ModelViewer.displayListOfDisplayable(camps);
+
+    //     System.out.println("Press Enter to go back.");
+    //     new Scanner(System.in).nextLine();
+    //     throw new PageBackException();
+    // }
+
+    // // FOR STAFFS - invisible /////////////////////////////////////////////////////////////////////////////////////////////
+    // public static void viewInvisibleCampList(Staff staff) throws PageBackException {
+    //     ChangePage.changePage();
+    //     List<Camp> camps = CampManager.getAllInvisibleCamps();
+
+    //     Comparator<Camp> campComparator = null;
+    //     campComparator = Comparator.comparing(Camp::getCampName, String.CASE_INSENSITIVE_ORDER);
+    //     Collections.sort(camps, campComparator);
+
+    //     System.out.println("List of Available Camps (Alphabetical Order):");
+    //     ModelViewer.displayListOfDisplayable(camps);
+
+    //     System.out.println("Choose an option:");
+    //     System.out.println("\t1. Sort camps");
+    //     System.out.println("\t2. Go Back");
+
+    //     System.out.print("Enter your choice: ");
+    //     int choice = IntGetter.readInt();
+
+    //     switch (choice) {
+    //         case 1:
+    //             // Prompt the user to choose a sorting option
+    //             sortCampsByOptionInvisible(camps, staff);
+    //             break;
+    //         case 2:
+    //             throw new PageBackException();
+    //         default:
+    //             System.out.println("Invalid choice. Try again.");
+    //             new Scanner(System.in).nextLine();
+    //             throw new PageBackException();
+    //     }
+    // }
+
+    // private static void sortCampsByOptionInvisible(List<Camp> camps, Staff staff) throws PageBackException {
+    //     ChangePage.changePage();
+    //     System.out.println("Sort camps by:");
+    //     System.out.println("\t1. Camp ID");
+    //     System.out.println("\t2. Camp Name");
+    //     System.out.println("\t3. Camp Date");
+    //     System.out.println("\t4. Camp Closing Date");
+    //     System.out.println("\t5. Camp Location");
+    //     System.out.println("\t6. Go Back");
+
+    //     System.out.print("Enter your choice: ");
+    //     int sortChoice = IntGetter.readInt();
+
+    //     if (sortChoice == 6) {
+    //         viewVisibleCampList(staff);
+    //     }
+
+    //     String sortTitle = "List of Available Camps";
+
+    //     Comparator<Camp> campComparator = null;
+
+    //     switch (sortChoice) {
+    //         case 1:
+    //             sortTitle = "List of Available Camps (ID order):";
+    //             campComparator = Comparator.comparingInt(camp -> {
+    //                 try {
+    //                     return Integer.parseInt(camp.getID().replaceAll("\\D", ""));
+    //                 } catch (NumberFormatException e) {
+    //                     return Integer.MAX_VALUE;
+    //                 }
+    //             });
+    //             break;
+    //         case 2:
+    //             sortTitle = "List of Available Camps (Alphabetical order):";
+    //             campComparator = Comparator.comparing(Camp::getCampName, String.CASE_INSENSITIVE_ORDER);
+    //             break;
+    //         case 3:
+    //             sortTitle = "List of Available Camps (Date order):";
+    //             campComparator = (camp1, camp2) -> {
+    //             String date1 = camp1.getDates().substring(0, 8);
+    //             String date2 = camp2.getDates().substring(0, 8);
+    //             return date1.compareTo(date2);
+    //         };
+            
+    //             break;
+    //         case 4:
+    //             sortTitle = "List of Available Camps (Closing Date order):";
+    //             campComparator = Comparator.comparing(Camp::getRegistrationClosingDate);
+    //             break;
+    //         case 5:
+    //             sortTitle = "List of Available Camps (Location order):";
+    //             campComparator = Comparator.comparing(Camp::getLocation);
+    //             break;
+    //         default:
+    //             System.out.println("Invalid choice. Try again.");
+    //             new Scanner(System.in).nextLine();
+    //             viewInvisibleCampList(staff);
+    //     }
+
+    //     Collections.sort(camps, campComparator);
+
+    //     ChangePage.changePage();
+    //     System.out.println(sortTitle);
+    //     ModelViewer.displayListOfDisplayable(camps);
+
+    //     System.out.println("Press Enter to go back.");
+    //     new Scanner(System.in).nextLine();
+    //     throw new PageBackException();
+    // }
+
+
+    // /**
+    //  * Displays the project details.
+    //  *
+    //  * @throws PageBackException if the user wants to go back
+    //  */
+    // public static void viewAllCamps() throws PageBackException {
+    //     ChangePage.changePage();
+    //     System.out.println("View All Camp List");
+    //     ModelViewer.displayListOfDisplayable(CampManager.viewAllcamp());
+    //     System.out.println("Press Enter to go back.");
+    //     new Scanner(System.in).nextLine();
+    //     throw new PageBackException();
+    // }
 
     public static void viewCamp(Camp camp) throws PageBackException {
         ChangePage.changePage();
@@ -348,4 +409,144 @@ public class CampViewer {
        new Scanner(System.in).nextLine();
        throw new PageBackException();
     }
+
+    /////////////////////////////////////////////////////////////////////////////////
+        public static void selectCampTypeAndDisplay(Staff staff) throws PageBackException {
+            ChangePage.changePage();
+    
+            System.out.println("Select the type of camps to view:");
+            System.out.println("\t1. View All Camps");
+            System.out.println("\t2. View Visible Camps");
+            System.out.println("\t3. View Invisible Camps");
+            System.out.println("\t4. Go Back");
+    
+            System.out.print("Enter your choice: ");
+            int typeChoice = IntGetter.readInt();
+    
+            switch (typeChoice) {
+                case 1:
+                    viewAllCamps();
+                    break;
+                case 2:
+                    viewCampList(staff, CampManager.getAllVisibleCamps(), true);
+                    break;
+                case 3:
+                    viewCampList(staff, CampManager.getAllInvisibleCamps(), false);
+                    break;
+                case 4:
+                    throw new PageBackException();
+                default:
+                    System.out.println("Invalid choice. Try again.");
+                    new Scanner(System.in).nextLine();
+                    selectCampTypeAndDisplay(staff);
+            }
+        }
+
+            public static void viewCampList(Staff staff, List<Camp> camps, boolean isVisible) throws PageBackException {
+                ChangePage.changePage();
+        
+                Comparator<Camp> campComparator = Comparator.comparing(Camp::getCampName, String.CASE_INSENSITIVE_ORDER);
+                Collections.sort(camps, campComparator);
+        
+                System.out.println("List of Available Camps (Alphabetical Order):");
+                ModelViewer.displayListOfDisplayable(camps);
+        
+                System.out.println("Choose an option:");
+                System.out.println("\t1. Sort camps");
+                System.out.println("\t2. Go Back");
+        
+                System.out.print("Enter your choice: ");
+                int choice = IntGetter.readInt();
+        
+                switch (choice) {
+                    case 1:
+                        sortCampsByOption(camps, staff, isVisible);
+                        break;
+                    case 2:
+                        throw new PageBackException();
+                    default:
+                        System.out.println("Invalid choice. Try again.");
+                        new Scanner(System.in).nextLine();
+                        throw new PageBackException();
+                }
+            }
+        
+            private static void sortCampsByOption(List<Camp> camps, Staff staff, boolean isVisible) throws PageBackException {
+                ChangePage.changePage();
+                System.out.println("Sort camps by:");
+                System.out.println("\t1. Camp ID");
+                System.out.println("\t2. Camp Name");
+                System.out.println("\t3. Camp Date");
+                System.out.println("\t4. Camp Closing Date");
+                System.out.println("\t5. Camp Location");
+                System.out.println("\t6. Go Back");
+        
+                System.out.print("Enter your choice: ");
+                int sortChoice = IntGetter.readInt();
+        
+                if (sortChoice == 6) {
+                    viewCampList(staff, camps, isVisible);
+                }
+        
+                String sortTitle = "List of Available Camps";
+        
+                Comparator<Camp> campComparator = null;
+        
+                switch (sortChoice) {
+                    case 1:
+                        sortTitle = "List of Available Camps (ID order):";
+                        campComparator = Comparator.comparingInt(camp -> {
+                            try {
+                                return Integer.parseInt(camp.getID().replaceAll("\\D", ""));
+                            } catch (NumberFormatException e) {
+                                return Integer.MAX_VALUE;
+                            }
+                        });
+                        break;
+                    case 2:
+                        sortTitle = "List of Available Camps (Alphabetical order):";
+                        campComparator = Comparator.comparing(Camp::getCampName, String.CASE_INSENSITIVE_ORDER);
+                        break;
+                    case 3:
+                        sortTitle = "List of Available Camps (Date order):";
+                        campComparator = Comparator.comparing(camp -> camp.getDates().substring(0, 8));
+                        break;
+                    case 4:
+                        sortTitle = "List of Available Camps (Closing Date order):";
+                        campComparator = Comparator.comparing(Camp::getRegistrationClosingDate);
+                        break;
+                    case 5:
+                        sortTitle = "List of Available Camps (Location order):";
+                        campComparator = Comparator.comparing(Camp::getLocation);
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Try again.");
+                        new Scanner(System.in).nextLine();
+                        viewCampList(staff, camps, isVisible);
+                }
+        
+                Collections.sort(camps, campComparator);
+        
+                ChangePage.changePage();
+                System.out.println(sortTitle);
+                ModelViewer.displayListOfDisplayable(camps);
+        
+                System.out.println("Press Enter to go back.");
+                new Scanner(System.in).nextLine();
+                throw new PageBackException();
+            }
+        
+            public static void viewAllCamps() throws PageBackException {
+                viewCampList(null, CampManager.viewAllcamp(), false);
+            }
+        
+            public static void viewVisibleCampList(Staff staff) throws PageBackException {
+                viewCampList(staff, CampManager.getAllVisibleCamps(), true);
+            }
+        
+            public static void viewInvisibleCampList(Staff staff) throws PageBackException {
+                viewCampList(staff, CampManager.getAllInvisibleCamps(), false);
+            }
+        
+    
 }

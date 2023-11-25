@@ -196,6 +196,10 @@ public class RequestManager {
     
         CampManager.updateCamp(campID, c);
         s.setRequestStatus(RequestStatus.APPROVED);
+
+        Student student = StudentRepository.getInstance().getByID(s.getSenderID());
+        student.addPoint();
+        StudentRepository.getInstance().update(student);
     }
 
 }
