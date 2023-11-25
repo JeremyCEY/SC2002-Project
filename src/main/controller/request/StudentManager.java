@@ -284,6 +284,17 @@ public class StudentManager {
         String campID = new Scanner(System.in).nextLine();
         campID = campID.toUpperCase();
 
+        if (!student.getCCamps().equals("null")) {
+            String CCamps = student.getCCamps();
+            if (CCamps.toLowerCase().contains(campID.toLowerCase())) {
+                System.out.printf("You are a commitee of camp %s, you are not allow to withdraw from this camp!\n",
+                        campID);
+                System.out.println("Press Enter to go back.");
+                new Scanner(System.in).nextLine();
+                throw new PageBackException();
+            }
+        }
+
         // check whether student is registered to camp
         String ACamps = student.getACamps();
         if (!ACamps.toLowerCase().contains(campID.toLowerCase())) {
@@ -291,17 +302,6 @@ public class StudentManager {
             System.out.println("Press Enter to go back.");
             new Scanner(System.in).nextLine();
             throw new PageBackException();
-        }
-
-        if (!student.getCCamps().equals("null")) {
-            String CCamps = student.getCCamps();
-            if (CCamps.toLowerCase().contains(campID.toLowerCase())) {
-                System.out.printf("You are a commitee of camp %s, you are not allow to withdraw from this camp!",
-                        campID);
-                System.out.println("Press Enter to go back.");
-                new Scanner(System.in).nextLine();
-                throw new PageBackException();
-            }
         }
 
         System.out.println("Are you sure you want to deregister from this camp? (y/[n])");
@@ -471,7 +471,7 @@ public class StudentManager {
         String studentID = student.getID();
         String campID = new Scanner(System.in).nextLine();
         campID = campID.toUpperCase();
-        System.out.println("CampID is :" + campID);
+        System.out.println("Warmly remindering: You are sending an enquiry to camp " + campID);
         try {
             CampManager.getCampByID(campID);
         } catch (ModelNotFoundException e) {

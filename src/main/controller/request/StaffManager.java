@@ -3,6 +3,7 @@ package main.controller.request;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -36,59 +37,125 @@ public class StaffManager {
 	public static void createCamp(User user) throws PageBackException {
         ChangePage.changePage();
         System.out.println(BoundaryStrings.separator);
-        System.out.println("Enter a camp Name:");
-        String name = new Scanner(System.in).nextLine();
-        System.out.println("Enter a camp Date, YYYYMMDD-YYYMMDD:");
-        String date = new Scanner(System.in).nextLine();
-        System.out.println("Enter a camp Registration Closing Date, YYYMMDD:");
-        String registrationClosingDateDate = new Scanner(System.in).nextLine();
+        String name; 
+        do{
+            System.out.println("Enter a camp Name:");
+            name = new Scanner(System.in).nextLine();
+            if (name==""){
+                System.out.println("You have not entered anything. Please reenter!"); 
+            }
+        }while(name==""); 
+        String date; 
+        do{
+            System.out.println("Enter a camp Date, YYYYMMDD-YYYMMDD:");
+            date = new Scanner(System.in).nextLine();
+            if (date==""){
+                System.out.println("You have not entered anything. Please reenter!"); 
+            }
+        }while(date==""); 
+        String registrationClosingDateDate; 
+        do{
+            System.out.println("Enter a camp Registration Closing Date, YYYMMDD:");
+            registrationClosingDateDate = new Scanner(System.in).nextLine();
+            if (registrationClosingDateDate==""){
+                System.out.println("You have not entered anything. Please reenter!"); 
+            }
+        }while(registrationClosingDateDate==""); 
+    
         System.out.println("Please select school that camp is open to:");
         System.out.println("NTU,ADM,EEE,NBS,SCSE,SSS");
-        String userInput = new Scanner(System.in).nextLine();
-        userInput = userInput.toUpperCase();
-        Faculty faculty = Faculty.NTU;
-
-        switch (userInput) {
-            case "ADM" -> {
-                faculty = Faculty.ADM;
-                break;
+        int included=0; 
+        String suggt; 
+        Faculty faculty=Faculty.NTU; 
+        Scanner scanner=new Scanner(System.in); 
+        do {
+            suggt=scanner.nextLine(); 
+            suggt=suggt.toUpperCase(); 
+            //System.out.println("suggt is: "+suggt); 
+            //System.out.println("suggest is: "+suggest); 
+            included=0; 
+            Faculty fc[]=Faculty.values();
+            for (Faculty fcl: fc){
+                if (fcl.name().equalsIgnoreCase(suggt)){
+                    included=1; 
+                    faculty=fcl; 
+                    break; 
+                }
             }
-            case "EEE" -> {
-                faculty = Faculty.EEE;
-                break;
+            if (included==0){
+                System.out.println("Please enter one of the following faculties name (case is not important):"); 
+                System.out.println("    NA,\r\n" + //
+                "    NTU,\r\n" + //
+                "    ADM,\r\n" + //
+                "    EEE,\r\n" + //
+                "    NBS,\r\n" + //
+                "    SCSE,\r\n" + //
+                "    SSS"); 
             }
-            case "NBS" -> {
-                faculty = Faculty.NBS;
-                break;
-            }
-            case "NTU" -> {
-                faculty = Faculty.NTU;
-                break;
-            }
-            case "SCSE" -> {
-                faculty = Faculty.SCSE;
-                break;
-            }
-            case "SSS" -> {
-                faculty = Faculty.SSS;
-                break;
-            }
-            default -> {
-                System.out.println("Invalid input. Please enter a valid school code.");
-            }
-        }
+        }while (included==0); 
+        
 
         System.out.println("Selected faculty: " + faculty);
 
-        System.out.println("Enter a camp Location:");
-        String location = new Scanner(System.in).nextLine();
-        System.out.println("Enter a camp attendee Slots:");
-        int totalSlots = new Scanner(System.in).nextInt();
-        System.out.println("Enter a camp committee Slots:");
-        int campCommSlots = new Scanner(System.in).nextInt();
+        String location; 
+        do{
+            System.out.println("Enter a camp Location:");
+            location = new Scanner(System.in).nextLine();
+            if (location==""){
+                System.out.println("You have not entered anything. Please reenter!"); 
+            }
+        }while(location==""); 
 
-        System.out.println("Enter a camp Description:");
-        String description = new Scanner(System.in).nextLine();
+        int totalSlots; 
+        while (true) {
+            System.out.println("Enter a camp attendee Slots:");
+            try {
+                // Try to read an integer from the user input
+                totalSlots = new Scanner(System.in).nextInt();
+
+                // Process the integer input
+                System.out.println("You entered: " + totalSlots);
+
+                // Break out of the loop if a valid integer is entered
+                break;
+            } catch (InputMismatchException e) {
+                // Handle the case where the input is not an integer
+                System.out.println("Invalid input. Please enter a valid integer.");
+
+                // Clear the invalid input from the scanner to avoid an infinite loop
+                scanner.nextLine();
+            }
+        }
+
+        int campCommSlots; 
+        while (true) {
+            System.out.println("Enter a camp committee Slots:");
+            try {
+                // Try to read an integer from the user input
+                campCommSlots = new Scanner(System.in).nextInt();
+                // Process the integer input
+                System.out.println("You entered: " + campCommSlots);
+
+                // Break out of the loop if a valid integer is entered
+                break;
+            } catch (InputMismatchException e) {
+                // Handle the case where the input is not an integer
+                System.out.println("Invalid input. Please enter a valid integer.");
+
+                // Clear the invalid input from the scanner to avoid an infinite loop
+                scanner.nextLine();
+            }
+        }
+
+        String description; 
+        do{
+            System.out.println("Enter a camp Description:");
+            description = new Scanner(System.in).nextLine();
+            if (description==""){
+                System.out.println("You have not entered anything. Please reenter!"); 
+            }
+        }while(description==""); 
+
         Camp camp;
         try {
             camp = CampManager.createCamp(
@@ -119,7 +186,7 @@ public class StaffManager {
         throw new PageBackException();
     }
 
-    public static void editExistingCamp(User user) throws PageBackException, ModelNotFoundException {
+    private static void editExistingCamp(User user) throws PageBackException, ModelNotFoundException {
         ChangePage.changePage();
         CampViewer.viewStaffCamps((Staff) user);
         Scanner scanner = new Scanner(System.in);
@@ -139,21 +206,98 @@ public class StaffManager {
         System.out.println("\t8. Camp Description");
         System.out.println("\t9. Camp Staff ID In Charge");
         System.out.println("\t10. Camp Visibility(true/false)");
-        int choice = IntGetter.readInt();
-        System.out.println("The new value of the field to update");
+        int choice; 
+        do {
+            choice=IntGetter.readInt();
+            if (choice == 0) throw new PageBackException();
+            if (choice>10 || choice<0){
+                System.out.println("Please enter field from 1 to 10!"); 
+            }
+        }while(choice>10 || choice<1); 
+        int suggest=-1; 
+        String suggt=""; 
+        String booln=""; 
+        System.out.println("The new value of the field to update: ");
+        do{
+            suggt=""; 
+            if ((choice==6) || (choice==7)){
+                suggest=scanner.nextInt(); 
+                suggt="default"; 
+            }
+            else if (choice==4){
+                System.out.println("Please enter one of the following faculties name (case is not important):"); 
+                System.out.println("    NA,\r\n" + //
+                        "    NTU,\r\n" + //
+                        "    ADM,\r\n" + //
+                        "    EEE,\r\n" + //
+                        "    NBS,\r\n" + //
+                        "    SCSE,\r\n" + //
+                        "    SSS"); 
+                //String faculty=scanner.nextLine(); 
+                int included=0; 
+                do {
+                    suggt=scanner.nextLine(); 
+                    suggt=suggt.toUpperCase(); 
+                    //System.out.println("suggt is: "+suggt); 
+                    //System.out.println("suggest is: "+suggest); 
+                    included=0; 
+                    Faculty fc[]=Faculty.values();
+                    for (Faculty fcl: fc){
+                        if (fcl.name().equalsIgnoreCase(suggt)){
+                            included=1; 
+                            break; 
+                        }
+                    }
+                    if (included==0){
+                        System.out.println("Please enter one of the following faculties name (case is not important):"); 
+                        System.out.println("    NA,\r\n" + //
+                        "    NTU,\r\n" + //
+                        "    ADM,\r\n" + //
+                        "    EEE,\r\n" + //
+                        "    NBS,\r\n" + //
+                        "    SCSE,\r\n" + //
+                        "    SSS"); 
+                    }
+                }while (included==0); 
+            }
+            else if (choice==10){
+                int validinput=0; 
+                do {
+                    booln=scanner.nextLine(); 
+                    booln=booln.toLowerCase(); 
+                    if (booln.equals("false") || booln.equals("true")){
+                        validinput=1; 
+                        suggt="default"; 
+                    }
+                    if (validinput!=1){
+                        System.out.println("booln is: "+booln); 
+                        System.out.println("Please enter true or false (case is not important)!");
+                        System.out.println("Please indicate your choice: ");
+                    }
+                }while(validinput!=1); 
+            }
+            else {//(choice==0 || choice==1 || choice==2 || choice==3 || choice==5 || choice==8 || choice==9){
+                suggt=scanner.nextLine();
+            }
+            //System.out.println("Suggest is: "+suggest); 
+            if ((Integer.toString(suggest)=="") || (suggt=="")){
+                System.out.println("You have not entered any new value, please reenter!"); 
+            }
+        }while((Integer.toString(suggest)=="") || (suggt=="")); 
         switch (choice) {
             case 0 -> throw new PageBackException();
-            case 1 -> camp.setCampName(scanner.nextLine());
-            case 2 -> camp.setDates(scanner.nextLine());
-            case 3 -> camp.setRegistrationClosingDate(scanner.nextLine());
-            case 4 -> camp.setCampType(Faculty.valueOf(scanner.nextLine()));
-            case 5 -> camp.setLocation(scanner.nextLine());
-            case 6 -> camp.setTotalSlots(scanner.nextInt());
-            case 7 -> camp.setCampCommSlots(scanner.nextInt());
-            case 8 -> camp.setDescription(scanner.nextLine());
-            case 9 -> camp.setStaffID(scanner.nextLine());
-            case 10 -> camp.setVisibility(String.valueOf(scanner.nextBoolean()));
+            case 1 -> camp.setCampName(suggt);
+            case 2 -> camp.setDates(suggt);
+            case 3 -> camp.setRegistrationClosingDate(suggt);
+            case 4 -> camp.setCampType(Faculty.valueOf(suggt));
+            case 5 -> camp.setLocation(suggt);
+            case 6 -> camp.setTotalSlots(suggest);
+            case 7 -> camp.setCampCommSlots(suggest);
+            case 8 -> camp.setDescription(suggt);
+            case 9 -> camp.setStaffID(suggt);
+            case 10 -> camp.setVisibility(String.valueOf(booln));
         }
+
         System.out.println("Have other field to update?");
         System.out.println("\t0. No");
         System.out.println("\t1. Yes");
@@ -172,40 +316,6 @@ public class StaffManager {
         throw new PageBackException();
     }
 
-    public static void deleteExistingCamp(User user) throws PageBackException, ModelNotFoundException {
-        ChangePage.changePage();
-        CampViewer.viewStaffCamps((Staff) user);
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter Camp ID of camp to delete");
-
-        String campID = scanner.nextLine();
-
-        // Check if the camp with the provided ID exists
-
-        Camp campToDelete = CampManager.getCampByID(campID);
-        System.out.println("Are you sure you want to delete this camp? (Y/N)");
-
-        String input = scanner.nextLine();
-        if (!input.equalsIgnoreCase("Y")) {
-            System.out.println("Camp deletion cancelled!");
-            System.out.println("Press enter to continue");
-            scanner.nextLine();
-            throw new PageBackException();
-        }
-
-        // Try to delete the camp
-        try {
-            CampRepository.getInstance().remove(campToDelete.getID());
-        } catch (ModelNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        System.out.println("Camp deleted successfully!");
-        System.out.println("Press enter to continue");
-        scanner.nextLine();
-        throw new PageBackException();
-    }
 
     public static void viewAndReplyPendingEnquiries(User user) throws ModelNotFoundException, PageBackException {
         ChangePage.changePage();
