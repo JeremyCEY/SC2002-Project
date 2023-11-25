@@ -50,6 +50,15 @@ public class CampManager {
         return CampRepository.getInstance().getList();
     }
 
+        /**
+     * get the list of all camps
+     *
+     * @return the list of all camps
+     */
+    public static List<Camp> getAllcamps() {
+        return CampRepository.getInstance().getList();
+    }
+
     /**
      * View all the camps that are available
      *
@@ -59,28 +68,6 @@ public class CampManager {
         return CampRepository.getInstance().findByRules(camp -> camp.getVisibility().equals("true"));
     }
 
-    /**
-     * create a new camp
-     *
-     * @param campID       the ID of the camp
-     * @param campTitle    the title of the camp
-     * @param supervisorID the ID of the supervisor
-     * @throws ModelAlreadyExistsException if the camp already exists
-     */
-    // public static void createCamp(String campID, String campName, String dates,
-    // String registrationClosingDate,
-    // Faculty openTo, String location, int filledSlots, int totalSlots, int
-    // filledCampCommSlots,
-    // int campCommSlots, String description,
-    // String staffID, String visibility) throws ModelAlreadyExistsException {
-    // Camp c1 = new Camp(campID, campName, dates, registrationClosingDate,
-    // openTo, location, filledSlots, totalSlots, filledCampCommSlots,
-    // campCommSlots, description, staffID,
-    // visibility);
-    // CampRepository.getInstance().add(c1);
-    // // CampManager.updatecampsStatus();
-    // }
-
     public static Camp createCamp(String campName, String dates, String registrationClosingDate,
             Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots,
             int campCommSlots,
@@ -89,15 +76,6 @@ public class CampManager {
                 filledSlots, totalSlots, filledCampCommSlots, campCommSlots, description, staffID, visibility);
         CampRepository.getInstance().add(c1);
         return c1;
-    }
-
-    /**
-     * get the list of all camps
-     *
-     * @return the list of all camps
-     */
-    public static List<Camp> getAllcamps() {
-        return CampRepository.getInstance().getList();
     }
 
     /**
@@ -115,33 +93,6 @@ public class CampManager {
         }
         return "C" + (max + 1);
     }
-
-    /**
-     * transfer a student to a new supervisor
-     *
-     * @param campID       the ID of the camp
-     * @param supervisorID the ID of the supervisor
-     * @throws ModelNotFoundException if the camp is not found
-     */
-    // public static void transferToNewSupervisor(String campID, String
-    // supervisorID) throws ModelNotFoundException {
-    // camp p1 = CampRepository.getInstance().getByID(campID);
-    // if (!FacultyRepository.getInstance().contains(supervisorID)) {
-    // throw new IllegalStateException("Supervisor Not Found!");
-    // }
-    // Supervisor oldsupervisor =
-    // FacultyRepository.getInstance().getByID(p1.getSupervisorID());
-    // Supervisor newsupervisor =
-    // FacultyRepository.getInstance().getByID(supervisorID);
-    // Student student = StudentRepository.getInstance().getByID(p1.getStudentID());
-    // student.setSupervisorID(supervisorID);
-    // p1.setSupervisorID(supervisorID);
-    // CampRepository.getInstance().update(p1);
-    // FacultyRepository.getInstance().update(oldsupervisor);
-    // FacultyRepository.getInstance().update(newsupervisor);
-    // StudentRepository.getInstance().update(student);
-    // CampManager.updatecampsStatus();
-    // }
 
     /**
      * withdraw from a camp
@@ -342,7 +293,11 @@ public class CampManager {
      * @return all available camps
      */
     public static List<Camp> getAllVisibleCamps() {
-        return CampRepository.getInstance().findByRules(p -> p.getVisibility() != "true");
+        return CampRepository.getInstance().findByRules(p -> p.getVisibility().equals("true"));
+    }
+
+    public static List<Camp> getAllInvisibleCamps() {
+        return CampRepository.getInstance().findByRules(p -> p.getVisibility().equals("false"));
     }
 
     public static List<Camp> getCampsForStudent(Student student) {
@@ -357,6 +312,7 @@ public class CampManager {
     public static List<Camp> getAllCampsByStaff(Staff staff) {
         return CampRepository.getInstance().findByRules(c -> c.getStaffID().equals(staff.getID()));
     }
+
 
     /**
      * get camp by the camp ID

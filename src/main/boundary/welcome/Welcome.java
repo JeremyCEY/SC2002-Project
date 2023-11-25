@@ -16,7 +16,6 @@ public class Welcome {
      */
     public static void welcome() {
         ChangePage.changePage();
-        System.out.println(BoundaryStrings.WELCOME_LOGO);
         System.out.println("Welcome to NTU's Camp Management System!\n");
         System.out.println(BoundaryStrings.separator);
         System.out.println("Please enter your choice to continue.");

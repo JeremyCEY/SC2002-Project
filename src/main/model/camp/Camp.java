@@ -206,7 +206,9 @@ public class Camp implements Model, Displayable {
 				String.format("| Committee Slots             | %s/%-29s|\n", getFilledCampCommSlots(), getCampCommSlots())+
 				String.format("| Registration Closing        | %-30s |\n", getRegistrationClosingDate()) +
 				String.format("| Description                 | %-30s |\n", getDescription())+
-				String.format("| Location                    | %-30s |\n", getLocation());
+				String.format("| Open to                     | %-30s |\n", getOpenTo().toString())+
+				String.format("| Location                    | %-30s |\n", getLocation())+
+				String.format("| Visibility                  | %-30s |\n", getVisibility());
     }
 
 	private String getSingleCampStringWithType(String type) {
@@ -260,6 +262,9 @@ public class Camp implements Model, Displayable {
 				String.format("| Registration Closing        | %-30s |\n", getRegistrationClosingDate()) +
 				String.format("| Description                 | %-30s |\n", getDescription())+
 				String.format("| Location                    | %-30s |\n", getLocation())+
+				String.format("| Open to                     | %-30s |\n", getOpenTo().toString())+
+				String.format("| Location                    | %-30s |\n", getLocation())+
+				String.format("| Visibility                  | %-30s |\n", getVisibility())+
 				String.format("| Attending as a              | %-30s |\n", type);
     }
 

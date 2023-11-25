@@ -1,16 +1,16 @@
 Camp Name,Camp Dates,Registration Deadline,Open To,Location,Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description
-camp fire,20230101-20230103,20230106,NTU,d,1,50,1,10,desc
+NEW CAMP NAME,20230102-20230103,20230102,NTU,NTU,0,50,0,10,desc
 
 Enquiries
 RequestID,RequestStatus,SenderID,ReplierID,Message,Reply
-E1,REPLIED,KOH1,YCHERN,thanks,null
+E1,PENDING,KOH1,null,enruiry,null
 
 RequestID,RequestStatus,SenderID,ReplierID,Message,Reply
-E2,REPLIED,KOH1,YCHERN,can wear,null
+E2,PENDING,KOH1,null,asdlfkj,null
 
 RequestID,RequestStatus,SenderID,ReplierID,Message,Reply
-E3,REPLIED,KOH1,YCHERN,can wear belt?,can bro
+E3,REPLIED,KOH1,HUKUMAR,oggood,null
 
 RequestID,RequestStatus,SenderID,ReplierID,Message,Reply
-E4,PENDING,YCHERN,null,messa,null
+E4,REPLIED,YCHERN,KOH1,testing?,can bro
 

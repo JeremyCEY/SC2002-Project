@@ -16,11 +16,11 @@ import main.utils.exception.PasswordIncorrectException;
 public class main {
     public static void main(String[] args) {
         // For testing the app from login
-        // UIEntry.start();
+        //UIEntry.start();
 
         // Skip to student page
         //AccountManager.loadUsers();
-        CampManager.loadcamps();
+        //CampManager.loadcamps();
         // try {
         //     User user = AccountManager.login(UserType.STUDENT, "YCHERN", "password");
         //     StudentMainPage.studentMainPage(user);
@@ -34,8 +34,8 @@ public class main {
         // Skip to staff page
         // AccountManager.loadUsers();
         try {
-            User user = AccountManager.login(UserType.STUDENT, "YCHERN", "password");
-            StudentMainPage.studentMainPage(user);
+            User user = AccountManager.login(UserType.STAFF, "HUKUMAR", "password");
+            StaffMainPage.staffMainPage(user);
             return;
         } catch (PasswordIncorrectException e) {
             System.out.println("Password incorrect.");
