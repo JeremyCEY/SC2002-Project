@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -692,8 +693,22 @@ public class StudentManager {
         do {
             suggt = "";
             if ((choice == 6) || (choice == 7)) {
-                suggest = scanner.nextInt();
-                suggt = "default";
+                
+                while (true) {
+                    System.out.println("Enter a camp attendee Slots:");
+                    try {
+                        // Try to read an integer from the user input
+                        suggest= new Scanner(System.in).nextInt();
+                        // Process the integer input
+                        System.out.println("You entered: " + suggest);
+                        // Break out of the loop if a valid integer is entered
+                        break;
+                    } catch (InputMismatchException e) {
+                        // Handle the case where the input is not an integer
+                         System.out.println("Invalid input. Please enter a valid integer.");
+                    }
+                }
+                suggt="default"; 
             } else if (choice == 4) {
                 System.out.println("Please enter one of the following faculties name (case is not important):");
                 System.out.println("    NA,\r\n" + //
