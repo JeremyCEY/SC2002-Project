@@ -284,13 +284,20 @@ public class StudentManager {
         } else {
             ModelViewer.displayListOfCampsWithType(camps);
         }
-        System.out.print("Please enter the camp ID: ");
-        String campID = new Scanner(System.in).nextLine();
+        String campID; 
+        do {
+            System.out.print("Please enter the camp ID: ");
+            campID = new Scanner(System.in).nextLine();
+            if (campID==""){
+                System.out.println("You have not entered anything. Please reenter!"); 
+            }
+            
+        }while(campID==""); 
         campID = campID.toUpperCase();
 
         if (!student.getCCamps().equals("null")) {
             String CCamps = student.getCCamps();
-            if (CCamps.toLowerCase().contains(campID.toLowerCase())) {
+            if (CCamps.toLowerCase().equals(campID.toLowerCase())) {
                 System.out.printf("You are a commitee of camp %s, you are not allow to withdraw from this camp!\n",
                         campID);
                 System.out.println("Press Enter to go back.");
@@ -524,9 +531,23 @@ public class StudentManager {
         System.out.println("3. Exit");
 
         boolean isValidChoice;
+        int choice; 
         do {
             Scanner scanner = new Scanner(System.in);
-            int choice = scanner.nextInt();
+            while (true) {
+                    System.out.println("Please enter your choice:");
+                    try {
+                        // Try to read an integer from the user input
+                        choice= new Scanner(System.in).nextInt();
+                        // Process the integer input
+                        System.out.println("You entered: " + choice);
+                        // Break out of the loop if a valid integer is entered
+                        break;
+                    } catch (InputMismatchException e) {
+                        // Handle the case where the input is not an integer
+                         System.out.println("Invalid input. Please enter a valid integer.");
+                    }
+            }
 
             switch (choice) {
                 case 1:
@@ -562,9 +583,14 @@ public class StudentManager {
         }
 
         Enquiry enquiryToEdit = RequestManager.getEnquiryByID(enquiryID);
-
+        String newMessage; 
+        do {
         System.out.println("Enter new message:");
-        String newMessage = sc.nextLine();
+        newMessage = sc.nextLine();
+        if (newMessage==""){
+            System.out.println("You have not entered anything. Please reenter!"); 
+        }
+        }while(newMessage==""); 
         enquiryToEdit.setMessage(newMessage);
         RequestManager.updateEnquiry(enquiryID, enquiryToEdit);
         System.out.println("Successfully updated enquiry!");
@@ -627,9 +653,15 @@ public class StudentManager {
             System.out.println("Here is the list of available camps: ");
             ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());// based on camp committee
 
-            System.out.println("Enter Camp ID to create Suggestion");
             String studentID = student.getID();
-            String campID = sc.nextLine();
+            String campID;
+            do {
+                System.out.println("Enter Camp ID to create Suggestion");
+                campID = sc.nextLine(); 
+                if (campID==""){
+                    System.out.println("You have not entered anything. Please reenter!"); 
+                }
+            }while (campID==""); 
             campID = campID.toUpperCase();
 
             try {
@@ -892,13 +924,6 @@ public class StudentManager {
             System.out.println();
             String campID = student.getCCamps().toUpperCase();
             // if empty
-            if (RequestManager.getAllPendingEnquiriesByCampID(campID).isEmpty()) {
-                ChangePage.changePage();
-                System.out.println("No Pending Enquiries.");
-                System.out.println("Press enter to go back.");
-                sc.nextLine();
-                throw new PageBackException();
-            }
             ModelViewer.displayListOfDisplayable(
                     RequestManager.getAllPendingEnquiriesByCampID(campID));
             System.out.println("Which enquiry ID do you want to reply to?");

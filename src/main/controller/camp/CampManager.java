@@ -17,26 +17,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 /**
- * A class manages the camp
+ * Manages camps and provides functionalities for camp creation, updating, retrieval,
+ * attendee registration, withdrawal, and loading from CSV resources.
  */
 public class CampManager {
-
+    /**
+     * Updates the camp with the specified ID.
+     *
+     * @param campID      the ID of the camp to be updated
+     * @param updatedCamp the updated camp object
+     * @throws ModelNotFoundException if the camp is not found
+     */
     public static void updateCamp(String campID, Camp updatedCamp) throws ModelNotFoundException {
         updatedCamp.setCampID(campID);
         CampRepository.getInstance().update(updatedCamp);
     }
 
     /**
-     * Change the supervisor of a camp
+     * Retrieves the list of all camps.
      *
-     * @return the new supervisor
+     * @return the list of all camps
      */
     public static List<Camp> viewAllcamp() {
         return CampRepository.getInstance().getList();
     }
 
-        /**
-     * get the list of all camps
+    /**
+     * Retrieves the list of all camps.
      *
      * @return the list of all camps
      */
@@ -45,7 +52,7 @@ public class CampManager {
     }
 
     /**
-     * View all the camps that are available
+     * Retrieves the list of available camps.
      *
      * @return the list of available camps
      */
@@ -53,6 +60,12 @@ public class CampManager {
         return CampRepository.getInstance().findByRules(camp -> camp.getVisibility().equals("true"));
     }
 
+    /**
+     * Creates a new camp with the provided details.
+     *
+     * @return the created camp
+     * @throws ModelAlreadyExistsException if the camp already exists
+     */
     public static Camp createCamp(String campName, String dates, String registrationClosingDate,
             Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots,
             int campCommSlots,
@@ -64,9 +77,9 @@ public class CampManager {
     }
 
     /**
-     * get the list of all camps by supervisor
+     * Retrieves a new camp ID for camp creation.
      *
-     * @return the list of all camps
+     * @return the new camp ID
      */
     public static String getNewCampID() {
         int max = 0;
@@ -80,10 +93,11 @@ public class CampManager {
     }
 
     /**
-     * withdraw from a camp
+     * Withdraws a student from a camp.
      *
-     * @param campID the ID of the camp
-     * @throws ModelNotFoundException if the camp is not found
+     * @param campID    the ID of the camp
+     * @param studentID the ID of the student
+     * @throws ModelNotFoundException if the camp or student is not found
      */
     public static void withdrawCampAttendee(String campID, String studentID) throws ModelNotFoundException {
         Camp camp = CampRepository.getInstance().getByID(campID);
@@ -102,11 +116,11 @@ public class CampManager {
     }
 
     /**
-     * student register a camp
+     * Registers a student for a camp.
      *
      * @param campID    the ID of the camp
      * @param studentID the ID of the student
-     * @throws ModelNotFoundException if the camp is not found
+     * @throws ModelNotFoundException if the camp or student is not found
      */
     public static void registerCampAttendee(String campID, String studentID) throws ModelNotFoundException {
         Camp camp = CampRepository.getInstance().getByID(campID);
@@ -124,6 +138,13 @@ public class CampManager {
         StudentRepository.getInstance().update(student);
     }
 
+    /**
+     * Registers a student as a camp committee member.
+     *
+     * @param campID    the ID of the camp
+     * @param studentID the ID of the student
+     * @throws ModelNotFoundException if the camp or student is not found
+     */
     public static void registerCampCommittee(String campID, String studentID) throws ModelNotFoundException {
         Camp camp = CampRepository.getInstance().getByID(campID);
         Student student;
@@ -143,8 +164,8 @@ public class CampManager {
 
 
     /**
-     * load camps from csv resource file
-     */
+    * Loads camps from the CSV resource file.
+    */
     public static void loadCamps() {
         List<List<String>> camps = CSVReader.read(Location.RESOURCE_LOCATION + "/resources/CampList.csv", true);
         for (List<String> camp : camps) {
@@ -180,40 +201,40 @@ public class CampManager {
     }
 
     /**
-     * check if the repository is empty
-     *
-     * @return true if the repository is empty
-     */
+    * Checks if the camp repository is empty.
+    *
+    * @return true if the repository is empty, false otherwise.
+    */
     public static boolean repositoryIsEmpty() {
         return CampRepository.getInstance().isEmpty();
     }
 
     /**
-     * Check if the camp is not in the repository
-     *
-     * @param campID the ID of the camp
-     * @return true if the camp is not in the repository
-     */
+     * Checks if the camp with the specified ID is not in the repository.
+    *
+    * @param campID the ID of the camp to check.
+    * @return true if the camp is not in the repository, false otherwise.
+    */
     public static boolean notContainsCampByID(String campID) {
         return !CampRepository.getInstance().contains(campID);
     }
 
     /**
-     * Check if the camp is in the repository
-     *
-     * @param campID the ID of the camp
-     * @return true if the camp is in the repository
-     */
+    * Checks if the camp with the specified ID is in the repository.
+    *
+    * @param campID the ID of the camp to check.
+    * @return true if the camp is in the repository, false otherwise.
+    */
     public static boolean containscampByID(String campID) {
         return CampRepository.getInstance().contains(campID);
     }
 
     /**
-     * get the camps of a student
-     *
-     * @param student the student
-     * @return the camp of the student
-     */
+    * Retrieves the camps associated with a student and their roles (Committee or Attendee).
+    *
+    * @param student the student for whom to retrieve camps.
+    * @return a map of camps and their associated roles, or null if no camps are associated.
+    */
     public static Map<Camp, String> getStudentcamps(Student student) {
         if (EmptyID.isEmptyID(student.getCCamps()) && EmptyID.isEmptyID(student.getACamps())) {
             return null;
@@ -247,29 +268,40 @@ public class CampManager {
     }
 
     /**
-     * get the camp of a supervisor
-     *
-     * @param campID the ID of the camp
-     * @return the camp of the supervisor
-     * @throws ModelNotFoundException if the camp is not found
-     */
+    * Retrieves the camp with the specified ID.
+    *
+    * @param campID the ID of the camp to retrieve.
+    * @return the camp with the specified ID.
+    * @throws ModelNotFoundException if the camp is not found.
+    */
     public static Camp getByID(String campID) throws ModelNotFoundException {
         return CampRepository.getInstance().getByID(campID);
     }
 
     /**
-     * get all available camps
-     *
-     * @return all available camps
-     */
+    * Retrieves all available camps.
+    *
+    * @return a list of all available camps.
+    */
     public static List<Camp> getAllVisibleCamps() {
         return CampRepository.getInstance().findByRules(p -> p.getVisibility().equals("true"));
     }
 
+    /**
+    * Retrieves all invisible camps.
+    *
+    * @return a list of all invisible camps.
+    */
     public static List<Camp> getAllInvisibleCamps() {
         return CampRepository.getInstance().findByRules(p -> p.getVisibility().equals("false"));
     }
 
+    /**
+    * Retrieves camps available to a student based on their faculty.
+    *
+    * @param student the student for whom to retrieve camps.
+    * @return a list of camps available to the student.
+    */
     public static List<Camp> getCampsForStudent(Student student) {
         String studentFaculty = student.getFaculty().toString();
 
@@ -279,18 +311,24 @@ public class CampManager {
         );
     }
 
+    /**
+    * Retrieves all camps associated with a specific staff member.
+    *
+    * @param staff the staff member for whom to retrieve camps.
+    * @return a list of camps associated with the staff member.
+    */
     public static List<Camp> getAllCampsByStaff(Staff staff) {
         return CampRepository.getInstance().findByRules(c -> c.getStaffID().equals(staff.getID()));
     }
 
 
-    /**
-     * get camp by the camp ID
-     * 
-     * @param campID the ID of the camp
-     * @return the camp
-     * @throws ModelNotFoundException if the camp is not found
-     */
+   /**
+    * Retrieves a camp based on its unique identifier (ID).
+    *
+    * @param campID the ID of the camp to retrieve.
+    * @return the camp with the specified ID.
+    * @throws ModelNotFoundException if the camp is not found.
+    */
     public static Camp getCampByID(String campID) throws ModelNotFoundException {
         return CampRepository.getInstance().getByID(campID);
     }

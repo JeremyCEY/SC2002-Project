@@ -8,11 +8,11 @@ import main.repository.user.StaffRepository;
 import main.utils.exception.ModelNotFoundException;
 
 /**
- * The UserUpdater class provides a utility for updating users in the database.
+ * The UserUpdater class offers a utility for updating users in the database.
  */
 public class UserUpdater {
     /**
-     * Updates the specified user in the database.
+     * Updates the specific user in the database.
      *
      * @param student the user to be updated
      * @throws ModelNotFoundException if the user is not found in the database
@@ -22,10 +22,10 @@ public class UserUpdater {
     }
 
     /**
-     * Updates the specified supervisor in the database.
+     * Updates the specified staff in the database.
      *
-     * @param supervisor the supervisor to be updated
-     * @throws ModelNotFoundException if the supervisor is not found in the database
+     * @param staff the staff to be updated
+     * @throws ModelNotFoundException if the staff is not found in the database
      */
     private static void updateStaff(Staff staff) throws ModelNotFoundException {
         StaffRepository.getInstance().update(staff);

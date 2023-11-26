@@ -7,21 +7,19 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 /**
- * The PasswordHashManager class provides a utility for hashing passwords using
- * the SHA3-256 algorithm.
+ * The PasswordHashManager class offers a utility for securely hashing passwords
+ * using the SHA3-256 algorithm.
  */
 public class PasswordHashManager {
     /**
-     * The hashing algorithm used to hash passwords
+     * The hashing algorithm employed for password hashing.
      */
     private static final String HASH_ALGORITHM = "SHA3-256";
     /**
-     * The MessageDigest object used to perform the hashing
+     * The MessageDigest object responsible for carrying out the hashing process.
      */
     private static final MessageDigest messageDigest;
 
-    // Static block used to initialize the MessageDigest object with the hashing
-    // algorithm
     static {
         try {
             messageDigest = MessageDigest.getInstance(HASH_ALGORITHM);
@@ -32,10 +30,10 @@ public class PasswordHashManager {
     }
 
     /**
-     * Hashes the specified password using the SHA3-256 algorithm.
+     * Hashes the provided password using the SHA3-256 algorithm.
      *
      * @param password the password to be hashed
-     * @return a byte array containing the hashed password
+     * @return a Base64-encoded string representing the hashed password
      */
     public static String hashPassword(@NotNull String password) {
         return Base64.getEncoder().encodeToString(messageDigest.digest(password.getBytes()));

@@ -3,11 +3,11 @@ package main.controller.account.user;
 import main.model.user.*;
 
 /**
- * A class that provides a utility for getting the domain of a user.
+ * This class gives us utility for getting the domain of a user.
  */
 public class UserDomainGetter {
     /**
-     * Gets the domain of the specified user.
+     * Gets the domain of the specific user.
      *
      * @param user the user whose domain is to be retrieved
      * @return the domain of the user

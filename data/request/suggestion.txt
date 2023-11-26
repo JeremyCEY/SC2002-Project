@@ -1,1 +1,2 @@
 registrationClosingnullcampIDC2descriptionnullcampStaffnullcampName0facultyNAstudentIDYCHERNrequestIDS1totalSlots-1locationnullcampCommSlots-1requestStatusPENDINGstaffIDnullcampDatesnull
+registrationClosingnullcampIDC4descriptionnullcampStaffnullcampName1facultyNAstudentIDYCHERNrequestIDS2totalSlots-1locationnullcampCommSlots-1requestStatusPENDINGstaffIDnullcampDatesnull
