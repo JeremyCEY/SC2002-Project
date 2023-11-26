@@ -30,7 +30,7 @@ public class main {
      */
     public static void main(String[] args) {
         // For testing the app from login
-        //UIEntry.start();
+        UIEntry.start();
  
         //AccountManager.loadUsers();
         //CampManager.loadcamps();
@@ -47,14 +47,14 @@ public class main {
         // }
 
         // Skip to staff page
-        try {
-            User user = AccountManager.login(UserType.STAFF, "HUKUMAR", "password");
-            StaffMainPage.staffMainPage(user);
-            return;
-        } catch (PasswordIncorrectException e) {
-            System.out.println("Password incorrect.");
-        } catch (ModelNotFoundException e) {
-            System.out.println("User not found.");
-        }
+        // try {
+        //     User user = AccountManager.login(UserType.STAFF, "HUKUMAR", "password");
+        //     StaffMainPage.staffMainPage(user);
+        //     return;
+        // } catch (PasswordIncorrectException e) {
+        //     System.out.println("Password incorrect.");
+        // } catch (ModelNotFoundException e) {
+        //     System.out.println("User not found.");
+        // }
     }
 }
