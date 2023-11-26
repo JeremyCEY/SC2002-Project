@@ -1,3 +1,7 @@
+/**
+ * The main.boundary.modelviewer package contains the ModelViewer class, which is responsible for
+ * displaying single or lists of objects that implement the Displayable interface.
+ */
 package main.boundary.modelviewer;
 
 import main.model.Displayable;
@@ -12,7 +16,7 @@ import java.util.*;
 public class ModelViewer {
     /**
      * Displays a single Displayable object.
-     * 
+     *
      * @param displayable The Displayable object to be displayed.
      */
     public static void displaySingleDisplayable(Displayable displayable) {
@@ -23,7 +27,7 @@ public class ModelViewer {
 
     /**
      * Displays a list of Displayable objects.
-     * 
+     *
      * @param displayableList The list of Displayable objects to be displayed.
      */
     public static void displayListOfDisplayable(List<? extends Displayable> displayableList) {
@@ -38,6 +42,11 @@ public class ModelViewer {
         }
     }
 
+    /**
+     * Displays a list of camps along with their types.
+     *
+     * @param campList A map containing Camp objects as keys and their corresponding types as values.
+     */
     public static void displayListOfCampsWithType(Map<Camp, String> campList) {
         if (Objects.isNull(campList) || campList.isEmpty()) {
             System.out.println("Nothing found");

@@ -1,3 +1,7 @@
+/**
+ * The main.boundary.welcome package contains the Welcome class, which provides a user interface (UI)
+ * for the user to enter the system, including options for login, forgetting UserID, and exiting the system.
+ */
 package main.boundary.welcome;
 
 import main.boundary.account.ForgetUserID;
@@ -8,11 +12,15 @@ import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
 
 /**
- * This class provides a UI for the user to enter the system.
+ * The Welcome class provides a UI for the user to enter the system.
+ * It displays a welcome page with options for login, forgetting UserID, and exiting the system.
  */
 public class Welcome {
     /**
-     * Displays a welcome page.
+     * Displays a welcome page, prompting the user to choose between login, forgetting UserID, or exiting the system.
+     * Continues to prompt the user until a valid choice is made.
+     *
+     * @throws PageBackException if the user chooses to go back to the previous page.
      */
     public static void welcome() {
         ChangePage.changePage();
@@ -46,3 +54,4 @@ public class Welcome {
         }
     }
 }
+

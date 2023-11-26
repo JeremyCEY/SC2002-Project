@@ -1,3 +1,8 @@
+/**
+ * The main.repository.camp package contains the CampRepository class, which is a repository
+ * that manages the persistence and retrieval of Camp objects through file I/O operations.
+ * It extends the Repository class, providing basic CRUD operations for the repository.
+ */
 package main.repository.camp;
 
 import main.model.camp.Camp;
@@ -9,11 +14,9 @@ import java.util.Map;
 import static main.utils.config.Location.RESOURCE_LOCATION;
 
 /**
- * The ProjectRepository class is a repository that manages the persistence and
- * retrieval of Project objects
- * through file I/O operations.
- * It extends the Repository class, which provides basic CRUD operations for the
- * repository.
+ * The CampRepository class is a repository that manages the persistence and retrieval of
+ * Camp objects through file I/O operations. It extends the Repository class, providing
+ * basic CRUD operations for the repository.
  */
 public class CampRepository extends Repository<Camp> {
 
@@ -23,8 +26,7 @@ public class CampRepository extends Repository<Camp> {
     private static final String FILE_PATH = "/data/camp/camp.txt";
 
     /**
-     * Constructs a new ProjectRepository object and loads the data from the project
-     * data file.
+     * Constructs a new CampRepository object and loads the data from the camp data file.
      */
     CampRepository() {
         super();
@@ -51,8 +53,7 @@ public class CampRepository extends Repository<Camp> {
     }
 
     /**
-     * Sets the list of mappable objects by converting a list of maps to a list of
-     * Project objects.
+     * Sets the list of mappable objects by converting a list of maps to a list of Camp objects.
      *
      * @param listOfMappableObjects the list of mappable objects
      */
@@ -63,3 +64,4 @@ public class CampRepository extends Repository<Camp> {
         }
     }
 }
+

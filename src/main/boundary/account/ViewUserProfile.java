@@ -1,3 +1,7 @@
+/**
+ * The main.boundary.account package contains classes responsible for providing user interfaces
+ * related to user account actions, including viewing user profiles.
+ */
 package main.boundary.account;
 
 import main.model.user.Student;
@@ -10,7 +14,7 @@ import main.utils.ui.UserTypeGetter;
 import java.util.Scanner;
 
 /**
- * This class provides a UI for the user to view his/her profile.
+ * The ViewUserProfile class provides a user interface (UI) for the user to view his/her profile.
  */
 public class ViewUserProfile {
     /**
@@ -19,10 +23,12 @@ public class ViewUserProfile {
      * @param user the user whose profile is to be displayed.
      */
     public static void viewUserProfile(User user) {
+        // Determine the user type for proper display
         String userType = UserTypeGetter.getUserTypeInCamelCase(user);
         int points = 0;
-        if ("Student".equals(userType)) { // I know this is a weird way to do string compare in java LMAOOOO // delete
-                                          // this later
+        
+        // Display profile information based on user type
+        if ("Student".equals(userType)) {
             String type = "x";
 
             if (user instanceof Student) {
@@ -51,6 +57,8 @@ public class ViewUserProfile {
             System.out.println(
                     "-----------------------------------------------------------------------------------------------------------------");
         }
+        
+        // Display staff profile information
         if ("Staff".equals(userType)) {
             System.out.println("Welcome to View " + userType + " Profile");
             System.out.println("----------------------------------------------------------------------");
@@ -69,11 +77,17 @@ public class ViewUserProfile {
      *                           page.
      */
     public static void viewUserProfilePage(User user) throws PageBackException {
+        // Change the page for a cleaner UI and display the user's profile
         ChangePage.changePage();
         viewUserProfile(user);
+        
+        // Prompt user to go back
         System.out.println("Press enter to go back.");
         Scanner scanner = new Scanner(System.in);
         scanner.nextLine();
+        
+        // Throw an exception to indicate the user wants to go back
         throw new PageBackException();
     }
 }
+

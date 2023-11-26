@@ -1,3 +1,11 @@
+/**
+ * The Repository abstract class provides the basic functionality for storing,
+ * retrieving, and managing a list of model objects.
+ * It implements the Savable interface and provides methods for adding,
+ * removing, updating, and finding model objects.
+ *
+ * @param <ModelObject> the type of model object stored in the repository
+ */
 package main.repository;
 
 import main.model.Model;
