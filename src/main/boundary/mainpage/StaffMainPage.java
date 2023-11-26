@@ -96,13 +96,13 @@ public class StaffMainPage {
                     case 0 -> Logout.logout();
                     case 1 -> ViewUserProfile.viewUserProfilePage(staff);
                     case 2 -> ChangeAccountPassword.changePassword(UserType.STAFF, user.getID());
-                    case 3 -> CampViewer.viewAllCamps();
+                    case 3 -> CampViewer.selectCampTypeAndDisplay(staff);
                     case 4 -> StaffManager.createCamp(user);
                     case 5 -> StaffManager.editExistingCamp(user);
                     case 6 -> StaffManager.deleteExistingCamp(user);
                     case 7 -> StaffManager.viewAndReplyPendingEnquiries(user);
-                    case 8 -> StaffManager.viewAndHandlePendingSuggestions(user);// to implement
-                    case 9 -> StaffManager.generateReports(user);// to implement
+                    case 8 -> StaffManager.viewAndHandlePendingSuggestions(user);
+                    case 9 -> StaffManager.generateReports(user);
                     case 10 -> Logout.logout();
                     default -> {
                         System.out.println("Invalid choice. Please press <enter> to try again.");
