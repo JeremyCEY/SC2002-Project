@@ -1,3 +1,9 @@
+/**
+ * This class represents the main page of a student in the system or application.
+ * It provides various methods for displaying functionalities such as viewing the user profile,
+ * changing the password, viewing and registering for camps, managing inquiries and suggestions,
+ * and logging out. The class handles user input and directs the flow based on the selected option.
+ */
 package main.boundary.mainpage;
 
 import main.boundary.account.ChangeAccountPassword;

@@ -1,3 +1,10 @@
+/**
+ * This package contains classes that represent user interfaces for various main pages
+ * within the application. These classes provide functionality for different user roles,
+ * such as students, staff, or coordinators, to interact with the system and perform
+ * relevant actions. Each class is designed to present a clear and organized user interface,
+ * facilitating user navigation and interaction.
+ */
 package main.boundary.mainpage;
 
 import main.boundary.account.ChangeAccountPassword;
@@ -31,6 +38,8 @@ import main.utils.config.Location;
 import main.utils.iocontrol.IntGetter;
 import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
+import main.controller.request.RequestManager;
+import main.controller.request.StudentManager;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
