@@ -1,3 +1,7 @@
+/**
+ * The main.boundary.account package contains classes responsible for handling user account-related interactions,
+ * including features such as changing passwords.
+ */
 package main.boundary.account;
 
 import main.controller.account.AccountManager;
@@ -12,9 +16,8 @@ import main.utils.ui.UserTypeGetter;
 import java.util.Scanner;
 
 /**
- * This class is responsible for handling the change password feature for a
- * given user account. It contains
- * two methods, {@code changePassword} and {@code askToRetry}, that are used for
+ * The ChangeAccountPassword class is responsible for handling the change password feature for a
+ * given user account. It contains two methods, {@code changePassword} and {@code askToRetry}, that are used for
  * this purpose.
  */
 public class ChangeAccountPassword {

@@ -1,3 +1,15 @@
+/*
+ * @Author: tyt1130 tangyutong0306@gmail.com
+ * @Date: 2023-11-09 11:03:36
+ * @LastEditors: tyt1130 tangyutong0306@gmail.com
+ * @LastEditTime: 2023-11-26 13:22:48
+ * @FilePath: \SC2002-Project\src\main\boundary\account\ViewUserProfile.java
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+/**
+ * The main.boundary.account package contains classes responsible for providing user interfaces
+ * related to user account actions, including viewing user profiles.
+ */
 package main.boundary.account;
 
 import main.model.user.Student;
@@ -10,7 +22,7 @@ import main.utils.ui.UserTypeGetter;
 import java.util.Scanner;
 
 /**
- * This class provides a UI for the user to view his/her profile.
+ * The ViewUserProfile class provides a user interface (UI) for the user to view his/her profile.
  */
 public class ViewUserProfile {
     /**
@@ -19,10 +31,12 @@ public class ViewUserProfile {
      * @param user the user whose profile is to be displayed.
      */
     public static void viewUserProfile(User user) {
+        // Determine the user type for proper display
         String userType = UserTypeGetter.getUserTypeInCamelCase(user);
         int points = 0;
-        if ("Student".equals(userType)) { // I know this is a weird way to do string compare in java LMAOOOO // delete
-                                          // this later
+        
+        // Display profile information based on user type
+        if ("Student".equals(userType)) {
             String type = "x";
 
             if (user instanceof Student) {
@@ -51,6 +65,8 @@ public class ViewUserProfile {
             System.out.println(
                     "-----------------------------------------------------------------------------------------------------------------");
         }
+        
+        // Display staff profile information
         if ("Staff".equals(userType)) {
             System.out.println("Welcome to View " + userType + " Profile");
             System.out.println("----------------------------------------------------------------------");
@@ -69,11 +85,16 @@ public class ViewUserProfile {
      *                           page.
      */
     public static void viewUserProfilePage(User user) throws PageBackException {
+        // Change the page for a cleaner UI and display the user's profile
         ChangePage.changePage();
         viewUserProfile(user);
+        
+        // Prompt user to go back
         System.out.println("Press enter to go back.");
         Scanner scanner = new Scanner(System.in);
         scanner.nextLine();
+        
+        // Throw an exception to indicate the user wants to go back
         throw new PageBackException();
     }
 }
