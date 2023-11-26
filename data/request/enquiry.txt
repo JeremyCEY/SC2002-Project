@@ -1,3 +1,0 @@
-senderIDYCHERNcampIDC5requestIDE2messagedfshgreplynullrequestStatusPENDINGreplierIDnull
-senderIDYCHERNcampIDC6requestIDE3message23450345678replynullrequestStatusPENDINGreplierIDnull
-senderIDKOH1campIDC5requestIDE4messageaesdfghjkl23reply1234567890requestStatusREPLIEDreplierIDYCHERN
