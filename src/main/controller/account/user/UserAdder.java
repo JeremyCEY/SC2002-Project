@@ -8,14 +8,14 @@ import main.repository.user.StudentRepository;
 import main.utils.exception.ModelAlreadyExistsException;
 
 /**
- * The UserAdder class provides a utility for adding users to the database.
+ * The UserAdder class allows us to add users to the database.
  */
 public class UserAdder {
     /**
-     * Adds the specified user to the database.
+     * Adds the specific user to the database.
      *
      * @param user the user to be added
-     * @throws ModelAlreadyExistsException if the user already exists in the
+     * @throws ModelAlreadyExistsException if user already exists in the
      *                                     database
      */
     public static void addUser(User user) throws ModelAlreadyExistsException {
@@ -27,10 +27,10 @@ public class UserAdder {
     }
 
     /**
-     * Adds the specified coordinator to the database.
+     * Adds the specific staff to the database.
      *
-     * @param coordinator the coordinator to be added
-     * @throws ModelAlreadyExistsException if the coordinator already exists in the
+     * @param staff the staff to be added
+     * @throws ModelAlreadyExistsException if staff already exists in the
      *                                     database
      */
     private static void addStaff(Staff staff) throws ModelAlreadyExistsException {
@@ -38,10 +38,10 @@ public class UserAdder {
     }
 
     /**
-     * Adds the specified student to the database.
+     * Adds the specific student to the database.
      *
      * @param student the student to be added
-     * @throws ModelAlreadyExistsException if the student already exists in the
+     * @throws ModelAlreadyExistsException if student already exists in the
      *                                     database
      */
     private static void addStudent(Student student) throws ModelAlreadyExistsException {

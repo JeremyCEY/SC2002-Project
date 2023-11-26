@@ -1,3 +1,9 @@
+/**
+ * The main.model.user package contains classes related to user information,
+ * including various user types like Staff, Student, and enums such as Faculty.
+ * Users are entities with unique IDs, names, and associated information.
+ * The package provides models for handling user data and related functionalities.
+ */
 package main.model.user;
 
 import main.utils.parameters.EmptyID;
@@ -6,8 +12,10 @@ import main.utils.parameters.NotNull;
 import java.util.Map;
 
 /**
- * This class represents a staff, which is a type of user.
- * It extends the User class and includes a staff ID field.
+ * The Staff class represents a staff member within the system. It extends the User
+ * class, inheriting basic user attributes, and includes additional fields such as
+ * staff ID and faculty affiliation. Staff members are users with administrative roles.
+ * This class provides constructors, getters, and setters for managing staff information.
  */
 public class Staff implements User {
     /**

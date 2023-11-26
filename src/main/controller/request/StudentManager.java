@@ -1,6 +1,3 @@
-/*
- * @Description: this package shows how to manage students' registration for camp and commitee
- */
 package main.controller.request;
 
 import main.boundary.modelviewer.ModelViewer;
@@ -44,7 +41,7 @@ import java.util.stream.Collectors;
 import static main.utils.config.Location.RESOURCE_LOCATION;
 
 /**
- * StudentManager class
+ * Manages operations related to student registrations and withdrawals from camps.
  */
 public class StudentManager {
     /**
@@ -59,23 +56,13 @@ public class StudentManager {
     }
 
     /**
-     * This private method is called when the student wants to register for a
-     * project. It prompts the student to enter the project ID, sends a request to
-     * register for the project, and displays a success message. If an error occurs,
-     * the student is given the option to go back or retry.
+     * Initiates the process for a student to register as an attendee for a camp.
      *
      * @param student the student.
      * @throws PageBackException if the user wants to go back.
      */
     public static void registerCampAttendee(Student student) throws PageBackException {
         ChangePage.changePage();
-        // if (student.getStatus() == StudentStatus.REGISTERED || student.getStatus() ==
-        // StudentStatus.DEREGISTERED) {
-        // System.out.println("You are already registered/deregistered for a project.");
-        // System.out.println("Press Enter to go back.");
-        // new Scanner(System.in).nextLine();
-        // throw new PageBackException();
-        // }
         System.out.println("Here is the list of available camps: ");
         ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());
         System.out.print("Please enter the camp ID: ");
@@ -93,7 +80,6 @@ public class StudentManager {
         Camp camp;
         try {
             camp = CampManager.getByID(campID);
-            // Check if previously registered
             if (student.getPCamps().contains(campID)) {
                 System.out
                         .println("You are not allowed to register from this camp that you withdrawn from previously.");
@@ -104,8 +90,6 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            // Check if already camp comm for this camp might be able to remove based on how
-            // we display avail camps
             else if (student.getCCamps().equalsIgnoreCase(campID)) {
                 System.out.println("You are already a camp committee for this camp.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -115,8 +99,6 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            // Check if already camp comm for this camp might be able to remove based on how
-            // we display avail camps
             else if (student.getACamps().equalsIgnoreCase(campID)) {
                 System.out.println("You are already an attendee for this camp.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -126,8 +108,6 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            // Check if no camps registered previously + clash?
-            // Check clash of camp dates
             else if (checkClash(student, camp)) {
                 System.out.println("This camp's dates clashes with your other registered camps.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -137,7 +117,6 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            // Check deadline
             else if (Integer.parseInt(CurrentDate.DATE) >= Integer.parseInt(camp.getRegistrationClosingDate())) {
                 System.out.println("Camp Registration Closed.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -147,7 +126,6 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            // Attendee slots maxed
             else if (camp.getFilledSlots() >= camp.getTotalSlots()) {
                 System.out.println("Attendee Slots maxed.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -157,10 +135,9 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            // Check faculty
-            else if (!(camp.getOpenTo().toString().equals("NTU")) // check if it's open to everyone "NTU"
-                    && !(camp.getOpenTo().toString().equals(student.getFaculty().toString()))) // check if it's your
-                                                                                               // faculty
+            else if (!(camp.getOpenTo().toString().equals("NTU"))
+                    && !(camp.getOpenTo().toString().equals(student.getFaculty().toString())))
+                                                                                               
             {
                 System.out.println("You don't match the faculty.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -178,7 +155,6 @@ public class StudentManager {
         String choice = new Scanner(System.in).nextLine();
         if (choice.equalsIgnoreCase("y")) {
             try {
-                // StudentManager.registerStudent(campID, student.getID());
                 CampManager.registerCampAttendee(campID, student.getID());
                 System.out.println("Registered for Camp!");
             } catch (Exception e) {
@@ -200,8 +176,15 @@ public class StudentManager {
         throw new PageBackException();
     }
 
+    /**
+     * Checks for date clashes between the dates of the camp the student wants to register
+     * for and the dates of their existing registered camps.
+     *
+     * @param student the student.
+     * @param camp the camp the student wants to register for.
+     * @return true if there is a date clash, false otherwise.
+     */
     public static boolean checkClash(Student student, Camp camp) {
-        // no camps registered initially so confirm no clashes
         if (student.getACamps().equals("null") && student.getCCamps().equals("null")) {
             return false;
         }
@@ -217,50 +200,45 @@ public class StudentManager {
             campIds.add(student.getCCamps());
         }
 
-        // have camps registered initially
-
         for (String campId : campIds) {
             try {
                 Camp registeredCamp = CampRepository.getInstance().getByID(campId);
 
-                // Check for date clash
                 if (hasDateClash(registeredCamp.getDates(), camp.getDates())) {
                     return true; // Clash detected
                 }
             } catch (ModelNotFoundException e) {
-                // Handle the case where the camp is not found
                 e.printStackTrace();
             }
         }
 
-        // No clashes found
         return false;
     }
 
+    /**
+     * Checks for date clashes between two date ranges.
+     *
+     * @param dates1 the first date range.
+     * @param dates2 the second date range.
+     * @return true if there is a date clash, false otherwise.
+     */
     public static boolean hasDateClash(String dates1, String dates2) {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-
-            // Parse dates from strings
             Date startDate1 = dateFormat.parse(dates1.split("-")[0]);
             Date endDate1 = dateFormat.parse(dates1.split("-")[1]);
             Date startDate2 = dateFormat.parse(dates2.split("-")[0]);
             Date endDate2 = dateFormat.parse(dates2.split("-")[1]);
 
-            // Check for date clash
             return !(endDate1.before(startDate2) || startDate1.after(endDate2));
         } catch (ParseException e) {
-            // Handle parsing exception
             e.printStackTrace();
-            return false; // Assuming a clash if there's an exception
+            return false;
         }
     }
 
     /**
-     * This private method is called when the student wants to deregister from a
-     * camp. It prompts the student to enter the project ID, sends a request to
-     * deregister from the project, and displays a success message. If an error
-     * occurs, the student is given the option to go back or retry.
+     * Initiates the process for a student to withdraw from being an attendee for a camp.
      *
      * @param student the student.
      * @throws PageBackException if the user wants to go back.
@@ -306,7 +284,6 @@ public class StudentManager {
             }
         }
 
-        // check whether student is registered to camp
         String ACamps = student.getACamps();
         if (!ACamps.toLowerCase().contains(campID.toLowerCase())) {
             System.out.println("Camp ID is invalid");
@@ -341,6 +318,12 @@ public class StudentManager {
         throw new PageBackException();
     }
 
+    /**
+     * Initiates the process for a student to register as a camp committee member.
+     *
+     * @param student the student.
+     * @throws PageBackException if the user wants to go back.
+     */
     public static void registerCampCommittee(Student student) throws PageBackException {
         ChangePage.changePage();
         if (!student.getCCamps().equals("null")) {
@@ -367,7 +350,6 @@ public class StudentManager {
         Camp camp;
         try {
             camp = CampManager.getByID(campID);
-            // Check if previously registered
             if (student.getPCamps().contains(campID)) {
                 System.out
                         .println("You are not allowed to register from this camp that you withdrawn from previously.");
@@ -378,8 +360,6 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            // Check if already attendee for this camp might be able to remove based on how
-            // we display avail camps
             if (student.getACamps().contains(campID)) {
                 System.out.println("You are already an attendee for this camp.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -389,8 +369,6 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            // Check if no camps registered previously + clash?
-            // Check deadline
             if (checkClash(student, camp)) {
                 System.out.println("This camp's dates clashes with your other registered camps.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -400,7 +378,6 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            // Check deadline
             else if (Integer.parseInt(CurrentDate.DATE) >= Integer.parseInt(camp.getRegistrationClosingDate())) {
                 System.out.println("Camp Registration Closed.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -410,7 +387,6 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            // Attendee slots maxed
             else if (camp.getFilledCampCommSlots() >= camp.getCampCommSlots()) {
                 System.out.println("Camp Committee Slots maxed.");
                 System.out.println("Press Enter to go back, or enter [r] to retry.");
@@ -420,7 +396,6 @@ public class StudentManager {
                 }
                 throw new PageBackException();
             }
-            // Check faculty
             else if (!(camp.getOpenTo().toString().equals("NTU")) // check if it's open to everyone "NTU"
                     && !(camp.getOpenTo().toString().equals(student.getFaculty().toString()))) // check if it's your
                                                                                                // faculty
@@ -450,7 +425,6 @@ public class StudentManager {
         String choice = new Scanner(System.in).nextLine();
         if (choice.equalsIgnoreCase("y")) {
             try {
-                // StudentManager.registerStudent(campID, student.getID());
                 CampManager.registerCampCommittee(campID, student.getID());
                 System.out.println("Registered for Camp!");
             } catch (Exception e) {
@@ -472,6 +446,12 @@ public class StudentManager {
         throw new PageBackException();
     }
 
+    /**
+     * Initiates the process for a student to submit an enquiry for a camp.
+     *
+     * @param student the student.
+     * @throws PageBackException if the user wants to go back.
+     */
     public static void submitEnquiry(Student student) throws PageBackException {
         ChangePage.changePage();
         System.out.println("Here is the list of available camps: ");
@@ -519,13 +499,19 @@ public class StudentManager {
         throw new PageBackException();
     }
 
+    /**
+    * Displays the list of enquiries made by the student and provides options to edit, delete, or exit.
+    *
+    * @param student the student.
+    * @throws PageBackException if the user wants to go back.
+    * @throws ModelNotFoundException if the model is not found.
+    */
     public static void viewEnquiry(Student student) throws PageBackException, ModelNotFoundException {
         ChangePage.changePage();
         System.out.println("Here is the list of Enquiries you made");
         ModelViewer.displayListOfDisplayable((RequestManager.viewEnquiryBySender(student.getID())));// change to by user
         System.out.println();
 
-        // if empty dont print below
         System.out.println("1. Edit Enquiry");
         System.out.println("2. Delete Enquiry");
         System.out.println("3. Exit");
@@ -537,14 +523,10 @@ public class StudentManager {
             while (true) {
                     System.out.println("Please enter your choice:");
                     try {
-                        // Try to read an integer from the user input
                         choice= new Scanner(System.in).nextInt();
-                        // Process the integer input
                         System.out.println("You entered: " + choice);
-                        // Break out of the loop if a valid integer is entered
                         break;
                     } catch (InputMismatchException e) {
-                        // Handle the case where the input is not an integer
                          System.out.println("Invalid input. Please enter a valid integer.");
                     }
             }
@@ -567,6 +549,13 @@ public class StudentManager {
         } while (!isValidChoice);
     }
 
+    /**
+    * Allows the student to edit an existing enquiry.
+    *
+    * @param student the student.
+    * @throws PageBackException if the user wants to go back.
+    * @throws ModelNotFoundException if the model is not found.
+    */
     private static void editEnquiry(Student student) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter ID of Enquiry to edit");
@@ -601,6 +590,13 @@ public class StudentManager {
         throw new PageBackException();
     }
 
+    /**
+    * Allows the student to delete an existing enquiry.
+    *
+    * @param student the student.
+    * @throws PageBackException if the user wants to go back.
+    * @throws ModelNotFoundException if the model is not found.
+    */
     private static void deleteEnquiry(Student student) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter ID of Enquiry to delete");
@@ -640,7 +636,14 @@ public class StudentManager {
         sc.nextLine();
         throw new PageBackException();
     }
-
+    
+    /**
+    * Allows the student to submit a suggestion if they are a camp committee member.
+    *
+    * @param student the student.
+    * @throws PageBackException if the user wants to go back.
+    * @throws ModelNotFoundException if the model is not found.
+    */
     public static void submitSuggestion(Student student) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         if (student.getCCamps().equals("null")) {
@@ -651,7 +654,7 @@ public class StudentManager {
             throw new PageBackException();
         } else {
             System.out.println("Here is the list of available camps: ");
-            ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());// based on camp committee
+            ModelViewer.displayListOfDisplayable(CampManager.getAllVisibleCamps());
 
             String studentID = student.getID();
             String campID;
@@ -688,7 +691,15 @@ public class StudentManager {
             editSuggestion(s, student);
         }
     }
-
+    
+    /**
+    * Allows the student to edit an existing suggestion.
+    *
+    * @param s       the suggestion to edit.
+    * @param student the student.
+    * @throws PageBackException      if the user wants to go back.
+    * @throws ModelNotFoundException if the model is not found.
+    */
     private static void editSuggestion(Suggestion s, Student student) throws PageBackException, ModelNotFoundException {
         Scanner scanner = new Scanner(System.in);
         ChangePage.changePage();
@@ -729,15 +740,11 @@ public class StudentManager {
                 while (true) {
                     System.out.println("Enter a camp attendee Slots:");
                     try {
-                        // Try to read an integer from the user input
                         suggest= new Scanner(System.in).nextInt();
-                        // Process the integer input
                         System.out.println("You entered: " + suggest);
-                        // Break out of the loop if a valid integer is entered
                         break;
                     } catch (InputMismatchException e) {
-                        // Handle the case where the input is not an integer
-                         System.out.println("Invalid input. Please enter a valid integer.");
+                        System.out.println("Invalid input. Please enter a valid integer.");
                     }
                 }
                 suggt="default"; 
@@ -750,7 +757,6 @@ public class StudentManager {
                         "    NBS,\r\n" + //
                         "    SCSE,\r\n" + //
                         "    SSS");
-                // String faculty=scanner.nextLine();
                 int included = 0;
                 do {
                     suggt = scanner.nextLine();
@@ -774,13 +780,9 @@ public class StudentManager {
                                 "    SSS");
                     }
                 } while (included == 0);
-
-                // suggt="default";
-            } else {// (choice==0 || choice==1 || choice==2 || choice==3 || choice==5 || choice==8
-                    // || choice==9){
+            } else {
                 suggt = scanner.nextLine();
             }
-            // System.out.println("Suggest is: "+suggest);
             if ((Integer.toString(suggest) == "") || (suggt == "")) {
                 System.out.println("You have not entered any new value, please reenter!");
             }
@@ -812,7 +814,14 @@ public class StudentManager {
         new Scanner(System.in).nextLine();
         throw new PageBackException();
     }
-
+    
+    /**
+    * Displays the list of suggestions made by the student and provides options to edit, delete, or exit.
+    *
+    * @param student the student.
+    * @throws PageBackException      if the user wants to go back.
+    * @throws ModelNotFoundException if the model is not found.
+    */
     public static void viewSuggestion(Student student) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         if (student.getCCamps().equals("null")) {
@@ -869,6 +878,13 @@ public class StudentManager {
         }
     }
 
+    /**
+    * Deletes a suggestion based on the student's choice.
+    *
+    * @param student the student.
+    * @throws PageBackException      if the user wants to go back.
+    * @throws ModelNotFoundException if the model is not found.
+    */    
     private static void deleteSuggestion(Student student) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter ID of Suggestion to delete");
@@ -909,6 +925,13 @@ public class StudentManager {
         throw new PageBackException();
     }
 
+    /**
+    * Displays pending enquiries for a camp committee member to reply to.
+    *
+    * @param student the student.
+    * @throws PageBackException      if the user wants to go back.
+    * @throws ModelNotFoundException if the model is not found.
+    */
     public static void commViewPendingEnquiries(Student student) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         if (student.getCCamps().equals("null")) {
@@ -986,6 +1009,13 @@ public class StudentManager {
         }
     }
 
+    /**
+    * Generates a report for a specific camp based on the student's choice.
+    *
+    * @param student the student.
+    * @throws PageBackException      if the user wants to go back.
+    * @throws ModelNotFoundException if the model is not found.
+    */
     public static void generateCampList(Student student) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         if (student.getCCamps().equals("null")) {
@@ -1043,12 +1073,10 @@ public class StudentManager {
             List<Student> campCommMembers = getAllCampCommByCamp(camp);
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-                // Writing headers to the CSV file
                 writer.write("Camp Name,Camp Dates,Registration Deadline,Open To,Location,"
                         + "Current Attendee Slots,Total Attendee Slots,Current Camp Comm Slots,Total Camp Comm Slots,Description");
                 writer.newLine();
 
-                // Writing camp details to the CSV file
                 writer.write(String.format("%s,%s,%s,%s,%s,%d,%d,%d,%d,%s",
                         campName, campDates, campRegistrationDeadline, openTo.toString(), location,
                         currentAttendeeSlots, totalAttendeeSlots, currentCampCommSlots, totalCampCommSlots,
@@ -1056,44 +1084,39 @@ public class StudentManager {
                 writer.newLine();
 
                 if (specificCampReportChoice == 1) {
-                    // Writing list of attendees to the CSV file
                     writer.write("List of Attendees");
                     writer.newLine();
                     for (Student attendee : attendees) {
-                        writer.write(attendee.getUserName()); // Include any relevant attendee information
+                        writer.write(attendee.getUserName());
                         writer.newLine();
                     }
 
-                    // Writing list of camp committee members to the CSV file
                     writer.write("List of Camp Committee Members");
                     writer.newLine();
                     for (Student campCommMember : campCommMembers) {
-                        writer.write(campCommMember.getUserName()); // Include any relevant camp committee member
-                                                                    // information
+                        writer.write(campCommMember.getUserName());                         
                         writer.newLine();
                     }
                 } else if (specificCampReportChoice == 2) {
-                    // Writing list of attendees to the CSV file
                     writer.write("List of Attendees");
                     writer.newLine();
                     for (Student attendee : attendees) {
-                        writer.write(attendee.getUserName()); // Include any relevant attendee information
+                        writer.write(attendee.getUserName());
                         writer.newLine();
                     }
                 } else if (specificCampReportChoice == 3) {
-                    // Writing list of camp committee members to the CSV file
                     writer.write("List of Camp Committee Members");
                     writer.newLine();
                     for (Student campCommMember : campCommMembers) {
-                        writer.write(campCommMember.getUserName()); // Include any relevant camp committee member
-                                                                    // information
+                        writer.write(campCommMember.getUserName());
+                                                                
                         writer.newLine();
                     }
                 }
 
                 System.out.printf("Camp Report for %s generated successfully and saved at %s.\n", campName, FILE_PATH);
             } catch (IOException e) {
-                e.printStackTrace(); // Handle the exception appropriately
+                e.printStackTrace();
             }
 
             System.out.println("Press enter to go back.");
@@ -1102,6 +1125,12 @@ public class StudentManager {
         }
     }
 
+    /**
+    * Retrieves a list of all attendees for a specific camp.
+    *
+    * @param camp the camp.
+    * @return a list of attendees.
+    */
     public static List<Student> getAllAttendeesByCamp(Camp camp) {
         return StudentRepository.getInstance().findByRules(
                 s -> s.getACamps().toLowerCase().contains(camp.getID().toLowerCase()))
@@ -1110,6 +1139,12 @@ public class StudentManager {
                 .collect(Collectors.toList());
     }
 
+    /**
+    * Retrieves a list of all camp committee members for a specific camp.
+    *
+    * @param camp the camp.
+    * @return a list of camp committee members.
+    */
     public static List<Student> getAllCampCommByCamp(Camp camp) {
         return StudentRepository.getInstance().findByRules(
                 s -> s.getCCamps().toLowerCase().contains(camp.getID().toLowerCase()))

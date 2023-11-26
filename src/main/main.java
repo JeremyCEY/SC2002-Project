@@ -48,8 +48,8 @@ public class main {
 
         // Skip to staff page
         // try {
-        //     User user = AccountManager.login(UserType.STUDENT, "YCHERN", "password");
-        //     StudentMainPage.studentMainPage(user);
+        //     User user = AccountManager.login(UserType.STAFF, "HUKUMAR", "password");
+        //     StaffMainPage.staffMainPage(user);
         //     return;
         // } catch (PasswordIncorrectException e) {
         //     System.out.println("Password incorrect.");

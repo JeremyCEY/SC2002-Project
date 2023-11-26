@@ -1,3 +1,10 @@
+/**
+ * This package contains classes that represent user interfaces for various main pages
+ * within the application. These classes provide functionality for different user roles,
+ * such as students, staff, or coordinators, to interact with the system and perform
+ * relevant actions. Each class is designed to present a clear and organized user interface,
+ * facilitating user navigation and interaction.
+ */
 package main.boundary.mainpage;
 
 import main.boundary.account.ChangeAccountPassword;
@@ -31,6 +38,8 @@ import main.utils.config.Location;
 import main.utils.iocontrol.IntGetter;
 import main.utils.ui.BoundaryStrings;
 import main.utils.ui.ChangePage;
+import main.controller.request.RequestManager;
+import main.controller.request.StudentManager;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -87,13 +96,13 @@ public class StaffMainPage {
                     case 0 -> Logout.logout();
                     case 1 -> ViewUserProfile.viewUserProfilePage(staff);
                     case 2 -> ChangeAccountPassword.changePassword(UserType.STAFF, user.getID());
-                    case 3 -> CampViewer.viewAllCamps();
+                    case 3 -> CampViewer.selectCampTypeAndDisplay(staff);
                     case 4 -> StaffManager.createCamp(user);
                     case 5 -> StaffManager.editExistingCamp(user);
                     case 6 -> StaffManager.deleteExistingCamp(user);
                     case 7 -> StaffManager.viewAndReplyPendingEnquiries(user);
-                    case 8 -> StaffManager.viewAndHandlePendingSuggestions(user);// to implement
-                    case 9 -> StaffManager.generateReports(user);// to implement
+                    case 8 -> StaffManager.viewAndHandlePendingSuggestions(user);
+                    case 9 -> StaffManager.generateReports(user);
                     case 10 -> Logout.logout();
                     default -> {
                         System.out.println("Invalid choice. Please press <enter> to try again.");

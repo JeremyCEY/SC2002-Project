@@ -1,3 +1,9 @@
+/**
+ * The main.model.request package contains classes representing various request types
+ * made within the application, such as inquiries and suggestions. These classes
+ * implement the Request interface and provide methods to manage and retrieve
+ * information related to the respective request types.
+ */
 package main.model.request;
 
 import java.util.List;
@@ -10,6 +16,11 @@ import main.repository.request.EnquiryRepository;
 import main.repository.user.StudentRepository;
 import main.utils.parameters.EmptyID;
 
+/**
+ * The Enquiry class represents an inquiry request made by a student regarding a camp.
+ * It implements the Request interface, providing methods to manage and retrieve information
+ * about the inquiry request.
+ */
 public class Enquiry implements Request {
 	private String requestID;
 	private RequestStatus requestStatus = RequestStatus.PENDING;
@@ -19,7 +30,14 @@ public class Enquiry implements Request {
 	private String message;
 	private String reply;
 
-	// Constructor
+    /**
+     * Constructor for creating an Enquiry object.
+     *
+     * @param requestID The unique identifier for the inquiry request.
+     * @param campID The identifier of the camp related to the inquiry.
+     * @param senderID The student ID of the sender making the inquiry.
+     * @param message The message content of the inquiry.
+     */
 	public Enquiry(String requestID, String campID, String senderID, String message) {
 
 		this.requestID = requestID;
@@ -30,6 +48,11 @@ public class Enquiry implements Request {
 		this.reply = EmptyID.EMPTY_ID;
 	}
 
+    /**
+     * Constructor for creating an Enquiry object from a map of attributes.
+     *
+     * @param map A map containing attribute-value pairs for initializing the Enquiry object.
+     */
 	public Enquiry(Map<String, String> map) {
 		fromMap(map);
 	}
@@ -91,6 +114,14 @@ public class Enquiry implements Request {
 		this.requestStatus = status;
 	}
 
+
+    // Getter and Setter methods...
+
+    /**
+     * Gets a displayable string representing the details of the inquiry request.
+     *
+     * @return A formatted string containing key information about the inquiry request.
+     */
 	public String getDisplayableString() {
 		String status = null;
 		if (getRequestStatus() == RequestStatus.PENDING)
@@ -111,6 +142,13 @@ public class Enquiry implements Request {
 	}
 
 	// method for show
+	/**
+     * Gets a displayable string representing the details of the inquiry request
+     * with a specific type.
+     *
+     * @param type The type of display to include (e.g., "show").
+     * @return A formatted string containing key information about the inquiry request.
+     */
 	public String getDisplayableStringWithType(String type) {
 		String status = null;
 		if (getRequestStatus() == RequestStatus.PENDING)

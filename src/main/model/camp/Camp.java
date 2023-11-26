@@ -1,3 +1,10 @@
+/**
+ * The main.model.camp package contains classes representing camps in the Camp Management System.
+ * These classes include the Camp class, which encapsulates the attributes and behavior
+ * of a camp, and related classes implementing interfaces for display and model behavior.
+ * The package provides a structured representation of camp-related data and functionality
+ * within the larger system.
+ */
 package main.model.camp;
 
 import main.model.Displayable;
@@ -6,6 +13,10 @@ import main.model.user.Faculty;
 
 import java.util.Map;
 
+/**
+ * The Camp class represents a camp object with various attributes.
+ * It implements the Model and Displayable interfaces.
+ */
 public class Camp implements Model, Displayable {
 
 	private String campID;
@@ -22,6 +33,23 @@ public class Camp implements Model, Displayable {
 	private String staffID;
 	private String visibility;
 
+    /**
+     * Constructs a Camp object with the given attributes.
+     *
+     * @param campID                  The unique identifier for the camp.
+     * @param campName                The name of the camp.
+     * @param dates                   The dates of the camp in the format "DD-MM-YY,DD-MM-YY".
+     * @param registrationClosingDate The closing date for camp registration.
+     * @param openTo                  The faculty to which the camp is open.
+     * @param location                The location of the camp.
+     * @param filledSlots             The number of attendees that have joined the camp.
+     * @param totalSlots              The total number of attendees that can join the camp.
+     * @param filledCampCommSlots     The number of committee members that have joined the camp.
+     * @param campCommSlots           The total committee slots, defaulting to 10.
+     * @param description             The description of the camp.
+     * @param staffID                 The staff ID associated with the camp.
+     * @param visibility              The visibility status of the camp.
+     */
 	public Camp(String campID, String campName, String dates, String registrationClosingDate,
 		Faculty openTo, String location, int filledSlots, int totalSlots, int filledCampCommSlots, int campCommSlots, String description, String staffID, String visibility) {
 		this.campID = campID;
@@ -39,6 +67,11 @@ public class Camp implements Model, Displayable {
 		this.visibility = visibility;
 	}
 
+    /**
+     * Constructs a Camp object from a map of attributes.
+     *
+     * @param map The map containing camp attributes.
+     */
 	public Camp(Map<String, String> map){
 		fromMap(map);
 	}
@@ -269,16 +302,35 @@ public class Camp implements Model, Displayable {
     }
 
 
+    // Getters and setters for various attributes...
+
+
+    /**
+     * Gets a string representation of the camp for display.
+     *
+     * @return The displayable string of the camp.
+     */
 	@Override
     public String getDisplayableString() {
         return getSingleCampString();
     }
 
+    /**
+     * Gets the splitter string used to separate camp displays.
+     *
+     * @return The splitter string.
+     */
     @Override
     public String getSplitter() {
         return "================================================================";
     }
 
+    /**
+     * Gets a string representation of the camp with its type for display.
+     *
+     * @param type The type of the camp.
+     * @return The displayable string of the camp with type information.
+     */
 	public String getDisplayableStringWithType(String type) {
 		return getSingleCampStringWithType(type);
 	}
