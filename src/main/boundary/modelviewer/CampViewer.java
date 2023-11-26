@@ -27,11 +27,11 @@ import java.util.Comparator;
  */
 public class CampViewer {
 
-    // /**
-    // * Displays the project details.
-    // * @param student the student to display the project details for
-    // * @throws PageBackException if the user wants to go back
-    // */
+   /**
+    * Displays the project details.
+    * @param student the student to display the project details for
+    * @throws PageBackException if the user wants to go back
+    */
     public static void viewVisibleCampList() throws PageBackException {
         ChangePage.changePage();
 

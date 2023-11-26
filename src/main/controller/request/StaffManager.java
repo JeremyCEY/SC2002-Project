@@ -1,3 +1,11 @@
+/*
+ * @Author: tyt1130 tangyutong0306@gmail.com
+ * @Date: 2023-11-08 19:38:58
+ * @LastEditors: tyt1130 tangyutong0306@gmail.com
+ * @LastEditTime: 2023-11-26 11:31:14
+ * @FilePath: \SC2002-Project\src\main\controller\request\StaffManager.java
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 package main.controller.request;
 
 import java.io.BufferedWriter;
@@ -34,6 +42,11 @@ import static main.utils.config.Location.RESOURCE_LOCATION;
 
 public class StaffManager {
 
+ /**
+  * @description: Staff creates the camp for students
+  * @param {User} user
+  * @return {*}
+  */
 	public static void createCamp(User user) throws PageBackException {
         ChangePage.changePage();
         System.out.println(BoundaryStrings.separator);

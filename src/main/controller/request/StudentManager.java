@@ -1,3 +1,6 @@
+/*
+ * @Description: this package shows how to manage students' registration for camp and commitee
+ */
 package main.controller.request;
 
 import main.boundary.modelviewer.ModelViewer;

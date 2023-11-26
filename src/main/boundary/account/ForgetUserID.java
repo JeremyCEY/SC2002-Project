@@ -31,7 +31,7 @@ public class ForgetUserID {
         } else {
             System.out.println("Found " + users.size() + " user(s) with name " + name + ".");
             System.out.println("The list of UserID associated with " + name + " is:");
-            System.out.println("┌--------------------------------------┐");
+            System.out.println("----------------------------------------");
             if (users.isEmpty()) {
                 System.out.println("| No user IDs found for " + name + " |");
             } else {
@@ -41,7 +41,7 @@ public class ForgetUserID {
                     System.out.printf("| %-17s| %-18s|\n", user.getID(), getUserDomain(user));
                 }
             }
-            System.out.println("└--------------------------------------┘");
+            System.out.println("----------------------------------------");
         }
         System.out.println("Press Enter key to go back.");
         try {
