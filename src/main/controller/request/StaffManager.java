@@ -40,347 +40,371 @@ import main.utils.ui.ChangePage;
 
 import static main.utils.config.Location.RESOURCE_LOCATION;
 
+/**
+ * Allows staff to create a new camp for students, guiding them through the input process.
+ *
+ * @param user The user (staff member) creating the camp.
+ * @throws PageBackException Thrown if the user chooses to go back during the camp creation process.
+ */
 public class StaffManager {
 
- /**
-  * @description: Staff creates the camp for students
-  * @param {User} user
-  * @return {*}
-  */
-  public static void createCamp(User user) throws PageBackException {
-    ChangePage.changePage();
-    System.out.println(BoundaryStrings.separator);
-    String name; 
-    do{
-        System.out.println("Enter a camp Name:");
-        name = new Scanner(System.in).nextLine();
-        if (name==""){
-            System.out.println("You have not entered anything. Please reenter!"); 
-        }
-    }while(name==""); 
-    String date; 
-    do{
-        System.out.println("Enter a camp Date, YYYYMMDD-YYYYMMDD:");
-        date = new Scanner(System.in).nextLine();
-        if (date==""){
-            System.out.println("You have not entered anything. Please reenter!"); 
-        }
-    }while(date==""); 
-    String registrationClosingDateDate; 
-    do{
-        System.out.println("Enter a camp Registration Closing Date, YYYYMMDD:");
-        registrationClosingDateDate = new Scanner(System.in).nextLine();
-        if (registrationClosingDateDate==""){
-            System.out.println("You have not entered anything. Please reenter!"); 
-        }
-    }while(registrationClosingDateDate==""); 
+    /**
+    * @description: Staff creates the camp for students
+    * @param {User} user
+    * @return {*}
+    */
+    public static void createCamp(User user) throws PageBackException {
+        ChangePage.changePage();
+        System.out.println(BoundaryStrings.separator);
+        String name; 
+        do{
+            System.out.println("Enter a camp Name:");
+            name = new Scanner(System.in).nextLine();
+            if (name==""){
+                System.out.println("You have not entered anything. Please reenter!"); 
+            }
+        }while(name==""); 
+        String date; 
+        do{
+            System.out.println("Enter a camp Date, YYYYMMDD-YYYYMMDD:");
+            date = new Scanner(System.in).nextLine();
+            if (date==""){
+                System.out.println("You have not entered anything. Please reenter!"); 
+            }
+        }while(date==""); 
+        String registrationClosingDateDate; 
+        do{
+            System.out.println("Enter a camp Registration Closing Date, YYYYMMDD:");
+            registrationClosingDateDate = new Scanner(System.in).nextLine();
+            if (registrationClosingDateDate==""){
+                System.out.println("You have not entered anything. Please reenter!"); 
+            }
+        }while(registrationClosingDateDate==""); 
 
-    System.out.println("Please select school that camp is open to:");
-    System.out.println("NTU,ADM,EEE,NBS,SCSE,SSS");
-    int included=0; 
-    String suggt; 
-    Faculty faculty=Faculty.NTU; 
-    Scanner scanner=new Scanner(System.in); 
-    do {
-        suggt=scanner.nextLine(); 
-        suggt=suggt.toUpperCase(); 
-        //System.out.println("suggt is: "+suggt); 
-        //System.out.println("suggest is: "+suggest); 
-        included=0; 
-        Faculty fc[]=Faculty.values();
-        for (Faculty fcl: fc){
-            if (fcl.name().equalsIgnoreCase(suggt)){
-                included=1; 
-                faculty=fcl; 
-                break; 
+        System.out.println("Please select school that camp is open to:");
+        System.out.println("NTU,ADM,EEE,NBS,SCSE,SSS");
+        int included=0; 
+        String suggt; 
+        Faculty faculty=Faculty.NTU; 
+        Scanner scanner=new Scanner(System.in); 
+        do {
+            suggt=scanner.nextLine(); 
+            suggt=suggt.toUpperCase(); 
+            //System.out.println("suggt is: "+suggt); 
+            //System.out.println("suggest is: "+suggest); 
+            included=0; 
+            Faculty fc[]=Faculty.values();
+            for (Faculty fcl: fc){
+                if (fcl.name().equalsIgnoreCase(suggt)){
+                    included=1; 
+                    faculty=fcl; 
+                    break; 
+                }
+            }
+            if (included==0){
+                System.out.println("Please enter one of the following faculties name (case is not important):"); 
+                System.out.println("    NA,\r\n" + //
+                "    NTU,\r\n" + //
+                "    ADM,\r\n" + //
+                "    EEE,\r\n" + //
+                "    NBS,\r\n" + //
+                "    SCSE,\r\n" + //
+                "    SSS"); 
+            }
+        }while (included==0); 
+        
+
+        System.out.println("Selected faculty: " + faculty);
+
+        String location; 
+        do{
+            System.out.println("Enter a camp Location:");
+            location = new Scanner(System.in).nextLine();
+            if (location==""){
+                System.out.println("You have not entered anything. Please reenter!"); 
+            }
+        }while(location==""); 
+
+        int totalSlots; 
+        while (true) {
+            System.out.println("Enter a camp attendee Slots:");
+            try {
+                // Try to read an integer from the user input
+                totalSlots = new Scanner(System.in).nextInt();
+
+                // Process the integer input
+                System.out.println("You entered: " + totalSlots);
+
+                // Break out of the loop if a valid integer is entered
+                break;
+            } catch (InputMismatchException e) {
+                // Handle the case where the input is not an integer
+                System.out.println("Invalid input. Please enter a valid integer.");
             }
         }
-        if (included==0){
-            System.out.println("Please enter one of the following faculties name (case is not important):"); 
-            System.out.println("    NA,\r\n" + //
-            "    NTU,\r\n" + //
-            "    ADM,\r\n" + //
-            "    EEE,\r\n" + //
-            "    NBS,\r\n" + //
-            "    SCSE,\r\n" + //
-            "    SSS"); 
+
+        int campCommSlots; 
+        while (true) {
+            System.out.println("Enter a camp committee Slots:");
+            try {
+                // Try to read an integer from the user input
+                campCommSlots = new Scanner(System.in).nextInt();
+                // Process the integer input
+                System.out.println("You entered: " + campCommSlots);
+
+                // Break out of the loop if a valid integer is entered
+                break;
+            } catch (InputMismatchException e) {
+                // Handle the case where the input is not an integer
+                System.out.println("Invalid input. Please enter a valid integer.");
+            }
         }
-    }while (included==0); 
-    
 
-    System.out.println("Selected faculty: " + faculty);
+        String description; 
+        do{
+            System.out.println("Enter a camp Description:");
+            description = new Scanner(System.in).nextLine();
+            if (description==""){
+                System.out.println("You have not entered anything. Please reenter!"); 
+            }
+        }while(description==""); 
 
-    String location; 
-    do{
-        System.out.println("Enter a camp Location:");
-        location = new Scanner(System.in).nextLine();
-        if (location==""){
-            System.out.println("You have not entered anything. Please reenter!"); 
-        }
-    }while(location==""); 
-
-    int totalSlots; 
-    while (true) {
-        System.out.println("Enter a camp attendee Slots:");
+        Camp camp;
+        name=name.toUpperCase(); 
         try {
-            // Try to read an integer from the user input
-            totalSlots = new Scanner(System.in).nextInt();
-
-            // Process the integer input
-            System.out.println("You entered: " + totalSlots);
-
-            // Break out of the loop if a valid integer is entered
-            break;
-        } catch (InputMismatchException e) {
-            // Handle the case where the input is not an integer
-            System.out.println("Invalid input. Please enter a valid integer.");
-        }
-    }
-
-    int campCommSlots; 
-    while (true) {
-        System.out.println("Enter a camp committee Slots:");
-        try {
-            // Try to read an integer from the user input
-            campCommSlots = new Scanner(System.in).nextInt();
-            // Process the integer input
-            System.out.println("You entered: " + campCommSlots);
-
-            // Break out of the loop if a valid integer is entered
-            break;
-        } catch (InputMismatchException e) {
-            // Handle the case where the input is not an integer
-            System.out.println("Invalid input. Please enter a valid integer.");
-        }
-    }
-
-    String description; 
-    do{
-        System.out.println("Enter a camp Description:");
-        description = new Scanner(System.in).nextLine();
-        if (description==""){
-            System.out.println("You have not entered anything. Please reenter!"); 
-        }
-    }while(description==""); 
-
-    Camp camp;
-    name=name.toUpperCase(); 
-    try {
-        camp = CampManager.createCamp(
-                name, date, registrationClosingDateDate, faculty, location, 0, totalSlots,
-                0, campCommSlots, description, user.getID(), "true");
-    } catch (ModelAlreadyExistsException e) {
-        throw new RuntimeException(e);
-    }
-
-    System.out.println("The camp details are as follows:");
-    ModelViewer.displaySingleDisplayable(camp);
-    System.out.println("Are you sure you want to create this camp? (Y/N)");
-    String input = new Scanner(System.in).nextLine();
-    if (!input.equalsIgnoreCase("Y")) {
-        System.out.println("Camp creation cancelled!");
-        try {
-            CampRepository.getInstance().remove(camp.getID());
-        } catch (ModelNotFoundException e) {
+            camp = CampManager.createCamp(
+                    name, date, registrationClosingDateDate, faculty, location, 0, totalSlots,
+                    0, campCommSlots, description, user.getID(), "true");
+        } catch (ModelAlreadyExistsException e) {
             throw new RuntimeException(e);
         }
+
+        System.out.println("The camp details are as follows:");
+        ModelViewer.displaySingleDisplayable(camp);
+        System.out.println("Are you sure you want to create this camp? (Y/N)");
+        String input = new Scanner(System.in).nextLine();
+        if (!input.equalsIgnoreCase("Y")) {
+            System.out.println("Camp creation cancelled!");
+            try {
+                CampRepository.getInstance().remove(camp.getID());
+            } catch (ModelNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("Enter enter to continue");
+            new Scanner(System.in).nextLine();
+            throw new PageBackException();
+        }
+        System.out.println("Camp created successfully!");
         System.out.println("Enter enter to continue");
         new Scanner(System.in).nextLine();
         throw new PageBackException();
     }
-    System.out.println("Camp created successfully!");
-    System.out.println("Enter enter to continue");
-    new Scanner(System.in).nextLine();
-    throw new PageBackException();
-}
 
+    /**
+    * Allows staff to edit an existing camp by providing options to update different fields.
+    *
+    * @param user The user (staff member) initiating the camp editing process.
+    * @throws PageBackException Thrown if the user chooses to go back during the camp editing process.
+    * @throws ModelNotFoundException Thrown if the specified camp ID is not found.
+    */
+    public static void editExistingCamp(User user) throws PageBackException, ModelNotFoundException {
+        ChangePage.changePage();
+        CampViewer.viewStaffCamps((Staff) user);
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter Camp ID of camp to edit");
 
-public static void editExistingCamp(User user) throws PageBackException, ModelNotFoundException {
-    ChangePage.changePage();
-    CampViewer.viewStaffCamps((Staff) user);
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter Camp ID of camp to edit");
-
-    String campID = scanner.nextLine();
-    Camp camp = CampManager.getCampByID(campID);
-    System.out.println("Which field do you want to update, press 0 to go back to upper menu");
-    System.out.println("\t0. Cancel");
-    System.out.println("\t1. Camp Name");
-    System.out.println("\t2. Camp Dates");
-    System.out.println("\t3. Camp Registration Closing Date");
-    System.out.println("\t4. Camp Faculty Open To");
-    System.out.println("\t5. Camp Location");
-    System.out.println("\t6. Camp Attendee Total Slots");
-    System.out.println("\t7. Camp Committee Total Slots");
-    System.out.println("\t8. Camp Description");
-    System.out.println("\t9. Camp Staff ID In Charge");
-    System.out.println("\t10. Camp Visibility(true/false)");
-    int choice; 
-    do {
-        choice=IntGetter.readInt();
-        if (choice == 0) throw new PageBackException();
-        if (choice>10 || choice<0){
-            System.out.println("Please enter field from 1 to 10!"); 
-        }
-    }while(choice>10 || choice<1); 
-    int suggest=-1; 
-    String suggt=""; 
-    String booln=""; 
-    System.out.println("The new value of the field to update: ");
-    do{
-        suggt=""; 
-        int totalSlots; 
-        if ((choice==6) || (choice==7)){
-            while (true) {
-                System.out.println("Enter a camp attendee Slots:");
-                try {
-                    // Try to read an integer from the user input
-                    suggest= new Scanner(System.in).nextInt();
-                    // Process the integer input
-                    System.out.println("You entered: " + suggest);
-                    // Break out of the loop if a valid integer is entered
-                    break;
-                } catch (InputMismatchException e) {
-                    // Handle the case where the input is not an integer
-                     System.out.println("Invalid input. Please enter a valid integer.");
-                }
+        String campID = scanner.nextLine();
+        Camp camp = CampManager.getCampByID(campID);
+        System.out.println("Which field do you want to update, press 0 to go back to upper menu");
+        System.out.println("\t0. Cancel");
+        System.out.println("\t1. Camp Name");
+        System.out.println("\t2. Camp Dates");
+        System.out.println("\t3. Camp Registration Closing Date");
+        System.out.println("\t4. Camp Faculty Open To");
+        System.out.println("\t5. Camp Location");
+        System.out.println("\t6. Camp Attendee Total Slots");
+        System.out.println("\t7. Camp Committee Total Slots");
+        System.out.println("\t8. Camp Description");
+        System.out.println("\t9. Camp Staff ID In Charge");
+        System.out.println("\t10. Camp Visibility(true/false)");
+        int choice; 
+        do {
+            choice=IntGetter.readInt();
+            if (choice == 0) throw new PageBackException();
+            if (choice>10 || choice<0){
+                System.out.println("Please enter field from 1 to 10!"); 
             }
-            suggt="default"; 
-        }
-        else if (choice==4){
-            System.out.println("Please enter one of the following faculties name (case is not important):"); 
-            System.out.println("    NA,\r\n" + //
-                    "    NTU,\r\n" + //
-                    "    ADM,\r\n" + //
-                    "    EEE,\r\n" + //
-                    "    NBS,\r\n" + //
-                    "    SCSE,\r\n" + //
-                    "    SSS"); 
-            //String faculty=scanner.nextLine(); 
-            int included=0; 
-            do {
-                suggt=scanner.nextLine(); 
-                suggt=suggt.toUpperCase(); 
-                //System.out.println("suggt is: "+suggt); 
-                //System.out.println("suggest is: "+suggest); 
-                included=0; 
-                Faculty fc[]=Faculty.values();
-                for (Faculty fcl: fc){
-                    if (fcl.name().equalsIgnoreCase(suggt)){
-                        included=1; 
-                        break; 
+        }while(choice>10 || choice<1); 
+        int suggest=-1; 
+        String suggt=""; 
+        String booln=""; 
+        System.out.println("The new value of the field to update: ");
+        do{
+            suggt=""; 
+            int totalSlots; 
+            if ((choice==6) || (choice==7)){
+                while (true) {
+                    System.out.println("Enter a camp attendee Slots:");
+                    try {
+                        // Try to read an integer from the user input
+                        suggest= new Scanner(System.in).nextInt();
+                        // Process the integer input
+                        System.out.println("You entered: " + suggest);
+                        // Break out of the loop if a valid integer is entered
+                        break;
+                    } catch (InputMismatchException e) {
+                        // Handle the case where the input is not an integer
+                        System.out.println("Invalid input. Please enter a valid integer.");
                     }
                 }
-                if (included==0){
-                    System.out.println("Please enter one of the following faculties name (case is not important):"); 
-                    System.out.println("    NA,\r\n" + //
-                    "    NTU,\r\n" + //
-                    "    ADM,\r\n" + //
-                    "    EEE,\r\n" + //
-                    "    NBS,\r\n" + //
-                    "    SCSE,\r\n" + //
-                    "    SSS"); 
-                }
-            }while (included==0); 
+                suggt="default"; 
+            }
+            else if (choice==4){
+                System.out.println("Please enter one of the following faculties name (case is not important):"); 
+                System.out.println("    NA,\r\n" + //
+                        "    NTU,\r\n" + //
+                        "    ADM,\r\n" + //
+                        "    EEE,\r\n" + //
+                        "    NBS,\r\n" + //
+                        "    SCSE,\r\n" + //
+                        "    SSS"); 
+                //String faculty=scanner.nextLine(); 
+                int included=0; 
+                do {
+                    suggt=scanner.nextLine(); 
+                    suggt=suggt.toUpperCase(); 
+                    //System.out.println("suggt is: "+suggt); 
+                    //System.out.println("suggest is: "+suggest); 
+                    included=0; 
+                    Faculty fc[]=Faculty.values();
+                    for (Faculty fcl: fc){
+                        if (fcl.name().equalsIgnoreCase(suggt)){
+                            included=1; 
+                            break; 
+                        }
+                    }
+                    if (included==0){
+                        System.out.println("Please enter one of the following faculties name (case is not important):"); 
+                        System.out.println("    NA,\r\n" + //
+                        "    NTU,\r\n" + //
+                        "    ADM,\r\n" + //
+                        "    EEE,\r\n" + //
+                        "    NBS,\r\n" + //
+                        "    SCSE,\r\n" + //
+                        "    SSS"); 
+                    }
+                }while (included==0); 
+            }
+            else if (choice==10){
+                int validinput=0; 
+                do {
+                    booln=scanner.nextLine(); 
+                    booln=booln.toUpperCase(); 
+                    if (booln.equals("FALSE") || booln.equals("TRUE")){
+                        validinput=1; 
+                        suggt="default"; 
+                    }
+                    if (validinput!=1){
+                        System.out.println("booln is: "+booln); 
+                        System.out.println("Please enter true or false (case is not important)!");
+                        System.out.println("Please indicate your choice: ");
+                    }
+                }while(validinput!=1); 
+            }
+            else {
+                suggt=scanner.nextLine();
+            }
+            if ((Integer.toString(suggest)=="") || (suggt=="")){
+                System.out.println("You have not entered any new value, please reenter!"); 
+            }
+        }while((Integer.toString(suggest)=="") || (suggt=="")); 
+        switch (choice) {
+            case 0 -> throw new PageBackException();
+            case 1 -> camp.setCampName(suggt);
+            case 2 -> camp.setDates(suggt);
+            case 3 -> camp.setRegistrationClosingDate(suggt);
+            case 4 -> camp.setCampType(Faculty.valueOf(suggt));
+            case 5 -> camp.setLocation(suggt);
+            case 6 -> camp.setTotalSlots(suggest);
+            case 7 -> camp.setCampCommSlots(suggest);
+            case 8 -> camp.setDescription(suggt);
+            case 9 -> camp.setStaffID(suggt);
+            case 10 -> camp.setVisibility(String.valueOf(booln));
         }
-        else if (choice==10){
-            int validinput=0; 
-            do {
-                booln=scanner.nextLine(); 
-                booln=booln.toUpperCase(); 
-                if (booln.equals("FALSE") || booln.equals("TRUE")){
-                    validinput=1; 
-                    suggt="default"; 
-                }
-                if (validinput!=1){
-                    System.out.println("booln is: "+booln); 
-                    System.out.println("Please enter true or false (case is not important)!");
-                    System.out.println("Please indicate your choice: ");
-                }
-            }while(validinput!=1); 
-        }
-        else {//(choice==0 || choice==1 || choice==2 || choice==3 || choice==5 || choice==8 || choice==9){
-            suggt=scanner.nextLine();
-        }
-        //System.out.println("Suggest is: "+suggest); 
-        if ((Integer.toString(suggest)=="") || (suggt=="")){
-            System.out.println("You have not entered any new value, please reenter!"); 
-        }
-    }while((Integer.toString(suggest)=="") || (suggt=="")); 
-    switch (choice) {
-        case 0 -> throw new PageBackException();
-        case 1 -> camp.setCampName(suggt);
-        case 2 -> camp.setDates(suggt);
-        case 3 -> camp.setRegistrationClosingDate(suggt);
-        case 4 -> camp.setCampType(Faculty.valueOf(suggt));
-        case 5 -> camp.setLocation(suggt);
-        case 6 -> camp.setTotalSlots(suggest);
-        case 7 -> camp.setCampCommSlots(suggest);
-        case 8 -> camp.setDescription(suggt);
-        case 9 -> camp.setStaffID(suggt);
-        case 10 -> camp.setVisibility(String.valueOf(booln));
-    }
 
-    System.out.println("Have other field to update?");
-    System.out.println("\t0. No");
-    System.out.println("\t1. Yes");
-    choice = scanner.nextInt();
-    if (choice == 1) {
+        System.out.println("Have other field to update?");
+        System.out.println("\t0. No");
+        System.out.println("\t1. Yes");
+        choice = scanner.nextInt();
+        if (choice == 1) {
+            CampManager.updateCamp(campID, camp);
+            editExistingCamp(user);
+        }
         CampManager.updateCamp(campID, camp);
-        editExistingCamp(user);
+        System.out.println("Successfully updated a new camp:");
+        CampViewer.viewCamp(camp);
+        System.out.println(BoundaryStrings.separator);
+        System.out.println();
+        System.out.println("Press enter to go back.");
+        scanner.nextLine();
+        throw new PageBackException();
     }
-    CampManager.updateCamp(campID, camp);
-    System.out.println("Successfully updated a new camp:");
-    CampViewer.viewCamp(camp);
-    System.out.println(BoundaryStrings.separator);
-    System.out.println();
-    System.out.println("Press enter to go back.");
-    scanner.nextLine();
-    throw new PageBackException();
-}
 
-public static void deleteExistingCamp(User user) throws PageBackException, ModelNotFoundException {
-    ChangePage.changePage();
-    CampViewer.viewStaffCamps((Staff) user);
+    /**
+    * Allows staff to delete an existing camp after confirming the deletion.
+    *
+    * @param user The user (staff member) initiating the camp deletion process.
+    * @throws PageBackException Thrown if the user chooses to go back during the camp deletion process.
+    * @throws ModelNotFoundException Thrown if the specified camp ID is not found.
+    */
+    public static void deleteExistingCamp(User user) throws PageBackException, ModelNotFoundException {
+        ChangePage.changePage();
+        CampViewer.viewStaffCamps((Staff) user);
 
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter Camp ID of camp to delete");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter Camp ID of camp to delete");
 
-    String campID = scanner.nextLine();
+        String campID = scanner.nextLine();
 
-    // Check if the camp with the provided ID exists
+        // Check if the camp with the provided ID exists
 
-    Camp campToDelete = CampManager.getCampByID(campID);
-    System.out.println("Are you sure you want to delete this camp? (Y/N)");
+        Camp campToDelete = CampManager.getCampByID(campID);
+        System.out.println("Are you sure you want to delete this camp? (Y/N)");
 
-    String input = scanner.nextLine();
-    if (!input.equalsIgnoreCase("Y")) {
-        System.out.println("Camp deletion cancelled!");
+        String input = scanner.nextLine();
+        if (!input.equalsIgnoreCase("Y")) {
+            System.out.println("Camp deletion cancelled!");
+            System.out.println("Press enter to continue");
+            scanner.nextLine();
+            throw new PageBackException();
+        }
+
+        // Try to delete the camp
+        try {
+            CampRepository.getInstance().remove(campToDelete.getID());
+        } catch (ModelNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("Camp deleted successfully!");
         System.out.println("Press enter to continue");
         scanner.nextLine();
         throw new PageBackException();
     }
 
-    // Try to delete the camp
-    try {
-        CampRepository.getInstance().remove(campToDelete.getID());
-    } catch (ModelNotFoundException e) {
-        throw new RuntimeException(e);
-    }
-
-    System.out.println("Camp deleted successfully!");
-    System.out.println("Press enter to continue");
-    scanner.nextLine();
-    throw new PageBackException();
-}
-
+    /**
+    * Displays and allows staff to reply to pending enquiries.
+    *
+    * @param user The user (staff member) viewing and replying to enquiries.
+    * @throws ModelNotFoundException Thrown if the specified enquiry ID is not found.
+    * @throws PageBackException Thrown if the user chooses to go back during the process.
+    */
     public static void viewAndReplyPendingEnquiries(User user) throws ModelNotFoundException, PageBackException {
         ChangePage.changePage();
         System.out.println(BoundaryStrings.separator);
         System.out.println("View Pending Enquiries");
         System.out.println();
-        ModelViewer.displayListOfDisplayable(
-                RequestManager.getAllPendingEnquiriesByStaff((Staff) user));
+        ModelViewer.displayListOfDisplayable(RequestManager.getAllPendingEnquiriesByStaff((Staff) user));
         System.out.println("Which enquiry ID do you want to reply");
         Scanner scanner = new Scanner(System.in);
         String enquiryID = scanner.nextLine();
@@ -408,6 +432,13 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
         throw new PageBackException();
     }
 
+    /**
+    * Displays and allows staff to handle pending suggestions by approving or rejecting them.
+    *
+    * @param user The user (staff member) handling pending suggestions.
+    * @throws ModelNotFoundException Thrown if the specified suggestion ID is not found.
+    * @throws PageBackException Thrown if the user chooses to go back during the process.
+    */
     public static void viewAndHandlePendingSuggestions(User user) throws ModelNotFoundException, PageBackException {
         ChangePage.changePage();
         System.out.println(BoundaryStrings.separator);
@@ -448,7 +479,16 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
         scanner.nextLine();
         throw new PageBackException();
     }
-
+    /**
+    * Allows a staff member to generate various reports related to camps. The method presents options
+    * to generate reports for all camps or a specific camp, and further allows the selection of
+    * specific report types such as student lists, attendee lists, committee lists, enquiries reports,
+    * and committee performance reports.
+    *
+    * @param user The staff member initiating the report generation.
+    * @throws IOException Thrown if an I/O error occurs during report generation.
+    * @throws PageBackException Thrown if the user chooses to go back during the process.
+    */
     public static void generateReports(User user) throws IOException, PageBackException {
         ChangePage.changePage();
         CampViewer.viewStaffCamps((Staff) user);
@@ -582,6 +622,15 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
         throw new PageBackException();
     }
 
+    /**
+    * Generates a CSV report for the attendees and camp committee members of a specific camp,
+    * including camp details and the list of attendees and committee members. The report is saved
+    * in the project's resources directory.
+    *
+    * @param campID The unique identifier of the camp for which the report is generated.
+    * @throws PageBackException Thrown if the user chooses to go back after report generation.
+    * @throws ModelNotFoundException Thrown if the camp with the specified ID is not found.
+    */
     private static void generateStudentsReport(String campID) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         ChangePage.changePage();
@@ -649,6 +698,14 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
         throw new PageBackException();
     }
 
+    /**
+    * Generates a CSV report for the attendees of a specific camp, including camp details
+    * and the list of attendees. The report is saved in the project's resources directory.
+    *
+    * @param campID The unique identifier of the camp for which the report is generated.
+    * @throws PageBackException Thrown if the user chooses to go back after report generation.
+    * @throws ModelNotFoundException Thrown if the camp with the specified ID is not found.
+    */
     public static void generateAttendeeReport(String campID) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         ChangePage.changePage();
@@ -705,6 +762,15 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
         throw new PageBackException();
     }
 
+    /**
+    * Generates a CSV report for the camp committee members of a specific camp, including
+    * camp details and the list of committee members. The report is saved in the project's
+    * resources directory.
+    *
+    * @param campID The unique identifier of the camp for which the report is generated.
+    * @throws PageBackException Thrown if the user chooses to go back after report generation.
+    * @throws ModelNotFoundException Thrown if the camp with the specified ID is not found.
+    */
     private static void generateCommitteeReport(String campID) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         ChangePage.changePage();
@@ -764,6 +830,13 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
         throw new PageBackException();
     }
 
+    /**
+    * Generates a performance report for camp committee members and saves it to a CSV file.
+    *
+    * @param campID The ID of the camp for which the report is generated.
+    * @throws PageBackException Thrown if the user decides to go back.
+    * @throws ModelNotFoundException Thrown if the camp with the specified ID is not found.
+    */
     public static void generatePerformaceReport(String campID) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         ChangePage.changePage();
@@ -826,6 +899,12 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
         throw new PageBackException();
     }
 
+    /**
+    * Generates an enquiry report for a specific camp and saves it to a CSV file.
+    * @param campID The ID of the camp for which the report is generated.
+    * @throws PageBackException Thrown if the user decides to go back.
+    * @throws ModelNotFoundException Thrown if the camp with the specified ID is not found.
+    */
     public static void generateEnquiryReport(String campID) throws PageBackException, ModelNotFoundException {
         Scanner sc = new Scanner(System.in);
         ChangePage.changePage();
@@ -891,6 +970,13 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
         throw new PageBackException();
     }
 
+    /**
+    * Generates a consolidated camp report for a list of camps associated with a staff member and saves it to a CSV file.
+    *
+    * @param camps The list of camps for which the report is generated.
+    * @param staff The staff member associated with the camps.
+    * @throws PageBackException Thrown if the user decides to go back.
+    */
     private static void generateStudentsReportForStaffCamps(List<Camp> camps, Staff staff) throws PageBackException {
         Scanner sc = new Scanner(System.in);
         ChangePage.changePage();
@@ -960,6 +1046,15 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
         throw new PageBackException();
     }
 
+    /**
+    * Generates a comprehensive camp attendee report for a staff member. 
+    * The report is saved in a CSV file format with committee
+    * information for each camp.
+    *
+    * @param camps A list of Camp objects representing the camps where the staff served as committee members.
+    * @param staff The Staff object for whom the report is generated.
+    * @throws PageBackException Signals that the user has opted to go back to the previous page.
+    */
     private static void generateAttendeeReportForStaffCamps(List<Camp> camps, Staff staff) throws PageBackException {
         Scanner sc = new Scanner(System.in);
         ChangePage.changePage();
@@ -1017,6 +1112,15 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
         throw new PageBackException();
     }
 
+    /**
+    * Generates a comprehensive camp committee report for a staff member. 
+    * The report is saved in a CSV file format with committee
+    * information for each camp.
+    *
+    * @param camps A list of Camp objects representing the camps where the staff served as committee members.
+    * @param staff The Staff object for whom the report is generated.
+    * @throws PageBackException Signals that the user has opted to go back to the previous page.
+    */
     private static void generateCommitteeReportForStaffCamps(List<Camp> camps, Staff staff) throws PageBackException {
         Scanner sc = new Scanner(System.in);
         ChangePage.changePage();
@@ -1076,6 +1180,15 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
         throw new PageBackException();
     }
 
+    /**
+    * Generates a comprehensive enquiry report for a staff member, including details of enquiries
+    * for multiple camps where the staff was involved. The report is saved in a CSV file format
+    * with camp and enquiry information.
+    *
+    * @param camps A list of Camp objects representing the camps where the staff was involved.
+    * @param staff The Staff object for whom the enquiry report is generated.
+    * @throws PageBackException Signals that the user has opted to go back to the previous page.
+    */
     private static void generateEnquiryReportForStaffCamps(List<Camp> camps, Staff staff) throws PageBackException {
         Scanner sc = new Scanner(System.in);
         ChangePage.changePage();
@@ -1142,6 +1255,15 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
         throw new PageBackException();
     }
 
+    /**
+    * Generates a performance report for a staff member, including details of multiple camps
+     * where the staff was involved. The report is saved in a CSV file format with camp details
+    * and performance information of the camp committee members.
+    *
+    * @param camps A list of Camp objects representing the camps where the staff was involved.
+    * @param staff The Staff object for whom the performance report is generated.
+    * @throws PageBackException Signals that the user has opted to go back to the previous page.
+    */
     private static void generatePerformanceReportForStaffCamps(List<Camp> camps, Staff staff) throws PageBackException {
         Scanner sc = new Scanner(System.in);
         ChangePage.changePage();
@@ -1201,6 +1323,12 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
         throw new PageBackException();
     }
 
+    /**
+    * Retrieves a list of all students who have attended a specific camp based on matching rules.
+    *
+    * @param camp The Camp object representing the camp for which attendees are to be retrieved.
+    * @return A list of Student objects representing attendees of the specified camp.
+    */
     private static List<Student> getAllAttendeesByCamp(Camp camp) {
         return StudentRepository.getInstance().findByRules(
                 s -> s.getACamps().toLowerCase().contains(camp.getID().toLowerCase()))
@@ -1209,6 +1337,13 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
                 .collect(Collectors.toList());
     }
 
+    /**
+    * Retrieves a list of all students who were part of the camp committee for a specific camp
+    * based on matching rules.
+    *
+    * @param camp The Camp object representing the camp for which camp committee members are to be retrieved.
+    * @return A list of Student objects representing camp committee members of the specified camp.
+    */
     private static List<Student> getAllCampCommByCamp(Camp camp) {
         return StudentRepository.getInstance().findByRules(
                 s -> s.getCCamps().toLowerCase().contains(camp.getID().toLowerCase()))
@@ -1217,6 +1352,12 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
                 .collect(Collectors.toList());
     }
 
+    /**
+    * Retrieves a list of all enquiries related to a specific camp based on matching rules.
+    *
+    * @param camp The Camp object representing the camp for which enquiries are to be retrieved.
+    * @return A list of Enquiry objects representing enquiries related to the specified camp.
+    */
     private static List<Enquiry> getAllEnquiriesByCamp(Camp camp) {
         return EnquiryRepository.getInstance().findByRules(
                 e -> e.getCampID().toLowerCase().contains(camp.getID().toLowerCase()))
@@ -1225,6 +1366,15 @@ public static void deleteExistingCamp(User user) throws PageBackException, Model
                 .collect(Collectors.toList());
     }
 
+    /**
+    * Generates a comprehensive camp report for a staff member, including details of multiple camps
+    * created by the staff. The report is saved in a CSV file format with attendance and committee
+    * information for each camp.
+    *
+    * @param camps A list of Camp objects representing the camps attended by the staff.
+    * @param staff The Staff object for whom the report is generated.
+    * @throws PageBackException Signals that the user has opted to go back to the previous page.
+    */
     public static void generateCampList(List<Camp> camps, Staff staff) throws PageBackException {
         Scanner sc = new Scanner(System.in);
         ChangePage.changePage();

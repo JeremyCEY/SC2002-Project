@@ -1,4 +1,4 @@
-studentIDYCHERNaCampsC6cCampsC5hashedPasswordh80ITRkOQ28UcyK5DnOE9qjgZ2yZ0h71GepxjlHUX5w=studentNameCHERNemailYCHERN@e.ntu.edu.sgpCampsC4facultySCSEpoints0
+studentIDYCHERNaCampsC6cCampsC5hashedPasswordh80ITRkOQ28UcyK5DnOE9qjgZ2yZ0h71GepxjlHUX5w=studentNameCHERNemailYCHERN@e.ntu.edu.sgpCampsC4facultySCSEpoints1
 studentIDKOH1aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameKOHemailKOH1@e.ntu.edu.sgpCampsnullfacultyADMpoints0
 studentIDBR015aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameBRANDONemailBR015@e.ntu.edu.sgpCampsnullfacultyEEEpoints0
 studentIDCT113aCampsnullcCampsnullhashedPasswordwAZ9SvTofwDbrGO2FWgoI3BZFy0bvqxnQnNF1qn9pIQ=studentNameCALVINemailCT113@e.ntu.edu.sgpCampsnullfacultySCSEpoints0
