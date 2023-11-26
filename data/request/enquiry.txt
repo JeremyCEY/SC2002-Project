@@ -1,7 +1,2 @@
-senderIDYCHERNcampIDC1requestIDE1messageCan I leave early?replynullrequestStatusPENDINGreplierIDnull
-senderIDYCHERNcampIDC3requestIDE2messageSorry, not opened. replynullrequestStatusREPLIEDreplierIDHUKUMAR
-senderIDYCHERNcampIDC3requestIDE3messageWEFDGBNreplynullrequestStatusREPLIEDreplierIDHUKUMAR
-senderIDYCHERNcampIDC4requestIDE5messageFGHNreplynullrequestStatusREPLIEDreplierIDHUKUMAR
-senderIDYCHERNcampIDC4requestIDE6messageYes.replynullrequestStatusREPLIEDreplierIDHUKUMAR
-senderIDYCHERNcampIDC5requestIDE8messageHello. replynullrequestStatusPENDINGreplierIDnull
-senderIDYCHERNcampIDC5requestIDE9messageOK.replynullrequestStatusPENDINGreplierIDnull
+senderIDYCHERNcampIDC5requestIDE2messagedfshgreplynullrequestStatusPENDINGreplierIDnull
+senderIDYCHERNcampIDC6requestIDE3message23450345678replynullrequestStatusPENDINGreplierIDnull
