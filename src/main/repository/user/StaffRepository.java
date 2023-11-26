@@ -1,3 +1,8 @@
+/**
+ * The main.repository.user package contains the StaffRepository class, which is a repository
+ * that manages the persistence and retrieval of Staff objects through file I/O operations.
+ * It extends the Repository class, providing basic CRUD operations for the repository.
+ */
 package main.repository.user;
 
 import main.model.user.Staff;
@@ -9,10 +14,9 @@ import java.util.Map;
 import static main.utils.config.Location.RESOURCE_LOCATION;
 
 /**
- * The staffRepository class is a repository that stores staff objects
- * through file I/O operations.
- * It extends the Repository class, which provides basic CRUD operations for the
- * repository.
+ * The StaffRepository class is a repository that manages the persistence and retrieval of
+ * Staff objects through file I/O operations. It extends the Repository class, providing
+ * basic CRUD operations for the repository.
  */
 public class StaffRepository extends Repository<Staff> {
 
@@ -22,7 +26,7 @@ public class StaffRepository extends Repository<Staff> {
     private static final String FILE_PATH = "/data/user/staff.txt";
 
     /**
-     * Constructor for creating a new staffRepository object.
+     * Constructor for creating a new StaffRepository object.
      */
     StaffRepository() {
         super();
@@ -30,9 +34,9 @@ public class StaffRepository extends Repository<Staff> {
     }
 
     /**
-     * Gets a new instance of staffRepository.
+     * Gets a new instance of StaffRepository.
      *
-     * @return a new instance of staffRepository
+     * @return a new instance of StaffRepository
      */
     public static StaffRepository getInstance() {
         return new StaffRepository();
@@ -60,3 +64,4 @@ public class StaffRepository extends Repository<Staff> {
         }
     }
 }
+
