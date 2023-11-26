@@ -1,3 +1,7 @@
+/**
+ * The main.boundary.modelviewer package contains classes responsible for providing user interfaces
+ * related to viewing details of camps.
+ */
 package main.boundary.modelviewer;
 
 import main.controller.camp.CampManager;
@@ -21,15 +25,14 @@ import java.util.HashMap;
 
 import java.util.Collections;
 import java.util.Comparator;
-
 /**
- * Displays the project details.
+ * The CampViewer class displays details of camps and provides methods for viewing different lists of camps.
  */
 public class CampViewer {
 
    /**
-    * Displays the project details.
-    * @param student the student to display the project details for
+    * Displays the list of available camps.
+    *
     * @throws PageBackException if the user wants to go back
     */
     public static void viewVisibleCampList() throws PageBackException {
@@ -45,6 +48,12 @@ public class CampViewer {
 
     // FOR STUDENTS
     // /////////////////////////////////////////////////////////////////////////////////////////////
+     /**
+     * Displays the list of visible camps for a specific student.
+     *
+     * @param student the student to display the project details for
+     * @throws PageBackException if the user wants to go back
+     */
     public static void viewVisibleFacultyCampList(Student student) throws PageBackException {
         ChangePage.changePage();
         List<Camp> camps = CampManager.getCampsForStudent(student);
@@ -78,6 +87,13 @@ public class CampViewer {
         }
     }
 
+    /**
+     * Sorts the list of camps based on the user's choice and displays the sorted list.
+     *
+     * @param camps   the list of camps to be sorted
+     * @param student the student for whom the camps are being sorted
+     * @throws PageBackException if the user wants to go back
+     */
     private static void sortCampsByOption(List<Camp> camps, Student student) throws PageBackException {
         ChangePage.changePage();
         System.out.println("Sort camps by:");
@@ -157,6 +173,12 @@ public class CampViewer {
         throw new PageBackException();
     }
 
+    /**
+     * Displays the list of camps for a specific staff member.
+     *
+     * @param staff the staff member for whom the camps are displayed
+     * @throws PageBackException if the user wants to go back
+     */
     public static void viewStaffCamps(Staff staff) throws PageBackException {
         List<Camp> camps = CampRepository.getInstance()
                 .findByRules(camp -> Objects.equals(camp.getStaffID(), staff.getID()));
@@ -165,9 +187,9 @@ public class CampViewer {
     }
 
     /**
-     * Displays the project details.
+     * Displays the list of camps registered by a specific student.
      *
-     * @param student the student
+     * @param student the student for whom the registered camps are displayed
      * @throws PageBackException if the user wants to go back
      */
     public static void viewStudentCamps(Student student) throws PageBackException {
@@ -184,6 +206,12 @@ public class CampViewer {
         throw new PageBackException();
     }
 
+    /**
+     * Selects the type of camps to view for a specific staff member and displays the selected list.
+     *
+     * @param staff the staff member for whom the camps are displayed
+     * @throws PageBackException if the user wants to go back
+     */
     public static void selectCampTypeAndDisplay(Staff staff) throws PageBackException {
         ChangePage.changePage();
 
@@ -215,6 +243,14 @@ public class CampViewer {
         }
     }
 
+    /**
+     * Displays a list of camps based on the specified criteria for a specific staff member.
+     *
+     * @param staff    the staff member for whom the camps are displayed
+     * @param camps    the list of camps to be displayed
+     * @param isVisible indicates whether the camps are visible or invisible
+     * @throws PageBackException if the user wants to go back
+     */
     public static void viewCampList(Staff staff, List<Camp> camps, boolean isVisible) throws PageBackException {
         ChangePage.changePage();
 
@@ -244,6 +280,14 @@ public class CampViewer {
         }
     }
 
+    /**
+     * Sorts the list of camps based on the user's choice and displays the sorted list for a specific staff member.
+     *
+     * @param camps    the list of camps to be sorted
+     * @param staff    the staff member for whom the camps are being sorted
+     * @param isVisible indicates whether the camps are visible or invisible
+     * @throws PageBackException if the user wants to go back
+     */
     private static void sortCampsByOption(List<Camp> camps, Staff staff, boolean isVisible) throws PageBackException {
         ChangePage.changePage();
         System.out.println("Sort camps by:");
@@ -309,14 +353,31 @@ public class CampViewer {
         throw new PageBackException();
     }
 
+    /**
+     * Displays a list of all camps.
+     *
+     * @throws PageBackException if the user wants to go back
+     */
     public static void viewAllCamps() throws PageBackException {
         viewCampList(null, CampManager.viewAllcamp(), false);
     }
 
+    /**
+     * Displays a list of visible camps for a specific staff member.
+     *
+     * @param staff the staff member for whom the camps are displayed
+     * @throws PageBackException if the user wants to go back
+     */
     public static void viewVisibleCampList(Staff staff) throws PageBackException {
         viewCampList(staff, CampManager.getAllVisibleCamps(), true);
     }
-
+    
+    /**
+     * Displays a list of invisible camps for a specific staff member.
+     *
+     * @param staff the staff member for whom the camps are displayed
+     * @throws PageBackException if the user wants to go back
+     */
     public static void viewInvisibleCampList(Staff staff) throws PageBackException {
         viewCampList(staff, CampManager.getAllInvisibleCamps(), false);
     }
