@@ -1,9 +1,17 @@
+/**
+ * The main.model.request package contains classes representing different types of requests
+ * made within the application, such as Enquiry and Suggestion.
+ */
 package main.model.request;
 
 import main.model.user.Faculty;
 import java.util.Map;
 import main.utils.parameters.EmptyID;
 
+/**
+ * The Suggestion class represents a request made by a student to suggest edits
+ * or changes related to a camp. It implements the Request interface.
+ */
 public class Suggestion implements Request {
 
 	private String requestID;
@@ -22,7 +30,13 @@ public class Suggestion implements Request {
 	private String description;
 	private String campStaff;
 
-	// Constructor
+    /**
+     * Constructor for creating a Suggestion object with essential information.
+     *
+     * @param requestID           The ID of the suggestion request.
+     * @param campID              The ID of the camp associated with the suggestion.
+     * @param studentID           The ID of the student making the suggestion.
+     */
 	public Suggestion(String requestID, String campID, String studentID) {
 		this.requestID = requestID;
 		this.campID = campID;
@@ -39,6 +53,11 @@ public class Suggestion implements Request {
 		this.campStaff = EmptyID.EMPTY_ID;
 	}
 
+    /**
+     * Constructor for creating a Suggestion object from a map of key-value pairs.
+     *
+     * @param map A map containing key-value pairs representing Suggestion attributes.
+     */
 	public Suggestion(Map<String, String> map) {
 		fromMap(map);
 	}
@@ -172,7 +191,10 @@ public class Suggestion implements Request {
 	public void setCampStaff(String campStaff) {
 		this.campStaff = campStaff;
 	}
-
+	
+    /**
+     * {@inheritDoc}
+     */
 	public String getDisplayableString() {
 		String status = null;
 		if (getRequestStatus() == RequestStatus.PENDING)
@@ -226,6 +248,9 @@ public class Suggestion implements Request {
 		return result.toString();
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	public String getDisplayableStringWithType(String type) {
 		String status = null;
 		if (getRequestStatus() == RequestStatus.PENDING)

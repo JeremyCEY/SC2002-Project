@@ -1,3 +1,10 @@
+/**
+ * The main.model.user package contains classes representing different user types
+ * within the system, such as Staff and Student. It also includes an enum Faculty
+ * representing various faculties. Users are characterized by unique IDs, names, and
+ * additional attributes based on their roles. This package facilitates the management
+ * and representation of user-related information.
+ */
 package main.model.user;
 
 import main.utils.parameters.EmptyID;
@@ -6,8 +13,11 @@ import main.utils.parameters.NotNull;
 import java.util.Map;
 
 /**
- * This class represents a student, which is a type of user.
- * It extends the User class and includes a student ID field.
+ * The Student class represents a student within the system. It extends the User class,
+ * inheriting basic user attributes, and includes additional fields like student ID,
+ * faculty, academic camps, and points. Students have distinct attributes and behaviors
+ * compared to other user types. This class provides constructors, getters, and setters
+ * for managing student information, academic camps, and points.
  */
 public class Student implements User {
 	/**
