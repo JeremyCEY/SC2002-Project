@@ -7,33 +7,33 @@ import main.repository.user.StudentRepository;
 import main.utils.exception.ModelNotFoundException;
 
 /**
- * A class that provides a utility for finding users in the database.
+ * A utility class providing methods for locating users in the database.
  */
 public class UserFinder {
     /**
-     * Finds the user with the specified ID.
+     * Finds the user with the specific ID.
      *
      * @param userID the ID of the user to be found
      * @return the user with the specified ID
-     * @throws ModelNotFoundException if the user is not found
+     * @throws ModelNotFoundException if user is not found
      */
     private static User findStudent(String userID) throws ModelNotFoundException {
         return StudentRepository.getInstance().getByID(userID);
     }
 
     /**
-     * Finds the coordinator with the specified ID.
+     * Finds the staff with the specified ID.
      *
-     * @param userID the ID of the coordinator to be found
-     * @return the coordinator with the specified ID
-     * @throws ModelNotFoundException if the coordinator is not found
+     * @param userID the ID of the staff to be found
+     * @return the staff with the specified ID
+     * @throws ModelNotFoundException if the staff memeber is not found
      */
     private static User findStaff(String userID) throws ModelNotFoundException {
         return StaffRepository.getInstance().getByID(userID);
     }
 
     /**
-     * Finds the user with the specified ID.
+     * Finds the user with the specified ID based on the provided user type.
      *
      * @param userID   the ID of the user to be found
      * @param userType the type of the user to be found

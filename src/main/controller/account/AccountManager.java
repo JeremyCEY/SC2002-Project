@@ -17,16 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class manages the account of a user
+ * Manages user accounts and provides functionalities for login, password change,
+ * user registration, user retrieval, and loading users from CSV resources.
  */
 public class AccountManager {
     /**
-     * Adds a new user to the database
+     * Logs in a user with the provided user type, user ID, and password.
      *
-     * @param userType the type of the user to be added
-     * @param userID   the ID of the user to be added
-     * @param password the password of the user to be added
-     * @return the user that is added
+     * @param userType the type of the user to be logged in
+     * @param userID   the ID of the user to be logged in
+     * @param password the password of the user to be logged in
+     * @return the logged-in user
      * @throws PasswordIncorrectException if the password is incorrect
      * @throws ModelNotFoundException     if the user is not found
      */
@@ -42,12 +43,12 @@ public class AccountManager {
     }
 
     /**
-     * Changes the password of the user
+     * Changes the password of a user with the provided user type, user ID, old password, and new password.
      *
-     * @param userType    the type of the user to be changed
-     * @param userID      the ID of the user to be changed
-     * @param oldPassword the old password of the user to be changed
-     * @param newPassword the new password of the user to be changed
+     * @param userType    the type of the user to change the password
+     * @param userID      the ID of the user to change the password
+     * @param oldPassword the old password of the user
+     * @param newPassword the new password for the user
      * @throws PasswordIncorrectException if the old password is incorrect
      * @throws ModelNotFoundException     if the user is not found
      */
@@ -59,10 +60,10 @@ public class AccountManager {
     }
 
     /**
-     * Gets the user by the user name
+     * Retrieves a list of users with the specified user name.
      *
-     * @param userName the user name of the user
-     * @return the user with the user name
+     * @param userName the user name to search for
+     * @return a list of users with the given user name
      */
     public static List<User> getUsersByUserName(String userName) {
         List<Student> studentList = StudentRepository.getInstance().findByRules(
@@ -76,14 +77,15 @@ public class AccountManager {
     }
 
     /**
-     * Registers a new user
+     * Registers a new user with the provided user type, user ID, password, name, email, and faculty.
      *
      * @param userType the type of the user to be registered
      * @param userID   the ID of the user to be registered
-     * @param password the password of the user to be registered
-     * @param name     the name of the user to be registered
-     * @param email    the email of the user to be registered
-     * @return the user that is registered
+     * @param password the password for the user
+     * @param name     the name of the user
+     * @param email    the email of the user
+     * @param faculty  the faculty of the user
+     * @return the registered user
      * @throws ModelAlreadyExistsException if the user already exists
      */
     public static User register(UserType userType, String userID, String password, String name, String email,
@@ -95,23 +97,18 @@ public class AccountManager {
     }
 
     /**
-     * Registers a new user
+     * Registers a new user with the provided user type, user ID, name, email, and faculty.
      *
      * @param userType the type of the user to be registered
      * @param userID   the ID of the user to be registered
-     * @param name     the name of the user to be registered
-     * @param email    the email of the user to be registered
-     * @return the user that is registered
+     * @param name     the name of the user
+     * @param email    the email of the user
+     * @param faculty  the faculty of the user
+     * @return the registered user
      * @throws ModelAlreadyExistsException if the user already exists
      */
     public static User register(UserType userType, String userID, String name, String email, Faculty faculty)
             throws ModelAlreadyExistsException {
-        // if (userType == UserType.STAFF) {
-        // System.err.println("Registering coordinator...");
-        // System.err.println("Coordinator ID: " + userID);
-        // System.err.println("Coordinator name: " + name);
-        // System.err.println("Coordinator email: " + email);
-        // }
         return register(userType, userID, "password", name, email, faculty);
     }
 
@@ -155,7 +152,7 @@ public class AccountManager {
     }
 
     /**
-     * Loads the coordinators from the CSV resource file
+     * Loads the staff members from the CSV resource file
      */
     private static void loadStaffs() {
         List<List<String>> staffList = CSVReader.read(Location.RESOURCE_LOCATION + "/resources/StaffList.csv",
@@ -192,9 +189,9 @@ public class AccountManager {
     }
 
     /**
-     * Checks if the repository is empty
+     * Checks if both student and staff repositories are empty.
      *
-     * @return true if the repository is empty, false otherwise
+     * @return true if both repositories are empty, false otherwise
      */
     public static boolean repositoryIsEmpty() {
         return StudentRepository.getInstance().isEmpty() &&
@@ -202,7 +199,7 @@ public class AccountManager {
     }
 
     /**
-     * Gets the user by the domain and ID
+     * Retrieves a user by the provided user type and ID.
      *
      * @param userType the type of the user
      * @param ID       the ID of the user
