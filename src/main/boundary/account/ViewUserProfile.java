@@ -41,7 +41,7 @@ public class ViewUserProfile {
 
             System.out.println("Welcome to View " + userType + " Profile");
             System.out.println(
-                    "┌---------------------------------------------------------------------------------------------------------------┐");
+                    "-----------------------------------------------------------------------------------------------------------------");
             System.out.printf("| %-15s | %-30s | %-15s | %-26s | %-11s |\n", "Name", "Email", userType + " ID", "Role",
                     "Points");
             System.out.println(
@@ -49,15 +49,15 @@ public class ViewUserProfile {
             System.out.printf("| %-15s | %-30s | %-15s | %-26s | %-11s |\n", user.getUserName(), user.getEmail(),
                     user.getID(), type, points);
             System.out.println(
-                    "└---------------------------------------------------------------------------------------------------------------┘");
+                    "-----------------------------------------------------------------------------------------------------------------");
         }
         if ("Staff".equals(userType)) {
             System.out.println("Welcome to View " + userType + " Profile");
-            System.out.println("┌--------------------------------------------------------------------┐");
+            System.out.println("----------------------------------------------------------------------");
             System.out.printf("| %-15s | %-30s | %-15s |\n", "Name", "Email", userType + " ID");
             System.out.println("|-----------------|--------------------------------|-----------------|");
             System.out.printf("| %-15s | %-30s | %-15s |\n", user.getUserName(), user.getEmail(), user.getID());
-            System.out.println("└--------------------------------------------------------------------┘");
+            System.out.println("----------------------------------------------------------------------");
         }
     }
 
